@@ -1,0 +1,43 @@
+.left .tools{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tools>li{
+  position: relative;
+  display: flex;
+  padding: 20px 0;
+  align-items: center;
+  flex-wrap: wrap;
+  cursor: url("../assets/cursor/pen.png"),pointer;
+  transition: all .3s;
+}
+.tools>li.active{
+  background-color: #464646;
+  color: wheat;
+  box-shadow: inset 5px 0 #deca8e;
+}
+
+.tools>li>i{
+  position: absolute;
+  left: 20px;
+}
+.tools>li span{
+  width: 100%;
+  padding-left: 70px;
+}
+
+.tools>li:not([class='active']):hover{
+  background-color: #d0d0d0fa;
+  box-shadow: 5px 9px 5px 0px rgba(210, 210, 210, 0.22);
+  transition: all .6s;
+}
+.more{
+  display: flex;
+  color: gray;
+  font-style: oblique;
+  justify-content: center;
+  margin-right: 20px;
+  font-size: 18px;
+  cursor: wait;
+}

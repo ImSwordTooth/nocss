@@ -1,0 +1,85 @@
+@font-face {
+  font-family: 'iconfont';  /* project id 1152663 */
+  src: url('//at.alicdn.com/t/font_1152663_bomaeso5epd.eot');
+  src: url('//at.alicdn.com/t/font_1152663_bomaeso5epd.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1152663_bomaeso5epd.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1152663_bomaeso5epd.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1152663_bomaeso5epd.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1152663_bomaeso5epd.svg#iconfont') format('svg');
+}
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:24px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/*工具箱控件*/
+.icontext:before{content: '\e61a'}
+.iconanchor:before{content: '\e643';font-size: 21px}
+.iconinput:before{content: '\e6b2';font-size: 21px}
+.iconbtn:before{content: '\e8f9'}
+.icondiv:before{content: '\e625';font-size: 30px}
+.iconimage:before{content: '\e600';font-size: 28px}
+.icontable:before{content: '\e623';font-size: 22px}
+.iconlist:before{content: '\e603'}
+
+/*窗口图标*/
+.icontools:before{content: '\e76a';}
+.iconcodes:before{content: '\e816'}
+.iconitems:before{content: '\e65b'}
+.iconoperations:before{content: '\e6ca'}
+
+/*窗口操作*/
+.iconzoomout:before{content: '\e8fa'}
+.iconzoomin:before{content: '\e601'}
+.iconhelp:before{content: '\e607'}
+.iconreset:before{content: '\e626'}
+.iconcopy:before{content: '\e608'}
+
+/*操作类型*/
+.iconstandard:before{content: '\e602';color: #1296db}
+.iconhover:before{content: '\e6af';color: #2aa515}
+.iconanimation:before{content: '\e66b';color: #efb336}
+
+/*操作*/
+.iconfontsize:before{content: '\e66f'}
+.iconfontstyle:before{content: '\e615'}
+.iconcolor:before{content: '\e646'}
+.iconbackgroundcolor:before{content:'\e63f'}
+.iconpadding:before{content: '\e620'}
+.iconborder:before{content: '\e604'}
+.icontextshadow:before{content: '\e60b'}
+.iconboxshadow:before{content: '\e648'}
+
+/*字形*/
+.iconbold:before{content: '\e617'}
+.iconlighter:before{content: '\e606'}
+.iconitalic:before{content: '\e73d'}
+.iconlinethrough:before{content: '\e773'}
+.iconlinetop:before{content: '\e644'}
+.iconlinebottom:before{content: '\e605'}
+
+/*线型*/
+.iconsolid:before{content: '\e624'}
+.icondashed:before{content: '\e63c'}
+.icondouble:before{content: '\e60a'}
+.icondotted:before{content: '\e622'}
+.iconinset:before{content: '\e7b4'}
+.iconoutset:before{content: '\e7b5'}
+.icongroove:before{content: '\e67b'}
+.iconridge:before{content: '\e621'}
+
+/*下拉箭头*/
+.icondownarrow:before{content: '\e60e';font-size: 12px}
+.iconuparrow:before{content: '\e610';font-size: 12px}
+
+/*表单组件*/
+.iconinput:before{content: '\e61b'}
+.iconcheckbox:before{content: '\e752'}
+.iconradio:before{content: '\e670'}
+.iconrange:before{content: '\e8fb'}
+
+.icontablerowandcol:before{content: '\e60c'}

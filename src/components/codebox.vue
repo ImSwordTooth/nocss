@@ -1,0 +1,41 @@
+<template>
+  <div class="showCodes">
+    <div class="Title">
+      <div>
+        <i class="iconfont iconcodes"></i>代码
+      </div>
+      <div class="toolsBtn">
+        <i class="iconfont iconcopy" v-tooltip.bottom="'复制'"></i>
+      </div>
+    </div>
+    <pre v-highlightjs="codes">
+      <code class="css"></code>
+    </pre>
+  </div>
+
+</template>
+
+<script>
+    export default {
+      name: "codebox",
+      data(){
+          return{
+            markdownhtml:`flex: .4;\nborder-top: solid 1px #c1c1c1;`
+          }
+      },
+      computed:{
+          codes(){
+            return this.$store.getters.getCodes;
+          },
+      }
+    }
+</script>
+
+<style scoped>
+  @import "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css";
+  .right .showContainer .showCodes{
+    flex: .4;
+    border-top: solid 1px #c1c1c1;
+    background-color: #f0f0f0;
+  }
+</style>
