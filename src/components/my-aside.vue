@@ -24,6 +24,7 @@
 
 <script>
   import * as x0popup from "x0popup";
+
   export default {
     name: "my-aside",
     data() {
@@ -39,11 +40,11 @@
         // this.activeLi = tag;
         let type = this.$store.getters.getToolType;
         let codes = this.$store.getters.getCodes;
-        if (type !== '' && codes !== '.nocss {\n\tcolor: #000000;\n\tfont-size: 12px;\n}') {
+        if (type !== '' && codes !== '.nocss {\n}') {
           x0popup('确定要切换标签吗？','确定要切换标签吗？当前所有样式将不会保存','warning',button=>{
             if (button === 'warning') {
               this.activeLi = tag;
-              this.$store.dispatch('changeCodes',`.nocss {\n\tcolor: #000000;\n\tfont-size: 12px;\n}`);
+              this.$store.dispatch('changeCodes',`.nocss {\n}`);
               this.$store.dispatch('changeIsAlive',false)
               this.submit(text,tag);
             }
@@ -57,8 +58,16 @@
         this.$store.dispatch('changeToolType',text);
         this.$store.dispatch('changeTagInfo',tag);
         switch (text) {
-          case '文本': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);break;
-          case '超链接': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);break;
+          case '文本':
+            this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);
+            this.$store.dispatch('changeStandardList',["color","fontsize","fontstyle","backgroundcolor","border","padding","textshadow","boxshadow","transition"]);
+            this.$store.dispatch('changePseudoClass',[{name:'hover',content:[]},{name:'active',content:[]}]);
+            break;
+          case '超链接':
+            this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);
+            this.$store.dispatch('changeStandardList',["color","textshadow","boxshadow"]);
+            this.$store.dispatch('changePseudoClass',[{name:'hover',content:[]}]);
+            break;
           case '表单组件': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);break;
           case '按钮': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);break;
           case '盒子': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);break;

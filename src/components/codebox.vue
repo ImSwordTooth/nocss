@@ -5,7 +5,7 @@
         <i class="iconfont iconcodes"></i>代码
       </div>
       <div class="toolsBtn">
-        <i class="iconfont iconcopy" v-tooltip.bottom="'复制'"></i>
+        <i class="iconfont iconcopy" v-tooltip.bottom="'复制'" v-clipboard:copy="codes" v-clipboard:success="onCopy"></i>
       </div>
     </div>
     <pre v-highlightjs="codes">
@@ -25,8 +25,16 @@
       },
       computed:{
           codes(){
-            return this.$store.getters.getCodes;
+            return this.$store.getters.getCodes+'\n'+this.$store.getters.getHoverCodes;
           },
+      },
+      methods: {
+        onCopy: function (e) {
+          this.iscopyd = '复制成功'
+        },
+        onError: function (e) {
+          alert('Failed to copy texts')
+        }
       }
     }
 </script>

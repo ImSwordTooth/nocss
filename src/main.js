@@ -3,27 +3,43 @@
 import Vue from 'vue'
 import App from './App'
 import store from './store'
-// import $ from 'jquery'
+//代码高亮
 import VueHighlightJS from 'vue-highlightjs'
+//弹出框
 import 'x0popup/dist/x0popup.min.css'
-Vue.use(VueHighlightJS)
-
+//提示
 import Tooltip from 'vue-directive-tooltip';
 import 'vue-directive-tooltip/css/index.css';
+//复制
+import VueClipboard from 'vue-clipboard2'
+// import $ from 'jquery'
+Vue.use(VueHighlightJS);
+
 Vue.use(Tooltip);
 
-Vue.config.productionTip = false
+Vue.use(VueClipboard)
 
 //把目录下的所有.vue文件变成组件
-const requireComponent = require.context('./components/operation',false,/\w+\.(vue|js)$/)
-requireComponent.keys().forEach(fileName => {
-  const componentConfig = requireComponent(fileName);
+const requireComponent_operation = require.context('./components/operation',false,/\w+\.(vue|js)$/)
+requireComponent_operation.keys().forEach(fileName => {
+  const componentConfig = requireComponent_operation(fileName);
   const componentName = fileName.replace(/^\.\/(.*)\.\w+$/,'$1');
 
   Vue.component(
     componentName,componentConfig.default||componentConfig
   )
 });
+
+const requireComponent_pseudo = require.context('./components/pseudo',false,/\w+\.(vue|js)$/)
+requireComponent_pseudo.keys().forEach(fileName => {
+  const componentConfig = requireComponent_pseudo(fileName);
+  const componentName = fileName.replace(/^\.\/(.*)\.\w+$/,'$1');
+
+  Vue.component(
+    componentName,componentConfig.default||componentConfig
+  )
+});
+
 
 // 自定义全局指令，用于颜色选择后点击其他地方隐藏颜色选择窗口
 const clickoutside = {

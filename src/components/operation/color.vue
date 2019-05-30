@@ -12,8 +12,9 @@
 </template>
 
 <script>
-  import { Chrome } from 'vue-color'
-    export default {
+  import {Chrome} from 'vue-color'
+
+  export default {
       name: "color",
       props:["now"],
       components:{
@@ -48,17 +49,28 @@
       },
       watch:{
         color:function () {
-            switch (this.now) {
+          let rgba = this.color.rgba;
+          let currentColor = rgba.a === 1 ? this.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
+          switch (this.now) {
               case 'standard': {
                 let codes = this.$store.getters.getCodes;
-                let rgba = this.color.rgba;
-                let currentColor = rgba.a === 1 ? this.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-                codes = codes.replace(/(?<=\tcolor:).+(?=;)/g, currentColor)
+                if ( codes.match(/\t\bcolor\b/g)){
+                  codes = codes.replace(/(?<=\t\bcolor:).+(?=;)/g,currentColor)
+                }else {
+                  codes = codes.replace(/}/g,`\tcolor:${currentColor};\n}`)
+                }
                 this.$store.dispatch('changeCodes', codes);
                 break;
               }
-              case 'class':{
-                console.log('xxx')
+              case 'hover':{
+                let codes = this.$store.getters.getHoverCodes;
+                if ( codes.match(/\bcolor\b/g)){
+                  codes = codes.replace(/(?<=\bcolor:).+(?=;)/g,currentColor)
+                }else {
+                  codes = codes.replace(/}/g,`\tcolor:${currentColor};\n}`)
+                }
+                this.$store.dispatch('changeHoverCodes', codes);
+                break;
               }
             }
 

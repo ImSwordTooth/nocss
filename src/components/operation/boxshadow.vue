@@ -47,9 +47,11 @@
 </template>
 
 <script>
-  import { Chrome } from 'vue-color'
-    export default {
+  import {Chrome} from 'vue-color'
+
+  export default {
         name: "boxshadow",
+      props:["now"],
       data(){
         return{
           alreadyShadow:[],
@@ -108,8 +110,7 @@
         //   let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a}),`;
         //   this.alreadyShadow.push(`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`);
         // },
-        submit(){
-          let codes = this.$store.getters.getCodes;
+        submit(now){
           let rgba = this.color.rgba;
           let type = this.type === 'inset' ? this.type : '';
           let x = this.offsetX;
@@ -117,36 +118,55 @@
           let blur = this.blur;
           let spread = this.spread;
           let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          if ( codes.match(/\bbox-shadow\b/g)){
-            if (blur === 0 && spread === 0 && currentColor.a === 0){
-              codes = codes.replace(/\n\tbox-shadow:.+;/g,'');
-            }else {
-              codes = codes.replace(/(?<=\bbox-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
-            }
-          }else {
-            codes = codes.replace(/}/g,`\tbox-shadow:${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor};\n}`)
+          switch (now) {
+            case 'standard':
+              let codes = this.$store.getters.getCodes;
+              if ( codes.match(/\bbox-shadow\b/g)){
+                if (blur === 0 && spread === 0 && currentColor.a === 0){
+                  codes = codes.replace(/\n\tbox-shadow:.+;/g,'');
+                }else {
+                  codes = codes.replace(/(?<=\bbox-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
+                }
+              }else {
+                codes = codes.replace(/}/g,`\tbox-shadow:${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor};\n}`)
+              }
+              this.$store.dispatch('changeCodes',codes);
+              break;
+            case 'hover':
+              let hoverCodes = this.$store.getters.getHoverCodes;
+              if ( hoverCodes.match(/\bbox-shadow\b/g)){
+                if (blur === 0 && spread === 0 && currentColor.a === 0){
+                  hoverCodes = hoverCodes.replace(/\n\tbox-shadow:.+;/g,'');
+                }else {
+                  hoverCodes = hoverCodes.replace(/(?<=\bbox-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
+                }
+              }else {
+                hoverCodes = hoverCodes.replace(/}/g,`\tbox-shadow:${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor};\n}`)
+              }
+              this.$store.dispatch('changeHoverCodes',hoverCodes);
+              break;
           }
-          this.$store.dispatch('changeCodes',codes)
+
         }
       },
       watch:{
         color:function () {
-          this.submit()
+          this.submit(this.now)
         },
         type:function(){
-          this.submit()
+          this.submit(this.now)
         },
         offsetX:function () {
-          this.submit()
+          this.submit(this.now)
         },
         offsetY:function () {
-          this.submit()
+          this.submit(this.now)
         },
         blur:function(){
-          this.submit()
+          this.submit(this.now)
         },
         spread:function () {
-          this.submit()
+          this.submit(this.now)
         }
       }
     }
@@ -236,6 +256,15 @@
     background-color: #5a5a5a;
     color: #fbdf0c;
     transition: background-color .5s;
+    animation: ss .6s ease-out;
+  }
+  @keyframes ss {
+    0%{
+      transform: scale(1.1,1);
+    }
+    100%{
+      transform: scale(1,1);
+    }
   }
   .operate_btn{
     color:#3698CA;

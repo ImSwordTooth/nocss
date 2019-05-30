@@ -17,7 +17,7 @@
       </div>
     </div>
     <article>
-      <hhh :style="itemStyle" @mouseenter.native="hoverFn" @mouseout.native="outFn"></hhh>
+      <codes :style="itemStyle" @mouseenter.native="hoverFn" @mouseout.native="outFn"></codes>
     </article>
   </div>
 </template>
@@ -46,10 +46,10 @@
         itemStyle(){
           let style = this.$store.getters.getCodes;
           style = style.replace(/.+(?={)/g,"").replace(/[{|}]/g,'');
+          let Hoverstyle = this.$store.getters.getHoverCodes;
+          Hoverstyle = Hoverstyle.replace(/.+(?={)/g,"").replace(/[{|}]/g,'');
             if (this.isHover) {
-              // 这里获取原样式加hover的样式
-              // return style + `color:red`
-              return style;
+              return style+Hoverstyle;
 
             }else {
               return style;
@@ -57,7 +57,7 @@
         }
       },
       components:{
-        'hhh':{
+        'codes':{
           render(createElement, context) {
             let tag = this.$store.getters.getTagInfo;
             let type = this.$store.getters.getInputType;

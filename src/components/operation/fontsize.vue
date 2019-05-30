@@ -14,6 +14,7 @@
 <script>
     export default {
         name: "fontsize",
+      props:["now"],
       data(){
           return{
             fontsize:12
@@ -21,9 +22,26 @@
       },
       watch:{
           fontsize:function () {
-            let codes = this.$store.getters.getCodes;
-            codes = codes.replace(/(?<=\bfont-size:).+(?=;)/g,this.fontsize+'px');
-            this.$store.dispatch('changeCodes',codes)
+            switch (this.now) {
+              case 'standard':
+                let codes = this.$store.getters.getCodes;
+                if ( codes.match(/\bfont-size\b/g)){
+                  codes = codes.replace(/(?<=\bfont-size:).+(?=;)/g,this.fontsize+'px')
+                }else {
+                  codes = codes.replace(/}/g,`\tfont-size:${this.fontsize}px;\n}`)
+                }
+                this.$store.dispatch('changeCodes',codes);
+                break;
+              case 'hover':
+                let hoverCodes = this.$store.getters.getHoverCodes;
+                if ( hoverCodes.match(/\bfont-size\b/g)){
+                  hoverCodes = hoverCodes.replace(/(?<=\bfont-size:).+(?=;)/g,this.fontsize+'px')
+                }else {
+                  hoverCodes = hoverCodes.replace(/}/g,`\tfont-size:${this.fontsize}px;\n}`)
+                }
+                this.$store.dispatch('changeHoverCodes',hoverCodes);
+                break;
+            }
           }
       }
     }
@@ -32,15 +50,5 @@
 <style scoped>
   input[type=range]{
     width: 200px;
-  }
-  .fontsizetext{
-    background-color: #e8e8e8;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 12px;
-    box-shadow: 1px 1px 1px 0px #b1b1b1
-  }
-  .fontsizetext:after{
-    content:'px'
   }
 </style>

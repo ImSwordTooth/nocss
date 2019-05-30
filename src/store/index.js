@@ -9,8 +9,10 @@ const state = {
   inputType:'text',                         //input的type
   operate_head:[],                          //操作类型
   standardList:[],                          //基本操作列表
+  pseudoClass:[],                           //伪类列表
   activeHead:'standard',                    //当前使用的操作类型
-  codes:`.nocss {\n\tcolor: #000000;\n\tfont-size: 12px;\n}`,        //代码
+  codes:`.nocss {\n}`,        //代码
+  hoverCodes:``,                            //hover时的代码
   isAlive:true,                              //控制组件刷新
 
 };
@@ -31,11 +33,20 @@ const getters = {   //实时监听state值的变化(最新状态)
   getOperateHead(state){
     return state.operate_head;
   },
+  getStandardList(state){
+    return state.standardList;
+  },
+  getPseudoClass(state){
+    return state.pseudoClass;
+  },
   getActiveHead(state){
     return state.activeHead;
   },
   getCodes(state){
     return state.codes;
+  },
+  getHoverCodes(state){
+    return state.hoverCodes;
   },
   getIsAlive(state){
     return state.isAlive;
@@ -58,6 +69,12 @@ const mutations = {
   changeOperateHead(state,head){
     state.operate_head = head;
   },
+  changeStandardList(state,list){
+    state.standardList = list;
+  },
+  changePseudoClass(state,list){
+    state.pseudoClass = list;
+  },
   changeActiveHead(state,head){
     state.activeHead = head;
   },
@@ -66,6 +83,9 @@ const mutations = {
   },
   changeCodes(state,codes){
     state.codes = codes;
+  },
+  changeHoverCodes(state,codes){
+    state.hoverCodes = codes;
   },
   changeIsAlive(state,is){
     state.isAlive = is;
@@ -90,6 +110,12 @@ const actions = {
   changeOperateHead(context, head) {
     context.commit('changeOperateHead',head)
   },
+  changeStandardList(context,list){
+    context.commit('changeStandardList',list);
+  },
+  changePseudoClass(context,list){
+    context.commit('changePseudoClass',list);
+  },
   changeActiveHead(context,head){
     context.commit('changeActiveHead',head)
   },
@@ -98,6 +124,9 @@ const actions = {
   },
   changeCodes(context,codes){
     context.commit('changeCodes',codes)
+  },
+  changeHoverCodes(context,codes){
+    context.commit('changeHoverCodes',codes)
   },
   changeIsAlive(context, is) {
     context.commit('changeIsAlive',is)

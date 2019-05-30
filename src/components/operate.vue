@@ -21,7 +21,7 @@
       methods:{
         reload(){
               this.$store.dispatch('changeIsAlive',false);
-              this.$store.dispatch('changeCodes',`.nocss {\n\tcolor: #000000;\n\tfont-size: 12px;\n}`);
+              this.$store.dispatch('changeCodes',`.nocss {\n}`);
           }
       }
     }

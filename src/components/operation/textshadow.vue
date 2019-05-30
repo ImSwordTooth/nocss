@@ -29,9 +29,11 @@
 </template>
 
 <script>
-  import { Chrome } from 'vue-color'
-    export default {
+  import {Chrome} from 'vue-color'
+
+  export default {
       name: "textshadow",
+      props:["now"],
       data(){
         return{
           offsetX:0,
@@ -70,37 +72,55 @@
         hideColorPicker(){
           this.isShow = false
         },
-        submit(){
-          let codes = this.$store.getters.getCodes;
+        submit(now){
           let x = this.offsetX;
           let y = this.offsetY;
           let blur = this.blur;
           let rgba = this.color.rgba;
           let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          if ( codes.match(/\btext-shadow\b/g)){
-            if (blur === 0 && currentColor.a === 0){
-              codes = codes.replace(/\n\ttext-shadow:.+;/g,'');
-            }else {
-              codes = codes.replace(/(?<=\btext-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${currentColor}`)
-            }
-          }else {
-            codes = codes.replace(/}/g,`\ttext-shadow:${x}px ${y}px ${blur}px ${currentColor};\n}`)
+          switch (now) {
+            case 'standard':
+              let codes = this.$store.getters.getCodes;
+              if ( codes.match(/\btext-shadow\b/g)){
+                if (blur === 0 && currentColor.a === 0){
+                  codes = codes.replace(/\n\ttext-shadow:.+;/g,'');
+                }else {
+                  codes = codes.replace(/(?<=\btext-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${currentColor}`)
+                }
+              }else {
+                codes = codes.replace(/}/g,`\ttext-shadow:${x}px ${y}px ${blur}px ${currentColor};\n}`)
+              }
+              this.$store.dispatch('changeCodes',codes);
+              break;
+            case 'hover':
+              let hoverCodes = this.$store.getters.getHoverCodes;
+              if ( hoverCodes.match(/\btext-shadow\b/g)){
+                if (blur === 0 && currentColor.a === 0){
+                  hoverCodes = hoverCodes.replace(/\n\ttext-shadow:.+;/g,'');
+                }else {
+                  hoverCodes = hoverCodes.replace(/(?<=\btext-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${currentColor}`)
+                }
+              }else {
+                hoverCodes = hoverCodes.replace(/}/g,`\ttext-shadow:${x}px ${y}px ${blur}px ${currentColor};\n}`)
+              }
+              this.$store.dispatch('changeHoverCodes',hoverCodes);
+              break;
           }
-          this.$store.dispatch('changeCodes',codes)
+
         }
       },
       watch:{
         offsetX:function () {
-          this.submit()
+          this.submit(this.now)
         },
         offsetY:function () {
-          this.submit()
+          this.submit(this.now)
         },
         blur:function(){
-          this.submit()
+          this.submit(this.now)
         },
         color:function () {
-          this.submit()
+          this.submit(this.now)
         }
       }
     }

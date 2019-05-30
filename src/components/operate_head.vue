@@ -37,7 +37,7 @@
     margin: 0;
   }
   .nav ul li{
-    background-color: #e8e8e8;
+    background-color: #f5f5f5;
     border: solid 1px #c3c3c375;
     border-left: none;
     padding: 5px 20px;
@@ -52,5 +52,14 @@
   }
   .nav ul i{
     margin: 0 2px;
+  }
+  .iconanimation{animation: rotate infinite 2s linear}
+  @keyframes rotate {
+    0%{
+      transform: rotate(0);
+    }
+    100%{
+      transform: rotate(360deg);
+    }
   }
 </style>

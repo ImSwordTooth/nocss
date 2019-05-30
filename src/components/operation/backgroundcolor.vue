@@ -12,9 +12,11 @@
 </template>
 
 <script>
-  import { Chrome } from 'vue-color'
+  import {Chrome} from 'vue-color'
+
   export default {
     name: "backgroundcolor",
+    props:["now"],
     components:{
       'chrome-picker': Chrome,
     },
@@ -53,15 +55,31 @@
     },
     watch:{
       color:function () {
-        let codes = this.$store.getters.getCodes;
         let rgba = this.color.rgba;
         let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-        if ( codes.match(/\bbackground-color\b/g)){
-          codes = codes.replace(/(?<=\bbackground-color:).+(?=;)/g,currentColor)
-        }else {
-          codes = codes.replace(/}/g,`\tbackground-color:${currentColor};\n}`)
+        switch (this.now) {
+          case 'standard':{
+            let codes = this.$store.getters.getCodes;
+            if ( codes.match(/\bbackground-color\b/g)){
+              codes = codes.replace(/(?<=\bbackground-color:).+(?=;)/g,currentColor)
+            }else {
+              codes = codes.replace(/}/g,`\tbackground-color:${currentColor};\n}`)
+            }
+            this.$store.dispatch('changeCodes',codes);
+            break;
+          }
+          case 'hover':{
+            let codes = this.$store.getters.getHoverCodes;
+            if ( codes.match(/\bbackground-color\b/g)){
+              codes = codes.replace(/(?<=\bbackground-color:).+(?=;)/g,currentColor)
+            }else {
+              codes = codes.replace(/}/g,`\tbackground-color:${currentColor};\n}`)
+            }
+            this.$store.dispatch('changeHoverCodes',codes);
+            break;
+          }
         }
-        this.$store.dispatch('changeCodes',codes)
+
       }
     }
   }
@@ -70,7 +88,7 @@
 <style scoped>
   .color{
     position: relative;
-    cursor: url("../../assets/cursor/pen.png"),pointer;
+    cursor: url("../../assets/cursor/brush.png"),pointer;
     z-index: 8;
   }
   .colorPicker{

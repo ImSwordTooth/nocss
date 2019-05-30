@@ -33,9 +33,11 @@
 </template>
 
 <script>
-  import { Chrome } from 'vue-color'
-    export default {
+  import {Chrome} from 'vue-color'
+
+  export default {
       name: "border",
+      props:["now"],
       data(){
         return{
           borderWeight:0,
@@ -61,23 +63,41 @@
         changeBorderStyle(event){
           this.borderStyle = event.currentTarget.innerText;
         },
-        submit(){
-          let codes = this.$store.getters.getCodes;
+        submit(now){
           let weight = this.borderWeight;
           let style = this.borderStyle;
           let rgba = this.color.rgba;
           let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          if ( codes.match(/\bborder\b/g)){
-            if (weight == 0 && rgba.a == 0){
-              codes = codes.replace(/\n\tborder:.+;/g,'');
-            }else {
-              codes = codes.replace(/(?<=\bborder:).+(?=;)/g,`${weight}px ${style} ${currentColor}`)
-            }
-          }else {
-            codes = codes.replace(/}/g,`\tborder:${weight}px ${style} ${currentColor};\n}`)
+          switch (now) {
+            case 'standard':
+              let codes = this.$store.getters.getCodes;
+              if ( codes.match(/\bborder\b/g)){
+                if (weight == 0 && rgba.a == 0){
+                  codes = codes.replace(/\n\tborder:.+;/g,'');
+                }else {
+                  codes = codes.replace(/(?<=\bborder:).+(?=;)/g,`${weight}px ${style} ${currentColor}`)
+                }
+              }else {
+                codes = codes.replace(/}/g,`\tborder:${weight}px ${style} ${currentColor};\n}`)
+              }
+              this.$store.dispatch('changeCodes',codes);
+              break;
+            case 'hover':
+              let hoverCodes = this.$store.getters.getHoverCodes;
+              if ( hoverCodes.match(/\bborder\b/g)){
+                if (weight == 0 && rgba.a == 0){
+                  hoverCodes = hoverCodes.replace(/\n\tborder:.+;/g,'');
+                }else {
+                  hoverCodes = hoverCodes.replace(/(?<=\bborder:).+(?=;)/g,`${weight}px ${style} ${currentColor}`)
+                }
+              }else {
+                hoverCodes = hoverCodes.replace(/}/g,`\tborder:${weight}px ${style} ${currentColor};\n}`)
+              }
+              this.$store.dispatch('changeHoverCodes',hoverCodes);
+              break;
           }
-          this.$store.dispatch('changeCodes',codes)
-        }
+          }
+
       },
       computed:{
         rgba(){
@@ -100,13 +120,13 @@
       },
       watch:{
         borderWeight:function () {
-          this.submit()
+          this.submit(this.now)
         },
         borderStyle:function () {
-          this.submit()
+          this.submit(this.now)
         },
         color:function () {
-          this.submit()
+          this.submit(this.now)
         }
       }
     }
@@ -125,7 +145,7 @@
     padding: 5px;
     border-radius: 5px;
     font-size: 12px;
-    box-shadow: 1px 1px 1px 0px #b1b1b1
+    box-shadow: 1px 1px 1px 0 #b1b1b1
   }
   .borderWeightText:after{
     content:'px'
@@ -174,10 +194,19 @@
     background-color: #5a5a5a;
     color: #fbdf0c;
     transition: background-color .5s;
+    animation: ss .6s ease-out;
+  }
+  @keyframes ss {
+    0%{
+      transform: scale(1.1,1);
+    }
+    100%{
+      transform: scale(1,1);
+    }
   }
   .color{
     position: relative;
-    cursor: url("../../assets/cursor/pen.png"),pointer;
+    cursor: url("../../assets/cursor/brush.png"),pointer;
     z-index: 7;
   }
   .colorPicker{
