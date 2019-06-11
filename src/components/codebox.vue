@@ -25,7 +25,7 @@
       },
       computed:{
           codes(){
-            return this.$store.getters.getCodes+'\n'+this.$store.getters.getHoverCodes;
+            return this.$store.getters.getCodes+'\n'+this.$store.getters.getHoverCodes+'\n'+this.$store.getters.getAnimationCodes;
           },
       },
       methods: {

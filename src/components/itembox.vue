@@ -70,16 +70,20 @@
               case 'a':return createElement(tag,{attrs:{href:'#'}},text);
               case 'input':return createElement(tag,{attrs:{type:type,value:text}});
               case 'img':return createElement(tag,{attrs:{src:image}});
-              case 'table':return createElement(tag);
+              case 'table':return createElement(tag,{attrs:{border:1}},[
+                createElement('tr',[createElement('td','哈哈哈'),createElement('td','哈哈哈'),createElement('td','哈哈哈')]),
+                createElement('tr',[createElement('td','哈哈哈')]),
+                createElement('tr',[createElement('td','哈哈哈')])
+              ]);
               case 'ul':return createElement('ul',[
-                createElement('li','第一项'),
+                createElement('li',{style:this.itemStyle},'第一项'),
                 createElement('li','第二项'),
                 createElement('li','第三项'),
               ]);
 
             }
           }
-        }
+        },
       },
       methods:{
         changeType:function (event) {
@@ -131,5 +135,8 @@
     outline: none;
     vertical-align: middle;
   }
+
+
+
 
 </style>

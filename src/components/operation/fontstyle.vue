@@ -21,6 +21,7 @@
 <script>
     export default {
         name: "fontstyle",
+      props:["now"],
       computed:{
         getfontweight(){
           let codes = this.$store.getters.getCodes;
@@ -76,38 +77,17 @@
         fontWeight(event){
           let codes = this.$store.getters.getCodes;
           let fontweight = event.currentTarget.dataset.weight;
-          if (fontweight === this.getfontweight){                               //切换
-            codes = codes.replace(/\n\tfont-weight:\w+;/g,'');
-          } else if ( codes.match(/\bfont-weight\b/g)){                         //有的话只改后面的值
-            codes = codes.replace(/(?<=\bfont-weight:).+(?=;)/g,fontweight)
-          }else {                                                               //没有的话直接添加
-            codes = codes.replace(/}/g,`\tfont-weight:${fontweight};\n}`)
-          }
-          this.$store.dispatch('changeCodes',codes)
+          this.submit('font-weight',this.now,fontweight);
         },
         fontStyle(event){
           let codes = this.$store.getters.getCodes;
           let fontstyle = event.currentTarget.dataset.style;
-          if (fontstyle === this.getfontstyle){                               //切换
-            codes = codes.replace(/\n\tfont-style:\w+;/g,'');
-          } else if ( codes.match(/\bfont-style\b/g)){                         //有的话只改后面的值
-            codes = codes.replace(/(?<=\bfont-style:).+(?=;)/g,fontstyle)
-          }else {                                                               //没有的话直接添加
-            codes = codes.replace(/}/g,`\tfont-style:${fontstyle};\n}`)
-          }
-          this.$store.dispatch('changeCodes',codes)
+          this.submit('font-style',this.now,fontstyle);
         },
         textdecoration(event){
           let codes = this.$store.getters.getCodes;
           let decoration = event.currentTarget.dataset.decoration;
-          if (decoration === this.gettextdecoration){                               //切换
-            codes = codes.replace(/\n\ttext-decoration:.+;/g,'');
-          } else if ( codes.match(/\btext-decoration\b/g)){                         //有的话只改后面的值
-            codes = codes.replace(/(?<=\btext-decoration:).+(?=;)/g,decoration)
-          }else {                                                               //没有的话直接添加
-            codes = codes.replace(/}/g,`\ttext-decoration:${decoration};\n}`)
-          }
-          this.$store.dispatch('changeCodes',codes)
+          this.submit('text-decoration',this.now,decoration);
         },
       }
     }

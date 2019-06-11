@@ -10,9 +10,11 @@ const state = {
   operate_head:[],                          //操作类型
   standardList:[],                          //基本操作列表
   pseudoClass:[],                           //伪类列表
+  percentList:[{name:'0%',iconName:'icon0',content:[]},{name:'100%',iconName:'icon100',content:[]}],
   activeHead:'standard',                    //当前使用的操作类型
   codes:`.nocss {\n}`,        //代码
   hoverCodes:``,                            //hover时的代码
+  animationCodes:``,                          //动画所用代码
   isAlive:true,                              //控制组件刷新
 
 };
@@ -39,6 +41,9 @@ const getters = {   //实时监听state值的变化(最新状态)
   getPseudoClass(state){
     return state.pseudoClass;
   },
+  getPercentList(state){
+    return state.percentList;
+  },
   getActiveHead(state){
     return state.activeHead;
   },
@@ -47,6 +52,9 @@ const getters = {   //实时监听state值的变化(最新状态)
   },
   getHoverCodes(state){
     return state.hoverCodes;
+  },
+  getAnimationCodes(state){
+    return state.animationCodes;
   },
   getIsAlive(state){
     return state.isAlive;
@@ -75,6 +83,9 @@ const mutations = {
   changePseudoClass(state,list){
     state.pseudoClass = list;
   },
+  changePercentList(state,list){
+    state.percentList = list;
+  },
   changeActiveHead(state,head){
     state.activeHead = head;
   },
@@ -86,6 +97,9 @@ const mutations = {
   },
   changeHoverCodes(state,codes){
     state.hoverCodes = codes;
+  },
+  changeAnimationCodes(state,codes){
+    state.animationCodes = codes;
   },
   changeIsAlive(state,is){
     state.isAlive = is;
@@ -116,6 +130,9 @@ const actions = {
   changePseudoClass(context,list){
     context.commit('changePseudoClass',list);
   },
+  changePercentList(context,list){
+    context.commit('changePercentList',list)
+  },
   changeActiveHead(context,head){
     context.commit('changeActiveHead',head)
   },
@@ -127,6 +144,9 @@ const actions = {
   },
   changeHoverCodes(context,codes){
     context.commit('changeHoverCodes',codes)
+  },
+  changeAnimationCodes(context,codes){
+    context.commit('changeAnimationCodes',codes)
   },
   changeIsAlive(context, is) {
     context.commit('changeIsAlive',is)

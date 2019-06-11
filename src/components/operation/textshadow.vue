@@ -3,7 +3,7 @@
     <span class="operateTitle"><i class="iconfont icontextshadow"></i>字体阴影</span>
     <div>
       <div class="item">
-        <span class="color" @click="isShow = true" v-clickoutside="hideColorPicker">
+        <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
           <span class="currentColor" :style="{'background':rgba}"></span>
           <span class="currentColorText">{{colorText}}</span>
           <chrome-picker class="colorPicker" v-if="isShow" v-model="color"></chrome-picker>
@@ -12,17 +12,17 @@
       <div class="item">
         <span class="info">x：</span>
         <input type="range" min="-10" max="10" step="1" v-model="offsetX">
-        <span class="rangeText">{{offsetX}}</span>
+        <span>{{offsetX}}</span>
       </div>
       <div class="item">
         <span class="info">y：</span>
         <input type="range" min="-10" max="10" step="1" v-model="offsetY">
-        <span class="rangeText">{{offsetY}}</span>
+        <span>{{offsetY}}</span>
       </div>
       <div class="item">
         <span class="info">blur：</span>
         <input type="range" min="0" max="20" step="1" v-model="blur">
-        <span class="rangeText">{{blur}}</span>
+        <span>{{blur}}</span>
       </div>
     </div>
   </li>
@@ -72,55 +72,27 @@
         hideColorPicker(){
           this.isShow = false
         },
-        submit(now){
+        prepareSubmit(now){
           let x = this.offsetX;
           let y = this.offsetY;
           let blur = this.blur;
           let rgba = this.color.rgba;
           let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          switch (now) {
-            case 'standard':
-              let codes = this.$store.getters.getCodes;
-              if ( codes.match(/\btext-shadow\b/g)){
-                if (blur === 0 && currentColor.a === 0){
-                  codes = codes.replace(/\n\ttext-shadow:.+;/g,'');
-                }else {
-                  codes = codes.replace(/(?<=\btext-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${currentColor}`)
-                }
-              }else {
-                codes = codes.replace(/}/g,`\ttext-shadow:${x}px ${y}px ${blur}px ${currentColor};\n}`)
-              }
-              this.$store.dispatch('changeCodes',codes);
-              break;
-            case 'hover':
-              let hoverCodes = this.$store.getters.getHoverCodes;
-              if ( hoverCodes.match(/\btext-shadow\b/g)){
-                if (blur === 0 && currentColor.a === 0){
-                  hoverCodes = hoverCodes.replace(/\n\ttext-shadow:.+;/g,'');
-                }else {
-                  hoverCodes = hoverCodes.replace(/(?<=\btext-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${currentColor}`)
-                }
-              }else {
-                hoverCodes = hoverCodes.replace(/}/g,`\ttext-shadow:${x}px ${y}px ${blur}px ${currentColor};\n}`)
-              }
-              this.$store.dispatch('changeHoverCodes',hoverCodes);
-              break;
-          }
-
+          this.submit('text-shadow',this.now,`${x}px ${y}px ${blur}px ${currentColor}`)
         }
       },
       watch:{
         offsetX:function () {
-          this.submit(this.now)
+          this.prepareSubmit()
         },
         offsetY:function () {
-          this.submit(this.now)
+          this.prepareSubmit()
         },
         blur:function(){
-          this.submit(this.now)
+          this.prepareSubmit()
         },
         color:function () {
-          this.submit(this.now)
+          this.prepareSubmit()
         }
       }
     }
@@ -138,20 +110,9 @@
     font-size: 14px;
     color: #909090;
   }
-  .rangeText{
-    background-color: #e8e8e8;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 12px;
-    box-shadow: 1px 1px 1px 0px #b1b1b1
-  }
-  .rangeText:after{
-    content:'px'
-  }
   .color{
     position: relative;
     cursor: url("../../assets/cursor/brush.png"),pointer;
-    z-index: 6;
   }
   .colorPicker{
     position: absolute;

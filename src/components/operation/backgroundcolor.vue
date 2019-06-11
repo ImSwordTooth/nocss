@@ -2,7 +2,7 @@
   <li id="backgroundcolor">
     <span class="operateTitle" v-tooltip.top="'该项与“渐变”互斥'"><i class="iconfont iconbackgroundcolor"></i>背景色</span>
     <div>
-      <span class="color" @click="isShow = true" v-clickoutside="hideColorPicker">
+      <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
         <span class="currentColor" :style="{'background':rgba}"></span>
         <span class="currentColorText">{{colorText}}</span>
         <chrome-picker class="colorPicker" v-if="isShow" v-model="color"></chrome-picker>
@@ -57,39 +57,17 @@
       color:function () {
         let rgba = this.color.rgba;
         let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-        switch (this.now) {
-          case 'standard':{
-            let codes = this.$store.getters.getCodes;
-            if ( codes.match(/\bbackground-color\b/g)){
-              codes = codes.replace(/(?<=\bbackground-color:).+(?=;)/g,currentColor)
-            }else {
-              codes = codes.replace(/}/g,`\tbackground-color:${currentColor};\n}`)
-            }
-            this.$store.dispatch('changeCodes',codes);
-            break;
-          }
-          case 'hover':{
-            let codes = this.$store.getters.getHoverCodes;
-            if ( codes.match(/\bbackground-color\b/g)){
-              codes = codes.replace(/(?<=\bbackground-color:).+(?=;)/g,currentColor)
-            }else {
-              codes = codes.replace(/}/g,`\tbackground-color:${currentColor};\n}`)
-            }
-            this.$store.dispatch('changeHoverCodes',codes);
-            break;
-          }
-        }
-
+        this.submit('background-color',this.now,currentColor)
       }
     }
   }
 </script>
 
 <style scoped>
+  /*.icon { width: 2.4em; height: 2.4em; vertical-align: -0.15em; fill: currentColor; overflow: hidden;}*/
   .color{
     position: relative;
     cursor: url("../../assets/cursor/brush.png"),pointer;
-    z-index: 8;
   }
   .colorPicker{
     position: absolute;

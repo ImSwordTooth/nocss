@@ -13,6 +13,7 @@
 <script>
     export default {
         name: "padding",
+      props:['now'],
       data(){
         return{
           paddingTop:0,
@@ -28,16 +29,7 @@
           let right = this.paddingRight;
           let bottom = this.paddingBottom;
           let left = this.paddingLeft;
-          if ( codes.match(/\bpadding\b/g)){
-            if (top === 0 && right === 0 && bottom === 0 && left === 0){
-              codes = codes.replace(/\n\tpadding:.+;/g,'');
-            }else {
-              codes = codes.replace(/(?<=\bpadding:).+(?=;)/g,`${top}px ${right}px ${bottom}px ${left}px`)
-            }
-          }else {
-            codes = codes.replace(/}/g,`\tpadding:${top}px ${right}px ${bottom}px ${left}px;\n}`)
-          }
-          this.$store.dispatch('changeCodes',codes)
+          this.submit('padding',this.now,`${top}px ${right}px ${bottom}px ${left}px`);
         }
       }
     }

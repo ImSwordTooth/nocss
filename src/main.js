@@ -12,7 +12,19 @@ import Tooltip from 'vue-directive-tooltip';
 import 'vue-directive-tooltip/css/index.css';
 //复制
 import VueClipboard from 'vue-clipboard2'
-// import $ from 'jquery'
+
+// import submit from './js/submit'
+// Vue.use(submit)
+
+// export default new Vuex.Store({
+//   strict: process.env.NODE_ENV !== 'production', // 在非生产环境下，使用严格模式
+//   modules: {
+//     store
+//   }
+// });
+
+// import $ from 'jQuery'
+// Vue.use($)
 Vue.use(VueHighlightJS);
 
 Vue.use(Tooltip);
@@ -74,4 +86,78 @@ new Vue({
   components: { App },
   store,
   template: '<App/>',
+  // methods:{
+  //   submit(name,type,replaceStr) {
+  //     let codes = this.$store.getters.getCodes;                                             //基础
+  //     let hoverCodes = this.$store.getters.getHoverCodes;                                   //hover
+  //     let animationCodes =this.$store.getters.getAnimationCodes;                            //动画
+  //
+  //     let patt = new RegExp(`\b${name}\b`,'g');           //判断是否有此项
+  //     let pattHave = new RegExp(`(?<=\\b${name}:).+(?=;)`,'g');         //有此项，需要替换冒号后面的值
+  //     let pattHaveNot = new RegExp(`}`,'g');         //没有此项，需要替换花括号
+  //
+  //     switch (type) {
+  //       case 'standard':{
+  //         if (codes.match(patt)) {
+  //           codes = codes.replace(pattHave,replaceStr);
+  //         }else {
+  //           codes = codes.replace(pattHaveNot,`\t${name}:${replaceStr};\n`)
+  //         }
+  //       }
+  //         this.$store.dispatch('changeCodes', codes);
+  //         break;
+  //     }
+  //
+  //   }
+  //
+  // }
 })
+
+Vue.prototype.submit = function (name,type,replaceStr) {
+  let codes = this.$store.getters.getCodes;                                             //基础
+  let hoverCodes = this.$store.getters.getHoverCodes;                                   //hover
+  let animationCodes =this.$store.getters.getAnimationCodes;
+  let patt = new RegExp(`\\b${name}\\b`,'g');           //判断是否有此项
+  let pattHave = new RegExp(`(?<=\\b${name}:).+(?=;)`,'g');         //有此项，需要替换冒号后面的值
+  let pattHaveNot = new RegExp(`}$`,'g');         //没有此项，需要替换花括号
+  let pattPercent = new RegExp(`${type} {`,"g");                     //百分比
+  let pattP = new RegExp(`(?<=\\b${type} {)\\w+|\\s+\\b${name}\\b`,'g');
+  switch (type) {
+    case 'standard':{
+      if (codes.match(patt)) {
+        codes = codes.replace(pattHave,replaceStr);
+      }else {
+        codes = codes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
+      }
+      this.$store.dispatch('changeCodes', codes);
+      break;
+    }
+    case 'hover':{
+      if (hoverCodes.match(patt)) {
+        hoverCodes = hoverCodes.replace(pattHave,replaceStr);
+      }else {
+        hoverCodes = hoverCodes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
+      }
+      this.$store.dispatch('changeHoverCodes', hoverCodes);
+      break;
+    }
+    default:{                                               //此处用于匹配动画中的类似0%、100%
+      if (animationCodes.match(pattPercent)){
+        console.log(patt.exec(/\b0% {.+|s+}/g))
+        if (pattP.test(animationCodes)){
+
+          console.log("you")
+        }else {
+          console.log('mei')
+        }
+
+
+      }else {
+        animationCodes = animationCodes.replace(pattHaveNot,`\t${type} {\n\t\t${name}:${replaceStr};\t}\n}`);
+        this.$store.dispatch('changeAnimationCodes', animationCodes);
+      }
+    }
+
+  }
+
+}

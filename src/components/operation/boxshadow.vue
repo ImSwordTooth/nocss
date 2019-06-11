@@ -5,16 +5,16 @@
       <!--<p class="already" v-if="alreadyShadow.length > 0" v-for="shadow in alreadyShadow">{{shadow}}</p>-->
       <div class="oneline">
         <div class="item">
-          <span class="color" @click="isShow = true" v-clickoutside="hideColorPicker">
+          <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
             <span class="currentColor" :style="{'background':rgba}"></span>
             <span class="currentColorText">{{colorText}}</span>
             <chrome-picker class="colorPicker" v-if="isShow" v-model="color"></chrome-picker>
           </span>
         </div>
         <div class="item">
-          <span class="currentType" @click="isShowType = !isShowType" v-clickoutside="hideType">{{type}}
+          <span class="chooseContainer" :class="{'tttop':isShowType}" @click="isShowType = !isShowType" v-clickoutside="hideType">{{type}}
             <i class="iconfont" :class="{'iconuparrow':isShowType,'icondownarrow':!isShowType}"></i>
-            <ul class="currentTypeUl" v-show="isShowType">
+            <ul v-show="isShowType">
               <li @click="changeType($event)"><i class="iconfont iconinset"></i>inset</li>
               <li @click="changeType($event)"><i class="iconfont iconoutset"></i>outset</li>
             </ul>
@@ -24,22 +24,22 @@
       <div class="item">
         <span class="info">x：</span>
         <input type="range" min="-10" max="10" step="1" v-model="offsetX">
-        <span class="rangeText">{{offsetX}}</span>
+        <span>{{offsetX}}</span>
       </div>
       <div class="item">
         <span class="info">y：</span>
         <input type="range" min="-10" max="10" step="1" v-model="offsetY">
-        <span class="rangeText">{{offsetY}}</span>
+        <span>{{offsetY}}</span>
       </div>
       <div class="item">
         <span class="info">blur：</span>
         <input type="range" min="0" max="20" step="1" v-model="blur">
-        <span class="rangeText">{{blur}}</span>
+        <span>{{blur}}</span>
       </div>
       <div class="item">
         <span class="info">spread：</span>
         <input type="range" min="0" max="20" step="1" v-model="spread">
-        <span class="rangeText">{{spread}}</span>
+        <span>{{spread}}</span>
       </div>
       <!--<button class="operate_btn" @click="addAlready">添加</button>-->
     </div>
@@ -110,7 +110,7 @@
         //   let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a}),`;
         //   this.alreadyShadow.push(`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`);
         // },
-        submit(now){
+        prepareSubmit(now){
           let rgba = this.color.rgba;
           let type = this.type === 'inset' ? this.type : '';
           let x = this.offsetX;
@@ -118,55 +118,27 @@
           let blur = this.blur;
           let spread = this.spread;
           let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          switch (now) {
-            case 'standard':
-              let codes = this.$store.getters.getCodes;
-              if ( codes.match(/\bbox-shadow\b/g)){
-                if (blur === 0 && spread === 0 && currentColor.a === 0){
-                  codes = codes.replace(/\n\tbox-shadow:.+;/g,'');
-                }else {
-                  codes = codes.replace(/(?<=\bbox-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
-                }
-              }else {
-                codes = codes.replace(/}/g,`\tbox-shadow:${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor};\n}`)
-              }
-              this.$store.dispatch('changeCodes',codes);
-              break;
-            case 'hover':
-              let hoverCodes = this.$store.getters.getHoverCodes;
-              if ( hoverCodes.match(/\bbox-shadow\b/g)){
-                if (blur === 0 && spread === 0 && currentColor.a === 0){
-                  hoverCodes = hoverCodes.replace(/\n\tbox-shadow:.+;/g,'');
-                }else {
-                  hoverCodes = hoverCodes.replace(/(?<=\bbox-shadow:).+(?=;)/g,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
-                }
-              }else {
-                hoverCodes = hoverCodes.replace(/}/g,`\tbox-shadow:${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor};\n}`)
-              }
-              this.$store.dispatch('changeHoverCodes',hoverCodes);
-              break;
-          }
-
+          this.submit('box-shadow',now,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
         }
       },
       watch:{
         color:function () {
-          this.submit(this.now)
+          this.prepareSubmit(this.now)
         },
         type:function(){
-          this.submit(this.now)
+          this.prepareSubmit(this.now)
         },
         offsetX:function () {
-          this.submit(this.now)
+          this.prepareSubmit(this.now)
         },
         offsetY:function () {
-          this.submit(this.now)
+          this.prepareSubmit(this.now)
         },
         blur:function(){
-          this.submit(this.now)
+          this.prepareSubmit(this.now)
         },
         spread:function () {
-          this.submit(this.now)
+          this.prepareSubmit(this.now)
         }
       }
     }
@@ -188,20 +160,9 @@
     font-size: 14px;
     color: #909090;
   }
-  .rangeText{
-    background-color: #e8e8e8;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 12px;
-    box-shadow: 1px 1px 1px 0 #b1b1b1
-  }
-  .rangeText:after{
-    content:'px'
-  }
   .color{
     position: relative;
     cursor: url("../../assets/cursor/brush.png"),pointer;
-    z-index: 5;
   }
   .colorPicker{
     position: absolute;
@@ -216,47 +177,8 @@
     font-weight: lighter;
     font-size: 16px;
   }
-  .currentType{
-    position: relative;
-    display: inline-block;
-    line-height: 10px;
-    cursor: url("../../assets/cursor/pen.png"),pointer;
-    padding: 5px;
-    font-size: 12px;
-    border-radius: 5px;
-    z-index: 5;
-    background-color: #e8e8e8;
-    box-shadow: 1px 1px 1px 0px #b1b1b1
-  }
-  .currentTypeUl{
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-    background-color: #f7f7f7;
-    border-radius: 5px;
-    box-shadow: 1px 1px 4px 1px #e2e2e2;
-  }
-  .currentTypeUl li{
-    padding: 3px 8px;
-    border-bottom: solid 1px #e2e2e2;
-    cursor: url("../../assets/cursor/pen.png"),pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    line-height: 25px;
-  }
-  .currentTypeUl li:nth-last-child(1){
-    border-radius: 0 0 5px 5px;
-  }
-  .currentTypeUl li:nth-child(1){
-    border-radius: 5px 5px 0 0;
-  }
-  .currentTypeUl li:hover{
-    background-color: #5a5a5a;
-    color: #fbdf0c;
-    transition: background-color .5s;
-    animation: ss .6s ease-out;
+  .chooseContainer{
+    padding: 6px 8px;
   }
   @keyframes ss {
     0%{

@@ -29,16 +29,17 @@
 </template>
 
 <script>
-import myheader from './components/my-header';
-import myaside from './components/my-aside';
-import myitembox from './components/itembox';
-import mycodebox from './components/codebox';
-import myoperate from './components/operate'
-import operate_head from './components/operate_head';
-import standard from './components/operate-body/standard'
-import pseudoClass from './components/operate-body/pseudoClass'
-import animation from './components/operate-body/animation'
-export default {
+  import myheader from './components/my-header';
+  import myaside from './components/my-aside';
+  import myitembox from './components/itembox';
+  import mycodebox from './components/codebox';
+  import myoperate from './components/operate'
+  import operate_head from './components/operate_head';
+  import standard from './components/operate-body/standard'
+  import pseudoClass from './components/operate-body/pseudoClass'
+  import animation from './components/operate-body/animation'
+
+  export default {
   name: 'App',
   components: {
     myheader,
@@ -67,3 +68,4 @@ export default {
   @import "iconfont.css";
   @import "css/app.css";
 </style>
+

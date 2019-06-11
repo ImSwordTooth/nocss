@@ -1,15 +1,35 @@
 <template>
   <header>
-    <img src="../assets/title2.png" alt="欢迎" class="logo">
+    <img src="../assets/222.png" alt="欢迎" class="logo">
+
+    <!--<h1>!css</h1>-->
     <a href="#" class="active">制作</a>
     <a href="#">别人家的</a>
     <a href="#">别人家的</a>
+    <canvas id="can" width="500" height="100"></canvas>
   </header>
 </template>
 
 <script>
     export default {
         name: "my-header",
+      mounted() {
+          this.draw();
+      },
+      methods:{
+        draw(){
+          // console.log($("#can"))
+          let canvas = document.getElementById('can');
+          let header = document.getElementsByTagName("header")[0];
+          console.log(header.style.width)
+          canvas.width = header.width;
+          canvas.height = header.height;
+          let ctx = canvas.getContext("2d");
+          ctx.fillStyle= '#000';
+          ctx.fillRect(0,0,canvas.width,canvas.height)
+
+        }
+      }
     }
 </script>
 
@@ -23,7 +43,7 @@
     display: flex;
     align-items: center;
     padding: 5px;
-    background:url("../assets/bc.jpg");
+    /*background:url("../assets/bc.jpg");*/
     box-shadow: 0 0 5px 1px #7e8990;
     z-index: 2;
   }
