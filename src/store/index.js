@@ -10,7 +10,7 @@ const state = {
   operate_head:[],                          //操作类型
   standardList:[],                          //基本操作列表
   pseudoClass:[],                           //伪类列表
-  percentList:[{name:'0%',iconName:'icon0',content:[]},{name:'100%',iconName:'icon100',content:[]}],
+  percentList:[{name:'0%',content:[]},{name:'100%',content:[]}],
   activeHead:'standard',                    //当前使用的操作类型
   codes:`.nocss {\n}`,        //代码
   hoverCodes:``,                            //hover时的代码

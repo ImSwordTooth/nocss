@@ -13,15 +13,6 @@ import 'vue-directive-tooltip/css/index.css';
 //复制
 import VueClipboard from 'vue-clipboard2'
 
-// import submit from './js/submit'
-// Vue.use(submit)
-
-// export default new Vuex.Store({
-//   strict: process.env.NODE_ENV !== 'production', // 在非生产环境下，使用严格模式
-//   modules: {
-//     store
-//   }
-// });
 
 // import $ from 'jQuery'
 // Vue.use($)
@@ -29,7 +20,7 @@ Vue.use(VueHighlightJS);
 
 Vue.use(Tooltip);
 
-Vue.use(VueClipboard)
+Vue.use(VueClipboard);
 
 //把目录下的所有.vue文件变成组件
 const requireComponent_operation = require.context('./components/operation',false,/\w+\.(vue|js)$/)
@@ -55,76 +46,54 @@ requireComponent_pseudo.keys().forEach(fileName => {
 
 // 自定义全局指令，用于颜色选择后点击其他地方隐藏颜色选择窗口
 const clickoutside = {
-  // 初始化指令
-  bind(el, binding, vnode) {
+  bind(el, binding, vnode) {                               // 初始化指令
     function documentHandler(e) {
-      // 这里判断点击的元素是否是本身，是本身，则返回
-      if (el.contains(e.target)) {
+      if (el.contains(e.target)) {                        // 这里判断点击的元素是否是本身，是本身，则返回
         return false;
       }
-      // 判断指令中是否绑定了函数
-      if (binding.expression) {
-        // 如果绑定了函数 则调用那个函数，此处binding.value就是handleClose方法
-        binding.value(e);
+      if (binding.expression) {                            // 判断指令中是否绑定了函数
+        binding.value(e);                                  // 如果绑定了函数 则调用那个函数，此处binding.value就是handleClose方法
       }
     }
-    // 给当前元素绑定个私有变量，方便在unbind中可以解除事件监听
-    el.__vueClickOutside__ = documentHandler;
+    el.__vueClickOutside__ = documentHandler;               // 给当前元素绑定个私有变量，方便在unbind中可以解除事件监听
     document.addEventListener('click', documentHandler);
   },
   update() {},
   unbind(el, binding) {
-    // 解除事件监听
-    document.removeEventListener('click', el.__vueClickOutside__);
+    document.removeEventListener('click', el.__vueClickOutside__);               // 解除事件监听
     delete el.__vueClickOutside__;
   },
 };
-Vue.directive('clickoutside',clickoutside)
+Vue.directive('clickoutside',clickoutside);
 
 new Vue({
   el: '#app',
   components: { App },
   store,
-  template: '<App/>',
-  // methods:{
-  //   submit(name,type,replaceStr) {
-  //     let codes = this.$store.getters.getCodes;                                             //基础
-  //     let hoverCodes = this.$store.getters.getHoverCodes;                                   //hover
-  //     let animationCodes =this.$store.getters.getAnimationCodes;                            //动画
-  //
-  //     let patt = new RegExp(`\b${name}\b`,'g');           //判断是否有此项
-  //     let pattHave = new RegExp(`(?<=\\b${name}:).+(?=;)`,'g');         //有此项，需要替换冒号后面的值
-  //     let pattHaveNot = new RegExp(`}`,'g');         //没有此项，需要替换花括号
-  //
-  //     switch (type) {
-  //       case 'standard':{
-  //         if (codes.match(patt)) {
-  //           codes = codes.replace(pattHave,replaceStr);
-  //         }else {
-  //           codes = codes.replace(pattHaveNot,`\t${name}:${replaceStr};\n`)
-  //         }
-  //       }
-  //         this.$store.dispatch('changeCodes', codes);
-  //         break;
-  //     }
-  //
-  //   }
-  //
-  // }
-})
+  template: '<App/>'
+});
 
+/*
+*@param {String}name  css属性名
+*@param {String}type  基础、伪类、或者动画节点
+*@param {String}replaceStr  css属性值
+*
+*
+* */
 Vue.prototype.submit = function (name,type,replaceStr) {
   let codes = this.$store.getters.getCodes;                                             //基础
   let hoverCodes = this.$store.getters.getHoverCodes;                                   //hover
   let animationCodes =this.$store.getters.getAnimationCodes;
-  let patt = new RegExp(`\\b${name}\\b`,'g');           //判断是否有此项
-  let pattHave = new RegExp(`(?<=\\b${name}:).+(?=;)`,'g');         //有此项，需要替换冒号后面的值
+  let patt = new RegExp(`\\t\\b${name}\\b`,'g');           //判断是否有此项
+  let pattHave = new RegExp(`(?<=\\t\\b${name}:).+(?=;)`,'g');         //有此项，需要替换冒号后面的值
   let pattHaveNot = new RegExp(`}$`,'g');         //没有此项，需要替换花括号
-  let pattPercent = new RegExp(`${type} {`,"g");                     //百分比
-  let pattP = new RegExp(`(?<=\\b${type} {)\\w+|\\s+\\b${name}\\b`,'g');
+  let pattPercent = new RegExp(`${type} {`,"g");                     //百分比：：判断是否有这个节点，没有的话就新增
+  let pattP = new RegExp(`(?<=\\b${type} {).*[.\\w\\W]*?${name}:`);        //百分比：：判断是否有此项
+  let pattPercentHave = new RegExp(`(?<=\\b${type}.*[.\\w\\W]*?${name}:).*(?=;)`);         //百分比：：有此项，需要替换冒号后面的值
+  let pattPercentHaveNot = new RegExp(`(?<=\\b${type}.*[.\\w\\W]*?)}`);         //百分比：：没有此项，需要替换花括号
   switch (type) {
     case 'standard':{
-      if (codes.match(patt)) {
+      if (patt.test(codes)) {
         codes = codes.replace(pattHave,replaceStr);
       }else {
         codes = codes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
@@ -133,7 +102,7 @@ Vue.prototype.submit = function (name,type,replaceStr) {
       break;
     }
     case 'hover':{
-      if (hoverCodes.match(patt)) {
+      if (patt.test(hoverCodes)) {
         hoverCodes = hoverCodes.replace(pattHave,replaceStr);
       }else {
         hoverCodes = hoverCodes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
@@ -142,22 +111,16 @@ Vue.prototype.submit = function (name,type,replaceStr) {
       break;
     }
     default:{                                               //此处用于匹配动画中的类似0%、100%
-      if (animationCodes.match(pattPercent)){
-        console.log(patt.exec(/\b0% {.+|s+}/g))
+      if (pattPercent.test(animationCodes)){
         if (pattP.test(animationCodes)){
-
-          console.log("you")
+          animationCodes = animationCodes.replace(pattPercentHave,replaceStr);
         }else {
-          console.log('mei')
+          animationCodes = animationCodes.replace(pattPercentHaveNot,`\n\t\t${name}:${replaceStr};\n\t}`);
         }
-
-
       }else {
-        animationCodes = animationCodes.replace(pattHaveNot,`\t${type} {\n\t\t${name}:${replaceStr};\t}\n}`);
-        this.$store.dispatch('changeAnimationCodes', animationCodes);
+        animationCodes = animationCodes.replace(pattHaveNot,`\t${type} {\n\t\t${name}:${replaceStr};\n\t}\n}`);
       }
+      this.$store.dispatch('changeAnimationCodes', animationCodes);
     }
-
   }
-
-}
+};

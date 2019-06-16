@@ -1,18 +1,18 @@
 <template>
   <div class="pseudoList">
     <p class="title">{{percentName}}</p>
-    <span class="chooseContainer" @click="isShow = !isShow" v-clickoutside="hideBox">添加
-          <i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>
-          <ul v-show="isShow">
-            <li @click="add($event)" data-type="color"><i class="iconfont iconcolor"></i>颜色</li>
-            <li @click="add($event)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小</li>
-            <li @click="add($event)" data-type="border"><i class="iconfont iconborder"></i>边框</li>
-            <li @click="add($event)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形</li>
-            <li @click="add($event)" data-type="backgroundcolor"><i class="iconfont iconbackgroundcolor"></i>背景色</li>
-            <li @click="add($event)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影</li>
-            <li @click="add($event)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影</li>
-          </ul>
-      </span>
+    <!--<span class="chooseContainer" @click="isShow = !isShow" v-clickoutside="hideBox">添加-->
+          <!--<i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>-->
+          <!--<ul v-show="isShow">-->
+            <!--<li @click="add($event)" data-type="color"><i class="iconfont iconcolor"></i>颜色</li>-->
+            <!--<li @click="add($event)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小</li>-->
+            <!--<li @click="add($event)" data-type="border"><i class="iconfont iconborder"></i>边框</li>-->
+            <!--<li @click="add($event)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形</li>-->
+            <!--<li @click="add($event)" data-type="backgroundcolor"><i class="iconfont iconbackgroundcolor"></i>背景色</li>-->
+            <!--<li @click="add($event)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影</li>-->
+            <!--<li @click="add($event)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影</li>-->
+          <!--</ul>-->
+      <!--</span>-->
     <ul class="operationUl">
       <component v-for="(item,index) in PercentList.content" :key="index" :is="item" :now=PercentList.name></component>
     </ul>
@@ -42,22 +42,22 @@
       hideBox(){
         this.isShow = false
       },
-      add(event){
-        let codes = this.$store.getters.getAnimationCodes;
-        if (codes==='') {
-          codes = `@keyframes css {\n}`;
-          this.$store.dispatch("changeAnimationCodes", codes)
-        }
-        let type = event.currentTarget.dataset.type;
-        let list = this.$store.getters.getPercentList;
-        import(`../operation/${type}`).then((data) => {
-          if (!this.PercentList.content.includes(data.default)){
-            for (let i=0;i<list.length;i++){
-              list[i].content.push(data.default)
-            }
-          }
-        });
-      }
+      // add(event){
+      //   let codes = this.$store.getters.getAnimationCodes;
+      //   if (codes==='') {
+      //     codes = `@keyframes css {\n}`;
+      //     this.$store.dispatch("changeAnimationCodes", codes)
+      //   }
+      //   let type = event.currentTarget.dataset.type;
+      //   let list = this.$store.getters.getPercentList;
+      //   import(`../operation/${type}`).then((data) => {
+      //     if (!this.PercentList.content.includes(data.default)){
+      //       for (let i=0;i<list.length;i++){
+      //         list[i].content.push(data.default)
+      //       }
+      //     }
+      //   });
+      // }
     }
   }
 </script>

@@ -3,10 +3,12 @@
     <span class="operateTitle"><i class="iconfont iconborder"></i>边框</span>
     <div>
       <div class="item">
+        <span class="info">宽度：</span>
         <input type="range" min="0" max="10" step="1" v-model="borderWeight">
         <span class="borderWeightText">{{borderWeight}}</span>
       </div>
       <div class="item">
+        <span class="info">样式：</span>
         <span class="chooseContainer" :class="{'tttop':isShowBorderStyle}" @click="isShowBorderStyle = !isShowBorderStyle" v-clickoutside="hideBorderStyle">{{borderStyle}}
           <i class="iconfont" :class="{'iconuparrow':isShowBorderStyle,'icondownarrow':!isShowBorderStyle}"></i>
           <ul v-show="isShowBorderStyle">

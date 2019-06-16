@@ -110,6 +110,7 @@
     flex: .6;
     display: flex;
     flex-direction: column;
+    cursor: auto;
   }
   .showItems article{
     display: flex;

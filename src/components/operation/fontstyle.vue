@@ -3,16 +3,16 @@
     <span class="operateTitle"><i class="iconfont iconfontstyle"></i>字形</span>
     <div>
       <div class="group">
-        <i class="iconfont iconbold" :class="{'active':isBold}" data-weight="bold" @click="fontWeight($event)" title="粗体"></i>
-        <i class="iconfont iconlighter" :class="{'active':isLighter}"  data-weight="lighter" @click="fontWeight($event)" title="细体"></i>
+        <i class="iconfont iconbold" :class="{'active':Weight==='bold'}" data-weight="bold" @click="fontWeight($event)" title="粗体"></i>
+        <i class="iconfont iconlighter" :class="{'active':Weight==='lighter'}"  data-weight="lighter" @click="fontWeight($event)" title="细体"></i>
       </div>
       <div class="group">
-        <i class="iconfont iconitalic" :class="{'active':isItalic}" data-style="italic" @click="fontStyle($event)" title="斜体"></i>
+        <i class="iconfont iconitalic" :class="{'active':Style==='italic'}" data-style="italic" @click="fontStyle($event)" title="斜体"></i>
       </div>
       <div class="group">
-        <i class="iconfont iconlinethrough" :class="{'active':isLineThrough}" data-decoration="line-through" @click="textdecoration($event)" title="删除线"></i>
-        <i class="iconfont iconlinetop" :class="{'active':isLineTop}" data-decoration="overline" @click="textdecoration($event)" title="上划线"></i>
-        <i class="iconfont iconlinebottom" :class="{'active':isLineBottom}" data-decoration="underline" @click="textdecoration($event)" title="下划线"></i>
+        <i class="iconfont iconlinethrough" :class="{'active':Decoration==='line-through'}" data-decoration="line-through" @click="textdecoration($event)" title="删除线"></i>
+        <i class="iconfont iconlinetop" :class="{'active':Decoration==='overline'}" data-decoration="overline" @click="textdecoration($event)" title="上划线"></i>
+        <i class="iconfont iconlinebottom" :class="{'active':Decoration==='underline'}" data-decoration="underline" @click="textdecoration($event)" title="下划线"></i>
       </div>
     </div>
   </li>
@@ -22,6 +22,13 @@
     export default {
         name: "fontstyle",
       props:["now"],
+      data(){
+          return{
+            Weight:'normal',
+            Style:'normal',
+            Decoration:'none'
+          }
+      },
       computed:{
         getfontweight(){
           let codes = this.$store.getters.getCodes;
@@ -75,19 +82,20 @@
       },
       methods:{
         fontWeight(event){
-          let codes = this.$store.getters.getCodes;
+
           let fontweight = event.currentTarget.dataset.weight;
-          this.submit('font-weight',this.now,fontweight);
+          this.Weight = this.Weight===fontweight?'normal':fontweight;
+          this.submit('font-weight',this.now,this.Weight);
         },
         fontStyle(event){
-          let codes = this.$store.getters.getCodes;
           let fontstyle = event.currentTarget.dataset.style;
-          this.submit('font-style',this.now,fontstyle);
+          this.Style = this.Style===fontstyle?'normal':fontstyle;
+          this.submit('font-style',this.now,this.Style);
         },
         textdecoration(event){
-          let codes = this.$store.getters.getCodes;
           let decoration = event.currentTarget.dataset.decoration;
-          this.submit('text-decoration',this.now,decoration);
+          this.Decoration = this.Decoration===decoration?'none':decoration;
+          this.submit('text-decoration',this.now,this.Decoration);
         },
       }
     }

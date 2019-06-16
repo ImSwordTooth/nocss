@@ -20,7 +20,7 @@
         <span>{{offsetY}}</span>
       </div>
       <div class="item">
-        <span class="info">blur：</span>
+        <span class="info">模糊量：</span>
         <input type="range" min="0" max="20" step="1" v-model="blur">
         <span>{{blur}}</span>
       </div>
@@ -41,7 +41,7 @@
           blur:0,
           color:{
             rgba: { r: 0, g: 0, b: 0, a: 0 },
-            a: 0
+            a: 1
           },
           isShow:false,
         }
@@ -105,10 +105,6 @@
   }
   input[type=range]{
     width: 80px;
-  }
-  .info{
-    font-size: 14px;
-    color: #909090;
   }
   .color{
     position: relative;

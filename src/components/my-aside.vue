@@ -60,7 +60,7 @@
         switch (text) {
           case '文本':
             this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);
-            this.$store.dispatch('changeStandardList',["color","fontsize","fontstyle","backgroundcolor","border","padding","textshadow","boxshadow","transite","transform"]);
+            this.$store.dispatch('changeStandardList',["color","fontsize","fontstyle","backgroundcolor","border","padding","textshadow","boxshadow","transite","transform","outline"]);
             this.$store.dispatch('changePseudoClass',[{name:'hover',content:[]},{name:'active',content:[]}]);
             break;
           case '超链接':

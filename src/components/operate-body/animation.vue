@@ -1,33 +1,53 @@
 <template>
   <div class="animation">
-    <div class="add">
-      <button v-show="!isInputMove" :class="{'move':isButtonMove,'normal':!isButtonMove}" @click="add">+</button>
-      <div class="setting" v-show="isInputMove" :class="{'showInput':isInputMove}" >
-        <input type="text" class="animationName" placeholder="动画名称">
-        <input type="range" class="animationDuring">
-        <span class="chooseContainer" :class="{'tttop':isShowEasing}" @click="isShowEasing = !isShowEasing" v-clickoutside="hideEasing">{{borderStyle}}
-          <i class="iconfont" :class="{'iconuparrow':isShowEasing,'icondownarrow':!isShowEasing}"></i>
-          <ul v-show="isShowEasing">
-            <li @click="changeEasing($event)"><i class="iconfont iconsolid"></i>linear</li>
-            <li @click="changeEasing($event)"><i class="iconfont icondashed"></i>ease</li>
-            <li @click="changeEasing($event)"><i class="iconfont icondouble"></i>ease-in</li>
-            <li @click="changeEasing($event)"><i class="iconfont icondotted"></i>ease-out</li>
-            <li @click="changeEasing($event)"><i class="iconfont iconinset"></i>ease-in-out</li>
-          </ul>
-        </span>
+    <div class="setting" >
+      <div>
+        <div class="item">
+          <input type="text" class="animationName operateText" placeholder="动画名称">
+        </div>
+        <div class="item">
+          <span class="info">过渡动画：</span>
+          <span class="chooseContainer chooseEasing" :class="{'tttop':isShowEasing}" @click="isShowEasing = !isShowEasing" v-clickoutside="hideEasing">{{easing}}
+            <i class="iconfont" :class="{'iconuparrow':isShowEasing,'icondownarrow':!isShowEasing}"></i>
+            <ul v-show="isShowEasing">
+              <li @click="changeEasing($event)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'linear':isActive==='linear'}"></i></div>linear</li>
+              <li @click="changeEasing($event)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease':isActive==='ease'}"></i></div>ease</li>
+              <li @click="changeEasing($event)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-in':isActive==='ease-in'}"></i></div>ease-in</li>
+              <li @click="changeEasing($event)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-out':isActive==='ease-out'}"></i></div>ease-out</li>
+              <li @click="changeEasing($event)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-in-out':isActive==='ease-in-out'}"></i></div>ease-in-out</li>
+            </ul>
+          </span>
+        </div>
+        <div class="item">
+          <span class="info">过渡时间：</span>
+          <input type="text" class="operateText" maxlength="3" v-model="during"><span class="unit">s</span>
+        </div>
       </div>
-
+      <div class="add">
+        <span class="chooseContainer" @click="isShow = !isShow" v-clickoutside="hideBox">添加项
+          <i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>
+          <ul v-show="isShow">
+            <li @click="add($event)" data-type="color"><i class="iconfont iconcolor"></i>颜色</li>
+            <li @click="add($event)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小</li>
+            <li @click="add($event)" data-type="border"><i class="iconfont iconborder"></i>边框</li>
+            <li @click="add($event)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形</li>
+            <li @click="add($event)" data-type="backgroundcolor"><i class="iconfont iconbackgroundcolor"></i>背景色</li>
+            <li @click="add($event)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影</li>
+            <li @click="add($event)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影</li>
+          </ul>
+         </span>
+        <label class="addPercent">
+          <input type="number" @input="sliceTwo()" v-model="addPercentValue"><span>%</span>
+          <button @click="addPercent">添加节点</button>
+        </label>
+      </div>
     </div>
-
     <div class="content">
       <div v-for="(percent,index) in percentList">
-        <component :is="xx" :percentName="percent.name"></component>
+        <component :is="tools" :percentName="percent.name"></component>
       </div>
-      <button @click="addPercent">添加节点</button>
-      <span @click="back">恢复</span>
+
     </div>
-
-
   </div>
 </template>
 
@@ -40,66 +60,87 @@
       components: {Hover,Color},
       data(){
           return{
-            isButtonMove:false,
-            isInputMove:false,
-            // isShow:false,
-            xx:null,
-            isShowEasing:false
+            tools:null,
+            isShowEasing:false,
+            isShow:false,
+            easing:"ease",
+            isActive:null,
+            during:0,
+            addPercentValue:''          //新增节点的值
           }
       },
       computed:{
         percentList(){
+          //后面的sort是根据节点的百分比进行排序
           return this.$store.getters.getPercentList;
+          // return this.$store.getters.getPercentList.sort((a,b)=>(Number(a.name.slice(0,a.name.length-1)-Number(b.name.slice(0,b.name.length-1)))));
         }
       },
       mounted(){
         import('../pseudo/percent').then(res=>{
-          this.xx = res.default;
+          this.tools = res.default;
         })
       },
       methods:{
-          choose(i){
-            this.percentList[i].isShow = !this.percentList[i].isShow;
-            // x = !x;
-          },
+        changeActive(e){
+          this.isActive = e.currentTarget.innerText
+        },
+        deleteActive(){
+          this.isActive = null
+        },
+        changeEasing(e){
+          this.easing = e.currentTarget.innerText;
+        },
+        choose(i){
+          this.percentList[i].isShow = !this.percentList[i].isShow;
+        },
         hideEasing(){
             this.isShowEasing = false
         },
         hideBox(){
-
-          // this.percentList[i].isShow = false
-          // let status = false;
-          // this.percentList.forEach(item=>{
-          //   if (item.isShow){
-          //     status = true;
-          //   }
-          // })
-          // if (!status){
-          //   console.log("cc")
-          //   return;
-          // }else {
-          //   console.log("xx")
-            this.percentList.forEach(item=>{
-              item.isShow = false
-            })
-          // }
+          this.isShow = false
+        },
+        //限制数字文本框只能输入两位数
+        sliceTwo(){
+          if (this.addPercentValue.length > 2) {
+            this.addPercentValue = this.addPercentValue.slice(0,2);
+          }
         },
         addPercent(){
-            let list = this.percentList;
-            list.push({name:'75%',iconName:'icon75',content:[]})
-            this.$store.dispatch('changePercentList',list);
+          let list = this.percentList;
+          let con = Object.assign([],list[0].content);                     //由于每个百分比节点的“内容”都是一样的,此处要用浅拷贝
+          let arr = [];                                 //现有百分比节点列表
+          list.forEach(item=>{
+            arr.push(Number(item.name.slice(0,item.name.length-1)))
+          });
 
+          if (!arr.includes(Number(this.addPercentValue))) {                  //列表里没有才添加，防止重复
+            arr.push(Number(this.addPercentValue));
+            arr.sort((a,b)=>a-b);
+            let index = arr.indexOf(Number(this.addPercentValue));
+            list.splice(index,0,{name:`${this.addPercentValue}%`,content:con})
+              // list.push({name:`${this.addPercentValue}%`,content:con})
+          }
+          this.$store.dispatch('changePercentList',list);
+          this.addPercentValue =''
         },
-          back(){
-            this.isButtonMove = false;
-            this.isInputMove = false;
-          },
-          add(){
-            let that = this;
-            that.isButtonMove = !that.isButtonMove;
-            setTimeout(function () {
-              that.isInputMove = true;
-            },400)
+        add(e){
+          let animationCodes = this.$store.getters.getAnimationCodes;
+          if (animationCodes==='') {
+            animationCodes = `@keyframes css {\n}`;
+            this.$store.dispatch("changeAnimationCodes", animationCodes)
+          }
+          let value = e.currentTarget.dataset.type;
+          let list = this.$store.getters.getPercentList;
+          for (let i=0; i<list.length; i++){
+            list[i].content.push(value)
+          }
+          // list.forEach(item=>{
+          //   item.content.push(value)
+          // });
+          this.$store.dispatch("changePercentList",list)
+        }
+
   //           let x = document.styleSheets[0];
   //           x.insertRule(` @keyframes jump {
   //   0% {
@@ -112,107 +153,118 @@
   //     -webkit-transform: translate(0, 0);
   //     transform: translate(0, 0); }
   // }`)
-          }
+
       }
     }
 </script>
 
 <style scoped>
-  .add{
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .add button{
-    width: 60px;
-    height: 60px;
-    border-radius: 100%;
-    font-size: 32px;
-    line-height: 60px;
-    border: solid 1px #ccc;
-    outline: none;
-    margin-top: 50px;
-  }
-  .add .normal{
-    position: absolute;
-    animation: jump 2s infinite;
-    left: 50%;
-  }
-  .add .move{
-    position: absolute;
-    left: 0;
-    animation: moveLeft .4s ease-in;
-  }
   .setting{
     position: relative;
     width: 100%;
     display: flex;
     align-items: center;
-    height: 100px;
+    justify-content: space-between;
+    margin-top: 20px;
+    box-sizing: border-box;
+    padding: 0 20px;
   }
   .setting .animationName{
     position: relative;
-    /*left: 10px;*/
     top: 0;
     padding: 10px 5px;
     border-radius: 5px;
     font-size: 18px;
     border: solid 1px #ccc;
     width: 120px;
-    margin-top: 25px;
     outline: solid 1px rgba(18, 150, 219, 0);
     outline-offset: 15px;
     background-color: #ebebeb;
     font-weight: bold;
   }
-  .setting .animationDuring{
+  .chooseEasing>ul li div{
     position: relative;
-    /*left: 200px;*/
+    display: inline-flex;
+    width: 100px;
+    height: 34px;
+    justify-items: center;
   }
+  .chooseEasing>ul li i{
+    position: absolute;
+    left: 0;
+    padding-top: 3px;
+  }
+  .addPercent{
+    position: relative;
+  }
+  .addPercent input{
+    width: 70px;
+    outline: none;
+    height: 30px;
+    font-weight: bold;
+    line-height: 30px;
+    padding: 3px 45px 3px 10px;
+    border: solid 1px rgba(0, 0, 0, 0.22);
+    background-color: rgba(28, 27, 26, 0.12);
+    color: black;
+    font-size: 1.1em;
+    font-style: italic;
+    box-shadow: 2px 1px 5px 1px rgba(54, 54, 54, 0.18);
+    transition: border-radius 2s,border 2s;
+    border-radius: 0 10px 10px 0;
+  }
+  .addPercent input:focus{
+    border: solid 1px #00000094;
+    border-radius: 10px;
+    transition: border-radius 2s,border 2s;
+  }
+  .addPercent span{
+    position: absolute;
+    right: 78px;
+    top: -3px;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
 
-
-  @keyframes moveLeft {
+  }
+  .addPercent button{
+    position: absolute;
+    height: 40px;
+    top: -9px;
+    right: 0;
+    background-color: #3279c1;
+    border: solid 1px #5a5a5a;
+    color: #ffffff;
+    outline: solid 1px transparent;
+  }
+  .addPercent button:hover{
+    box-shadow: 1px 1px 3px 1px #a7a7a7fa;
+  }
+  .linear{
+    animation: l 1s linear;
+  }
+  .ease{
+    animation: l 1s ease;
+  }
+  .ease-in{
+    animation: l 1s ease-in;
+  }
+  .ease-out{
+    animation: l 1s ease-out;
+  }
+  .ease-in-out{
+    animation: l 1s ease-in-out;
+  }
+  @keyframes l {
     0%{
-      left: 50%;
+      left: 0%;
     }
     100%{
-      left: 0;
+      left: 70%;
     }
-  }
-  .showInput{
-    animation: input .4s ease-out!important;
-  }
-
-  @keyframes input {
-    0%{
-      width: 80%;
-      outline-offset: 0;
-      outline-color: rgba(90, 90, 101, 0.51);
-    }
-    100%{
-      width: 100%;
-      outline-offset: 15px;
-      outline-color: rgba(18, 150, 219, 0);
-    }
-  }
-  @keyframes jump {
-    0% {
-      transform: translate(0, 0); }
-    50% {
-      transform: translate(0, 20px); }
-    100% {
-      transform: translate(0, 0); }
   }
   .content{
     position: relative;
-    top: 80px;
-  }
-  .chooseContainer{
-    position: absolute;
-    left: 12%;
   }
   .percent{
     display: inline-flex;

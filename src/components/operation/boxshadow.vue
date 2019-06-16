@@ -12,6 +12,7 @@
           </span>
         </div>
         <div class="item">
+          <span class="info">样式：</span>
           <span class="chooseContainer" :class="{'tttop':isShowType}" @click="isShowType = !isShowType" v-clickoutside="hideType">{{type}}
             <i class="iconfont" :class="{'iconuparrow':isShowType,'icondownarrow':!isShowType}"></i>
             <ul v-show="isShowType">
@@ -32,12 +33,12 @@
         <span>{{offsetY}}</span>
       </div>
       <div class="item">
-        <span class="info">blur：</span>
+        <span class="info">模糊量：</span>
         <input type="range" min="0" max="20" step="1" v-model="blur">
         <span>{{blur}}</span>
       </div>
       <div class="item">
-        <span class="info">spread：</span>
+        <span class="info">尺寸：</span>
         <input type="range" min="0" max="20" step="1" v-model="spread">
         <span>{{spread}}</span>
       </div>
@@ -50,7 +51,7 @@
   import {Chrome} from 'vue-color'
 
   export default {
-        name: "boxshadow",
+    name: "boxshadow",
       props:["now"],
       data(){
         return{
@@ -62,7 +63,7 @@
           type:'outset',
           color:{
             rgba: { r: 0, g: 0, b: 0, a: 0 },
-            a: 0
+            a: 1
           },
           isShow:false,
           isShowType:false
@@ -145,6 +146,13 @@
 </script>
 
 <style scoped>
+  .listDiv{
+    /*display: inline-block;*/
+    margin-bottom: 10px;
+  }
+  .listDiv:nth-last-of-type(1){
+    margin-bottom: 0;
+  }
   .item{
     display: inline-block;
     margin-right: 20px;
@@ -156,10 +164,7 @@
   input[type=range]{
     width: 80px;
   }
-  .info{
-    font-size: 14px;
-    color: #909090;
-  }
+
   .color{
     position: relative;
     cursor: url("../../assets/cursor/brush.png"),pointer;
