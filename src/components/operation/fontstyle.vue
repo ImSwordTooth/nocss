@@ -20,82 +20,43 @@
 
 <script>
     export default {
-        name: "fontstyle",
+      name: "fontstyle",
       props:["now"],
       data(){
           return{
-            Weight:'normal',
-            Style:'normal',
-            Decoration:'none'
+            Weight:'normal',                                  //字体宽度
+            Style:'normal',                                   //字体样式
+            Decoration:'none'                                 //字体修饰线
           }
       },
+      created(){
+        this.$watch('$data.Weight',function () {
+          this.submit('font-weight',this.now,this.Weight);
+        },{immediate:this.isMed});
+        this.$watch('$data.Style',function () {
+          this.submit('font-style',this.now,this.Style);
+        },{immediate:this.isMed});
+        this.$watch('$data.Decoration',function () {
+          this.submit('text-decoration',this.now,this.Decoration);
+        },{immediate:this.isMed});
+      },
       computed:{
-        getfontweight(){
-          let codes = this.$store.getters.getCodes;
-          let reg = /(?<=\bfont-weight:).+(?=;)/g;
-          if ( codes.match(/\bfont-weight\b/g)) {
-            let result = reg.exec(codes);
-            return result[0];
-          }else {
-            return null;
-          }
-        },
-        getfontstyle(){
-          let codes = this.$store.getters.getCodes;
-          let reg = /(?<=\bfont-style:).+(?=;)/g;
-          if ( codes.match(/\bfont-style\b/g)) {
-            let result = reg.exec(codes);
-            return result[0];
-          }else {
-            return null;
-          }
-        },
-        gettextdecoration(){
-          let codes = this.$store.getters.getCodes;
-          let reg = /(?<=\btext-decoration:).+(?=;)/g;
-          if ( codes.match(/\btext-decoration\b/g)) {
-            let result = reg.exec(codes);
-            return result[0];
-          }else {
-            return null;
-          }
-        },
-        isBold(){
-            return this.getfontweight === 'bold';
-        },
-        isLighter(){
-            return this.getfontweight === 'lighter'
-        },
-        isItalic(){
-            return this.getfontstyle === 'italic'
-        },
-        isLineThrough(){
-          return this.gettextdecoration === 'line-through'
-        },
-        isLineTop(){
-          return this.gettextdecoration === 'overline'
-        },
-        isLineBottom(){
-          return this.gettextdecoration === 'underline'
+        isMed(){
+          return this.now !== 'standard'
         }
-
       },
       methods:{
         fontWeight(event){
-
           let fontweight = event.currentTarget.dataset.weight;
           this.Weight = this.Weight===fontweight?'normal':fontweight;
-          this.submit('font-weight',this.now,this.Weight);
         },
         fontStyle(event){
           let fontstyle = event.currentTarget.dataset.style;
           this.Style = this.Style===fontstyle?'normal':fontstyle;
-          this.submit('font-style',this.now,this.Style);
         },
         textdecoration(event){
           let decoration = event.currentTarget.dataset.decoration;
           this.Decoration = this.Decoration===decoration?'none':decoration;
-          this.submit('text-decoration',this.now,this.Decoration);
         },
       }
     }

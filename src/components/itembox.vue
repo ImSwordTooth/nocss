@@ -107,10 +107,10 @@
 
 <style scoped>
   .showItems{
-    flex: .6;
+    grid-row: 2/3;
+    grid-column: 2/3;
     display: flex;
     flex-direction: column;
-    cursor: auto;
   }
   .showItems article{
     display: flex;
@@ -136,8 +136,4 @@
     outline: none;
     vertical-align: middle;
   }
-
-
-
-
 </style>

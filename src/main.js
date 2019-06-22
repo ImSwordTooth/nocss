@@ -81,21 +81,24 @@ new Vue({
 *
 * */
 Vue.prototype.submit = function (name,type,replaceStr) {
+  console.log(replaceStr)
   let codes = this.$store.getters.getCodes;                                             //基础
   let hoverCodes = this.$store.getters.getHoverCodes;                                   //hover
   let animationCodes =this.$store.getters.getAnimationCodes;
   let patt = new RegExp(`\\t\\b${name}\\b`,'g');           //判断是否有此项
   let pattHave = new RegExp(`(?<=\\t\\b${name}:).+(?=;)`,'g');         //有此项，需要替换冒号后面的值
   let pattHaveNot = new RegExp(`}$`,'g');         //没有此项，需要替换花括号
-  let pattPercent = new RegExp(`${type} {`,"g");                     //百分比：：判断是否有这个节点，没有的话就新增
+  let pattPercent = new RegExp(`\\b${type} {`,"g");                     //百分比：：判断是否有这个节点，没有的话就新增
   let pattP = new RegExp(`(?<=\\b${type} {).*[.\\w\\W]*?${name}:`);        //百分比：：判断是否有此项
   let pattPercentHave = new RegExp(`(?<=\\b${type}.*[.\\w\\W]*?${name}:).*(?=;)`);         //百分比：：有此项，需要替换冒号后面的值
   let pattPercentHaveNot = new RegExp(`(?<=\\b${type}.*[.\\w\\W]*?)}`);         //百分比：：没有此项，需要替换花括号
   switch (type) {
     case 'standard':{
       if (patt.test(codes)) {
+        console.log("11111")
         codes = codes.replace(pattHave,replaceStr);
       }else {
+        console.log("22222")
         codes = codes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
       }
       this.$store.dispatch('changeCodes', codes);
@@ -121,6 +124,10 @@ Vue.prototype.submit = function (name,type,replaceStr) {
         animationCodes = animationCodes.replace(pattHaveNot,`\t${type} {\n\t\t${name}:${replaceStr};\n\t}\n}`);
       }
       this.$store.dispatch('changeAnimationCodes', animationCodes);
+      let css = document.styleSheets[0];
+      css.deleteRule(0);
+      css.insertRule(animationCodes,0);
+
     }
   }
 };

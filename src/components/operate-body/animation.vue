@@ -1,13 +1,14 @@
 <template>
   <div class="animation">
     <div class="setting" >
+      <!--css中animation属性的设置-->
       <div>
         <div class="item">
-          <input type="text" class="animationName operateText" placeholder="动画名称">
+          <input type="text" class="animationName operateText" v-model="keyframesName" placeholder="动画名称"><button @click="deleteKeyframes">删除</button>
         </div>
         <div class="item">
           <span class="info">过渡动画：</span>
-          <span class="chooseContainer chooseEasing" :class="{'tttop':isShowEasing}" @click="isShowEasing = !isShowEasing" v-clickoutside="hideEasing">{{easing}}
+          <div class="chooseContainer chooseEasing" :class="{'tttop':isShowEasing}" @click="isShowEasing = !isShowEasing" v-clickoutside="hideEasing">{{easing}}
             <i class="iconfont" :class="{'iconuparrow':isShowEasing,'icondownarrow':!isShowEasing}"></i>
             <ul v-show="isShowEasing">
               <li @click="changeEasing($event)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'linear':isActive==='linear'}"></i></div>linear</li>
@@ -16,15 +17,23 @@
               <li @click="changeEasing($event)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-out':isActive==='ease-out'}"></i></div>ease-out</li>
               <li @click="changeEasing($event)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-in-out':isActive==='ease-in-out'}"></i></div>ease-in-out</li>
             </ul>
-          </span>
+          </div>
         </div>
         <div class="item">
           <span class="info">过渡时间：</span>
           <input type="text" class="operateText" maxlength="3" v-model="during"><span class="unit">s</span>
         </div>
+        <div class="item">
+          <label class="checkbox" v-tooltip.top="'由于“非无限”会导致动画只播放一次，因此建议一直开启“无限”以查看效果，实际情况下由您定制'">
+            <input type="checkbox" v-model="isChecked">
+            <i class="iconfont" :class="{'iconcheckboxnotchecked':!isChecked,'iconcheckboxchecked':isChecked}"></i>
+            无限
+          </label>
+        </div>
       </div>
+      <!--设置结束-->
       <div class="add">
-        <span class="chooseContainer" @click="isShow = !isShow" v-clickoutside="hideBox">添加项
+        <div class="chooseContainer" @click="isShow = !isShow" v-clickoutside="hideBox">添加项
           <i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>
           <ul v-show="isShow">
             <li @click="add($event)" data-type="color"><i class="iconfont iconcolor"></i>颜色</li>
@@ -34,19 +43,21 @@
             <li @click="add($event)" data-type="backgroundcolor"><i class="iconfont iconbackgroundcolor"></i>背景色</li>
             <li @click="add($event)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影</li>
             <li @click="add($event)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影</li>
+            <li @click="add($event)" data-type="transform"><i class="iconfont icontransform"></i>变形</li>
           </ul>
-         </span>
+         </div>
         <label class="addPercent">
+          <!--type为input时，不支持自动屏蔽非数字，type为number时不支持最大长度，我选择number+input方法剪切长度-->
           <input type="number" @input="sliceTwo()" v-model="addPercentValue"><span>%</span>
           <button @click="addPercent">添加节点</button>
         </label>
       </div>
     </div>
+    <!--循环渲染出各个节点-->
     <div class="content">
       <div v-for="(percent,index) in percentList">
         <component :is="tools" :percentName="percent.name"></component>
       </div>
-
     </div>
   </div>
 </template>
@@ -56,106 +67,127 @@
   import Color from "../operation/color"
 
   export default {
-        name: "animation",
-      components: {Hover,Color},
-      data(){
-          return{
-            tools:null,
-            isShowEasing:false,
-            isShow:false,
-            easing:"ease",
-            isActive:null,
-            during:0,
-            addPercentValue:''          //新增节点的值
-          }
+    name: "animation",
+    components: {Hover,Color},
+    data(){
+      return{
+        tools:null,                  //节点组件列表
+        isShowEasing:false,          //控制easing下拉框的显示
+        isShow:false,                //控制添加项下拉框的显示
+        keyframesName:"",             //animation中keyframes的名字
+        easing:"ease",                //animation中easing参数
+        during:0,                     ///animation中during参数，持续时间
+        isActive:null,                //控制easing选择框中哪个小球应该运动
+        addPercentValue:'',          //新增节点的值
+        isChecked:true               //是否无限循环，即infinite
+      }
+    },
+    //页面加载时动态导入各个百分比节点的组件
+    mounted(){
+      import('../pseudo/percent').then(res=>{
+        this.tools = res.default;
+      })
+    },
+    computed:{
+      // 百分比节点列表
+      percentList(){
+        //后面的sort是根据节点的百分比进行排序
+        return this.$store.getters.getPercentList;
+        // return this.$store.getters.getPercentList.sort((a,b)=>(Number(a.name.slice(0,a.name.length-1)-Number(b.name.slice(0,b.name.length-1)))));
+      }
+    },
+    methods:{
+      //添加百分比节点
+      addPercent(){
+        let list = this.percentList;
+        let con = Object.assign([],list[0].content);                     //由于每个百分比节点的“内容”都是一样的,此处要用浅拷贝
+        let arr = [];                                 //现有百分比节点列表
+        list.forEach(item=>{
+          arr.push(Number(item.name.slice(0,item.name.length-1)))
+        });
+        if (!arr.includes(Number(this.addPercentValue))) {                  //现有百分比节点列表里没有才添加，防止重复
+          arr.push(Number(this.addPercentValue));
+          arr.sort((a,b)=>a-b);                                             //按顺序添加
+          let index = arr.indexOf(Number(this.addPercentValue));
+          list.splice(index,0,{name:`${this.addPercentValue}%`,content:con})
+        }
+        this.$store.dispatch('changePercentList',list);
+        this.addPercentValue =''                                           //添加完成后重置文本框
       },
-      computed:{
-        percentList(){
-          //后面的sort是根据节点的百分比进行排序
-          return this.$store.getters.getPercentList;
-          // return this.$store.getters.getPercentList.sort((a,b)=>(Number(a.name.slice(0,a.name.length-1)-Number(b.name.slice(0,b.name.length-1)))));
+      //给每个节点添加属性
+      add(e){
+        let animationCodes = this.$store.getters.getAnimationCodes;
+        let codes = this.$store.getters.getCodes;
+        let keyframesName = this.keyframesName===""?"css":this.keyframesName;           //@keyframes动画名字默认是css
+        let isInfinite = this.isChecked?"infinite":"";
+        let str = `${keyframesName} ${this.easing} ${this.during}s ${isInfinite}`;                              //这里是假的，后面再加
+        if (animationCodes==='') {                                                      //如果动画代码是空的
+          animationCodes = `@keyframes css {\n}`;                                       //1.初始化动画代码
+          this.$store.dispatch("changeAnimationCodes", animationCodes);
+          this.submit("animation","standard",str);                                      //2.给css添加动画属性
+          let css = document.styleSheets[0];
+          css.insertRule(animationCodes,0)                                                //3.插入@keyframes规则
+        }
+        let property = e.currentTarget.dataset.type;
+        let list = this.$store.getters.getPercentList;
+        for (let i=0; i<list.length; i++){                                              //循环百分比节点
+          list[i].content.push(property)                                                //每个节点都要有这个属性
+        }
+        this.$store.dispatch("changePercentList",list)
+      },
+      //删除@keyframes规则
+      deleteKeyframes(){
+        let css = document.styleSheets[0];
+        css.deleteRule(0)
+      },
+      //限制数字文本框只能输入两位数
+      sliceTwo(){
+        if (this.addPercentValue.length > 2) {
+          this.addPercentValue = this.addPercentValue.slice(0,2);
         }
       },
-      mounted(){
-        import('../pseudo/percent').then(res=>{
-          this.tools = res.default;
-        })
+      // 改变小球运动对象
+      changeActive(e){
+        this.isActive = e.currentTarget.innerText
       },
-      methods:{
-        changeActive(e){
-          this.isActive = e.currentTarget.innerText
-        },
-        deleteActive(){
-          this.isActive = null
-        },
-        changeEasing(e){
-          this.easing = e.currentTarget.innerText;
-        },
-        choose(i){
-          this.percentList[i].isShow = !this.percentList[i].isShow;
-        },
-        hideEasing(){
-            this.isShowEasing = false
-        },
-        hideBox(){
-          this.isShow = false
-        },
-        //限制数字文本框只能输入两位数
-        sliceTwo(){
-          if (this.addPercentValue.length > 2) {
-            this.addPercentValue = this.addPercentValue.slice(0,2);
-          }
-        },
-        addPercent(){
-          let list = this.percentList;
-          let con = Object.assign([],list[0].content);                     //由于每个百分比节点的“内容”都是一样的,此处要用浅拷贝
-          let arr = [];                                 //现有百分比节点列表
-          list.forEach(item=>{
-            arr.push(Number(item.name.slice(0,item.name.length-1)))
-          });
-
-          if (!arr.includes(Number(this.addPercentValue))) {                  //列表里没有才添加，防止重复
-            arr.push(Number(this.addPercentValue));
-            arr.sort((a,b)=>a-b);
-            let index = arr.indexOf(Number(this.addPercentValue));
-            list.splice(index,0,{name:`${this.addPercentValue}%`,content:con})
-              // list.push({name:`${this.addPercentValue}%`,content:con})
-          }
-          this.$store.dispatch('changePercentList',list);
-          this.addPercentValue =''
-        },
-        add(e){
-          let animationCodes = this.$store.getters.getAnimationCodes;
-          if (animationCodes==='') {
-            animationCodes = `@keyframes css {\n}`;
-            this.$store.dispatch("changeAnimationCodes", animationCodes)
-          }
-          let value = e.currentTarget.dataset.type;
-          let list = this.$store.getters.getPercentList;
-          for (let i=0; i<list.length; i++){
-            list[i].content.push(value)
-          }
-          // list.forEach(item=>{
-          //   item.content.push(value)
-          // });
-          this.$store.dispatch("changePercentList",list)
-        }
-
-  //           let x = document.styleSheets[0];
-  //           x.insertRule(` @keyframes jump {
-  //   0% {
-  //     -webkit-transform: translate(0, 0);
-  //     transform: translate(0, 0); }
-  //   50% {
-  //     -webkit-transform: translate(0, 10px);
-  //     transform: translate(0, 20px); }
-  //   100% {
-  //     -webkit-transform: translate(0, 0);
-  //     transform: translate(0, 0); }
-  // }`)
-
+      //鼠标移出时删除小球运动对象
+      deleteActive(){
+        this.isActive = null
+      },
+      //改变easing
+      changeEasing(e){
+        this.easing = e.currentTarget.innerText;
+      },
+      //关闭easing下拉框
+      hideEasing(){
+        this.isShowEasing = false
+      },
+      //关闭添加项的下拉框
+      hideBox(){
+        this.isShow = false
+      },
+      //准备提交
+      prepareSubmit(){
+        let keyframesName = this.keyframesName===""?"css":this.keyframesName;
+        let isInfinite = this.isChecked?"infinite":"";
+        this.submit("animation","standard",`${keyframesName} ${this.easing} ${this.during}s ${isInfinite} `)
+      },
+    },
+    watch:{
+      keyframesName(){
+        this.prepareSubmit();
+      },
+      easing(){
+        this.prepareSubmit();
+      },
+      during(){
+        this.prepareSubmit();
+      },
+      isChecked(){
+        this.prepareSubmit();
       }
     }
+  }
 </script>
 
 <style scoped>
@@ -205,7 +237,7 @@
     line-height: 30px;
     padding: 3px 45px 3px 10px;
     border: solid 1px rgba(0, 0, 0, 0.22);
-    background-color: rgba(28, 27, 26, 0.12);
+    background-color: rgba(148, 144, 140, 0.12);
     color: black;
     font-size: 1.1em;
     font-style: italic;
@@ -225,7 +257,6 @@
     font-size: 20px;
     font-weight: bold;
     font-style: italic;
-
   }
   .addPercent button{
     position: absolute;
@@ -257,7 +288,7 @@
   }
   @keyframes l {
     0%{
-      left: 0%;
+      left: 0;
     }
     100%{
       left: 70%;

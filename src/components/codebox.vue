@@ -41,8 +41,10 @@
 
 <style scoped>
   @import "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css";
-  .right .showContainer .showCodes{
-    flex: .4;
+  .showCodes{
+    grid-row: 3/4;
+    grid-column: 2/3;
+    /*flex: .4;*/
     border-top: solid 1px #c1c1c1;
     background-color: #f0f0f0;
   }

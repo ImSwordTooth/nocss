@@ -3,6 +3,7 @@ html,body{
   height: 100%;
   margin: 0;
   cursor: url("../assets/cursor/pencil.png"),auto;
+  overflow: hidden;
 }
 ::selection{
   background-color: #2ec7bd;
@@ -245,10 +246,6 @@ html,body{
   max-height: 238px;
   overflow: hidden auto;
 }
-/*@font-face {*/
-  /*font-family: lll;*/
-  /*src: url("../assets/PostNoBillsColombo-ExtraBold.ttf");*/
-/*}*/
 .chooseContainer>ul li{
   padding: 3px 15px;
   border-bottom: solid 1px #e2e2e2;
@@ -299,4 +296,15 @@ html,body{
 .unit{
   margin:0 20px 0 5px;
   font-size: 12px;
+}
+.checkbox{
+  cursor: url("../assets/cursor/pen.png"),auto;
+}
+.checkbox input[type='checkbox']{
+  display: none;
+}
+.checkbox input[type='checkbox']+i{
+  position: relative;
+  top: 3px;
+  color: #217db5;
 }

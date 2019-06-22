@@ -10,17 +10,22 @@
 
 <script>
     export default {
-        name: "fontsize",
+      name: "fontsize",
       props:["now"],
       data(){
-          return{
-            fontsize:12
-          }
+        return{
+          fontsize:12                                                 //字体大小
+        }
       },
-      watch:{
-          fontsize:function () {
-            this.submit('font-size',this.now,`${this.fontsize}px`)
-          }
+      created(){
+        this.$watch('$data.fontsize', function () {
+          this.submit('font-size',this.now,`${this.fontsize}px`)
+        },{immediate:this.isMed})
+      },
+      computed:{
+        isMed(){
+          return this.now !== 'standard'
+        }
       }
     }
 </script>

@@ -45,7 +45,7 @@
     padding: 5px;
     /*background:url("../assets/bc.jpg");*/
     box-shadow: 0 0 5px 1px #7e8990;
-    z-index: 2;
+    z-index: 3;
   }
   header .logo{
     height: 40px;

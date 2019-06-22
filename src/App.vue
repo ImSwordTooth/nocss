@@ -1,30 +1,24 @@
 <template>
-  <div id="app">
-    <div class="container">
-      <myheader></myheader>
-      <div class="main">
-        <myaside></myaside>
-        <div class="right">
-          <div class="prompt" v-if="toolType === ''">选择要操作的控件以开始</div>
-          <div class="showContainer">
-            <myitembox></myitembox>
-            <mycodebox></mycodebox>
-          </div>
-          <div class="operateContainer">
-            <myoperate></myoperate>
-            <article class="operations">
-              <operate_head></operate_head>
-              <div class="operate">
-                <keep-alive>
-                  <component :is="operateHead"></component>
-                </keep-alive>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div id="app" class="container">
+    <myheader></myheader>
+    <myaside></myaside>
 
+        <div class="prompt" v-if="toolType === ''">选择要操作的控件以开始</div>
+
+          <myitembox></myitembox>
+          <mycodebox></mycodebox>
+
+        <div class="operateContainer">
+          <myoperate></myoperate>
+          <article class="operations">
+            <operate_head></operate_head>
+            <div class="operate">
+              <keep-alive>
+                <component :is="operateHead"></component>
+              </keep-alive>
+            </div>
+          </article>
+        </div>
   </div>
 </template>
 
@@ -66,6 +60,7 @@
 
 <style>
   @import "iconfont.css";
-  @import "css/app.css";
+  /*@import "css/app.css";*/
+  @import "css/otherApp.css";
 </style>
 

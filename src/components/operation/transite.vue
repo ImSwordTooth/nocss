@@ -38,7 +38,7 @@
         </div>
         <div class="item">
           <span class="info">过渡时间：</span>
-          <input type="text" class="operateText" maxlength="3" @input="prepareSubmit(index)" v-model="item.during"><span class="unit">s</span>
+          <input type="text" class="operateText" maxlength="3" v-model="item.during"><span class="unit">s</span>
         </div>
       </div>
 
@@ -49,7 +49,7 @@
 
 <script>
     export default {
-        name: "transite",
+      name: "transite",
       props:['now'],
       data(){
           return{
@@ -68,11 +68,19 @@
             ],
           }
       },
+      created(){
+        this.$watch('$data.list',function () {
+          this.prepareSubmit();
+        },{immediate:this.isMed,deep:true})
+      },
       computed:{
         isShowAdd(){
           return !this.list.some(function (item) {
             return item.transitionName==='请选择' || item.easing === '请选择'
           })
+        },
+        isMed(){
+          return this.now !== 'standard'
         }
       },
       methods:{
@@ -90,13 +98,11 @@
         },
         changeEasing(e,i){
           this.list[i].easing = e.currentTarget.innerText;
-          this.prepareSubmit(i)
         },
         changeTransitionName(e,i){
           this.list[i].transitionName = e.currentTarget.dataset.type;
-          this.prepareSubmit(i)
         },
-        prepareSubmit(i){
+        prepareSubmit(){
           let replaceStr = '';                                                //由于有四种情况，所以要提前确认代替的字符串
           this.list.forEach(item=>{
             replaceStr += ` ${item.transitionName} ${item.easing} ${item.during}s,`

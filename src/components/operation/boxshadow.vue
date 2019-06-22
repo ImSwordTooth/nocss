@@ -2,18 +2,21 @@
   <li id="textshadow">
     <span class="operateTitle"><i class="iconfont iconboxshadow"></i>盒子阴影</span>
     <div>
-      <!--<p class="already" v-if="alreadyShadow.length > 0" v-for="shadow in alreadyShadow">{{shadow}}</p>-->
       <div class="oneline">
-        <div class="item">
+        <!--<div v-for="(item,index) in list">-->
+          <div class="item">
           <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
+            <!--{{item.isShow}}-->
             <span class="currentColor" :style="{'background':rgba}"></span>
             <span class="currentColorText">{{colorText}}</span>
-            <chrome-picker class="colorPicker" v-if="isShow" v-model="color"></chrome-picker>
+            <chrome-picker class="colorPicker" v-if="isShow" v-model="boxshadow.color"></chrome-picker>
           </span>
-        </div>
+          </div>
+        <!--</div>-->
+
         <div class="item">
           <span class="info">样式：</span>
-          <span class="chooseContainer" :class="{'tttop':isShowType}" @click="isShowType = !isShowType" v-clickoutside="hideType">{{type}}
+          <span class="chooseContainer" :class="{'tttop':isShowType}" @click="isShowType = !isShowType" v-clickoutside="hideType">{{boxshadow.type}}
             <i class="iconfont" :class="{'iconuparrow':isShowType,'icondownarrow':!isShowType}"></i>
             <ul v-show="isShowType">
               <li @click="changeType($event)"><i class="iconfont iconinset"></i>inset</li>
@@ -24,23 +27,23 @@
       </div>
       <div class="item">
         <span class="info">x：</span>
-        <input type="range" min="-10" max="10" step="1" v-model="offsetX">
-        <span>{{offsetX}}</span>
+        <input type="range" min="-10" max="10" step="1" v-model="boxshadow.offsetX">
+        <span>{{boxshadow.offsetX}}</span>
       </div>
       <div class="item">
         <span class="info">y：</span>
-        <input type="range" min="-10" max="10" step="1" v-model="offsetY">
-        <span>{{offsetY}}</span>
+        <input type="range" min="-10" max="10" step="1" v-model="boxshadow.offsetY">
+        <span>{{boxshadow.offsetY}}</span>
       </div>
       <div class="item">
         <span class="info">模糊量：</span>
-        <input type="range" min="0" max="20" step="1" v-model="blur">
-        <span>{{blur}}</span>
+        <input type="range" min="0" max="20" step="1" v-model="boxshadow.blur">
+        <span>{{boxshadow.blur}}</span>
       </div>
       <div class="item">
         <span class="info">尺寸：</span>
-        <input type="range" min="0" max="20" step="1" v-model="spread">
-        <span>{{spread}}</span>
+        <input type="range" min="0" max="20" step="1" v-model="boxshadow.spread">
+        <span>{{boxshadow.spread}}</span>
       </div>
       <!--<button class="operate_btn" @click="addAlready">添加</button>-->
     </div>
@@ -56,25 +59,41 @@
       data(){
         return{
           alreadyShadow:[],
-          offsetX:0,
-          offsetY:0,
-          blur:0,
-          spread:0,
-          type:'outset',
-          color:{
-            rgba: { r: 0, g: 0, b: 0, a: 0 },
-            a: 1
+          boxshadow:{
+            offsetX:0,
+            offsetY:0,
+            blur:0,
+            spread:0,
+            color:{
+              rgba: { r: 0, g: 0, b: 0, a: 0 },
+              a: 1
+            },
+            type:'outset'
           },
           isShow:false,
-          isShowType:false
+          isShowType:false,
+
+          list:[
+            {
+              isShow:false
+            },{
+              isShow:false
+            }
+          ]
         }
       },
       components:{
         'chrome-picker': Chrome,
       },
+      created(){
+        this.$watch('$data.boxshadow',function(){
+            this.prepareSubmit();
+          },{immediate:this.isMed,deep:true}
+        )
+      },
       computed:{
         rgba(){
-          let rgba = this.color.rgba;
+          let rgba = this.boxshadow.color.rgba;
           if(rgba.a === 0){
             return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
           }
@@ -83,23 +102,38 @@
           }
         },
         colorText(){
-          let rgba = this.color.rgba;
+          let rgba = this.boxshadow.color.rgba;
           if (rgba.a === 0){
             return "无"
           } else {
-            return rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+            return rgba.a === 1 ? this.boxshadow.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
           }
+        },
+        isMed(){
+          return this.now !== 'standard';
         }
       },
       methods:{
         hideColorPicker(){
           this.isShow = false
-        },
+          // if( this.list.every(function(item){
+          //   console.log("sss")
+          //  return !item.isShow
+          // })){
+          //   return false;
+          // }else {
+          //   this.list.forEach(item=>{
+          //     item.isShow = false
+          //   })
+          // }
+
+          },
+
         hideType(){
           this.isShowType = false
         },
         changeType(event){
-          this.type= event.currentTarget.innerText;
+          this.boxshadow.type= event.currentTarget.innerText;
         },
         // addAlready(){
         //   let rgba = this.color.rgba;
@@ -111,35 +145,15 @@
         //   let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a}),`;
         //   this.alreadyShadow.push(`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`);
         // },
-        prepareSubmit(now){
-          let rgba = this.color.rgba;
-          let type = this.type === 'inset' ? this.type : '';
-          let x = this.offsetX;
-          let y = this.offsetY;
-          let blur = this.blur;
-          let spread = this.spread;
-          let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          this.submit('box-shadow',now,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
-        }
-      },
-      watch:{
-        color:function () {
-          this.prepareSubmit(this.now)
-        },
-        type:function(){
-          this.prepareSubmit(this.now)
-        },
-        offsetX:function () {
-          this.prepareSubmit(this.now)
-        },
-        offsetY:function () {
-          this.prepareSubmit(this.now)
-        },
-        blur:function(){
-          this.prepareSubmit(this.now)
-        },
-        spread:function () {
-          this.prepareSubmit(this.now)
+        prepareSubmit(){
+          let rgba = this.boxshadow.color.rgba;
+          let type = this.boxshadow.type === 'inset' ? this.boxshadow.type : '';
+          let x = this.boxshadow.offsetX;
+          let y = this.boxshadow.offsetY;
+          let blur = this.boxshadow.blur;
+          let spread = this.boxshadow.spread;
+          let currentColor = rgba.a === 1 ? this.boxshadow.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
+          this.submit('box-shadow',this.now,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
         }
       }
     }

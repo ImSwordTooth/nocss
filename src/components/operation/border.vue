@@ -4,12 +4,12 @@
     <div>
       <div class="item">
         <span class="info">宽度：</span>
-        <input type="range" min="0" max="10" step="1" v-model="borderWeight">
-        <span class="borderWeightText">{{borderWeight}}</span>
+        <input type="range" min="0" max="10" step="1" v-model="border.borderWeight">
+        <span class="borderWeightText">{{border.borderWeight}}</span>
       </div>
       <div class="item">
         <span class="info">样式：</span>
-        <span class="chooseContainer" :class="{'tttop':isShowBorderStyle}" @click="isShowBorderStyle = !isShowBorderStyle" v-clickoutside="hideBorderStyle">{{borderStyle}}
+        <div class="chooseContainer" :class="{'tttop':isShowBorderStyle}" @click="isShowBorderStyle = !isShowBorderStyle" v-clickoutside="hideBorderStyle">{{border.borderStyle}}
           <i class="iconfont" :class="{'iconuparrow':isShowBorderStyle,'icondownarrow':!isShowBorderStyle}"></i>
           <ul v-show="isShowBorderStyle">
             <li @click="changeBorderStyle($event)"><i class="iconfont iconsolid"></i>solid</li>
@@ -21,13 +21,13 @@
             <li @click="changeBorderStyle($event)"><i class="iconfont icongroove"></i>groove</li>
             <li @click="changeBorderStyle($event)"><i class="iconfont iconridge"></i>ridge</li>
           </ul>
-        </span>
+        </div>
       </div>
       <div class="item">
-        <span class="color" @click="isShow = true" v-clickoutside="hideColorPicker">
+        <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
           <span class="currentColor" :style="{'background':rgba}"></span>
           <span class="currentColorText">{{colorText}}</span>
-          <chrome-picker class="colorPicker" v-if="isShow" v-model="color"></chrome-picker>
+          <chrome-picker class="colorPicker" v-if="isShow" v-model="border.color"></chrome-picker>
         </span>
       </div>
     </div>
@@ -42,73 +42,75 @@
       props:["now"],
       data(){
         return{
-          borderWeight:0,
-          borderStyle:'solid',
-          color:{
-            rgba: { r: 0, g: 0, b: 0, a: 0 },
-            a: 0
+          border:{
+            borderWeight:0,                                                     //边框宽度
+            borderStyle:'solid',                                                //边框样式
+            color:{                                                             //边框颜色
+              rgba: { r: 0, g: 0, b: 0, a: 0 },
+              a: 0
+            },
           },
-          isShow:false,
-          isShowBorderStyle:false
+          isShow:false,                                                       //控制颜色选择框的显示
+          isShowBorderStyle:false                                             //控制边框样式下拉框的显示
         }
       },
       components:{
         'chrome-picker': Chrome,
       },
+      created(){
+        this.$watch('$data.border',function(){
+                this.prepareSubmit();
+            },{immediate:this.isMed,deep:true}
+          )
+      },
       methods:{
+        //隐藏颜色选择框
         hideColorPicker(){
           this.isShow = false
         },
+        //隐藏边框样式下拉框
         hideBorderStyle(){
           this.isShowBorderStyle = false
         },
+        //改变边框样式下拉框
         changeBorderStyle(event){
-          this.borderStyle = event.currentTarget.innerText;
+          this.border.borderStyle = event.currentTarget.innerText;
         },
-        prepareSubmit(now){
-          let weight = this.borderWeight;
-          let style = this.borderStyle;
-          let rgba = this.color.rgba;
-          let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          this.submit('border',now,`${weight}px ${style} ${currentColor}`)
+        //准备提交
+        prepareSubmit(){
+          let weight = this.border.borderWeight;
+          let style = this.border.borderStyle;
+          let rgba = this.border.color.rgba;
+          let currentColor = rgba.a === 1 ? this.border.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
+          this.submit('border',this.now,`${weight}px ${style} ${currentColor}`)
         }
-
       },
       computed:{
         rgba(){
-          let rgba = this.color.rgba;
-          if(rgba.a === 0){
+          let rgba = this.border.color.rgba;
+          if(rgba.a === 0){                                 //透明度为0时，用斜纹代替颜色，表示透明
             return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
           }
-          else {
+          else {                                            //其他情况下显示正常颜色
             return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
           }
         },
         colorText(){
-          let rgba = this.color.rgba;
-          if (rgba.a === 0){
+          let rgba = this.border.color.rgba;
+          if (rgba.a === 0){                                //透明度为0时，颜色为“无”
             return "无"
-          } else {
-            return rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+          } else {                                          //其他情况下显示正常颜色文本
+            return rgba.a === 1 ? this.border.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
           }
-        }
-      },
-      watch:{
-        borderWeight:function () {
-          this.prepareSubmit(this.now)
         },
-        borderStyle:function () {
-          this.prepareSubmit(this.now)
-        },
-        color:function () {
-          this.prepareSubmit(this.now)
+        isMed(){
+          return this.now!=="standard"
         }
       }
     }
 </script>
 
 <style scoped>
-  /*.icon { width: 2.4em; height: 2.4em; vertical-align: -0.15em; fill: currentColor; overflow: hidden;}*/
   input[type=range]{
     width: 50px;
   }
@@ -119,7 +121,6 @@
   .color{
     position: relative;
     cursor: url("../../assets/cursor/brush.png"),pointer;
-    z-index: 7;
   }
   .colorPicker{
     position: absolute;

@@ -14,6 +14,7 @@
             <li @click="add($event)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影</li>
             <li @click="add($event)" data-type="transform"><i class="iconfont icontransform"></i>变形</li>
             <li @click="add($event)" data-type="transite"><i class="iconfont icontransition"></i>过渡</li>
+            <li @click="add($event)" data-type="outline"><i class="iconfont iconoutline"></i>轮廓线</li>
           </ul>
       </span>
       <ul class="operationUl">

@@ -15,19 +15,19 @@
           </ul>
         </span>
           <div class="content" v-show="tr.transformName==='translate'">
-            <span class="info">左右：</span><input type="text" class="operateText" maxlength="3" v-model="tr.translateX" @input="changeValue(index)"><span class="unit">px</span>
-            <span class="info">上下：</span><input type="text" class="operateText" maxlength="3" v-model="tr.translateY" @input="changeValue(index)"><span class="unit">px</span>
+            <span class="info">左右：</span><input type="text" class="operateText" v-model="tr.translateX"><span class="unit">px</span>
+            <span class="info">上下：</span><input type="text" class="operateText" v-model="tr.translateY"><span class="unit">px</span>
           </div>
           <div class="content" v-show="tr.transformName==='scale'">
-            <span class="info">横向：</span><input type="text" class="operateText" maxlength="3" v-model="tr.scaleX" @input="changeValue(index)"><span class="unit">倍</span>
-            <span class="info">纵向：</span><input type="text" class="operateText" maxlength="3" v-model="tr.scaleY" @input="changeValue(index)"><span class="unit">倍</span>
+            <span class="info">横向：</span><input type="text" class="operateText" v-model="tr.scaleX"><span class="unit">倍</span>
+            <span class="info">纵向：</span><input type="text" class="operateText" v-model="tr.scaleY"><span class="unit">倍</span>
           </div>
           <div class="content" v-show="tr.transformName==='rotate'">
-            <span class="info">角度：</span><input type="text" class="operateText" maxlength="3" v-model="tr.rotateDeg" @input="changeValue(index)"><span class="unit">deg</span>
+            <span class="info">角度：</span><input type="text" class="operateText" v-model="tr.rotateDeg"><span class="unit">deg</span>
           </div>
           <div class="content" v-show="tr.transformName==='skew'">
-            <span class="info">横向：</span><input type="text" class="operateText" maxlength="3" v-model="tr.skewX" @input="changeValue(index)"><span class="unit">deg</span>
-            <span class="info">纵向：</span><input type="text" class="operateText" maxlength="3" v-model="tr.skewY" @input="changeValue(index)"><span class="unit">deg</span>
+            <span class="info">横向：</span><input type="text" class="operateText" v-model="tr.skewX"><span class="unit">deg</span>
+            <span class="info">纵向：</span><input type="text" class="operateText" v-model="tr.skewY"><span class="unit">deg</span>
           </div>
         </div>
         <button class="add" @click="addList" v-show="isShowAdd"><i class="iconfont iconadd"></i></button>
@@ -37,49 +37,50 @@
 
 <script>
     export default {
-        name: "transform",
+      name: "transform",
       props:['now'],
       data(){
-          return{
-            isShow:false,
-            list:[
-              {
-                transformName:'请选择',
-                translateX:0,
-                translateY:0,
-                scaleX:1,
-                scaleY:1,
-                rotateDeg:0,
-                skewX:0,
-                skewY:0
-              }
-              ],
-          }
+        return{
+          isShow:false,                                                     //控制变化类型的下拉框
+          list:[                                                            //变形列表
+            {
+              transformName:'请选择',                                            //变形类型
+              translateX:0,                                                         //X轴平移量
+              translateY:0,                                                         //Y轴平移量
+              scaleX:1,                                                             //X轴缩放量
+              scaleY:1,                                                             //Y轴缩放量
+              rotateDeg:0,                                                          //旋转角度
+              skewX:0,                                                              //X轴倾斜角度
+              skewY:0,                                                              //Y轴倾斜角度
+            }
+          ]
+        }
+      },
+      created(){
+        this.$watch('$data.list',function () {
+          this.prepareSubmit();
+        },{immediate:this.isMed,deep:true})
       },
       computed:{
-          isShowAdd(){
-            return !this.list.some(function (item) {
-              return item.transformName==='请选择'
-            })
-          }
+        isShowAdd(){                                                            //当变化类型没有是“请选择”的时候才显示添加按钮（其实并不好）
+          return !this.list.some(function (item) {
+            return item.transformName==='请选择'
+          })
+        },
+        isMed(){
+          return this.now !== 'standard'
+        }
       },
       methods:{
-          hideChoose(){
-            this.isShow = false
-          },
+        //隐藏变化类型下拉框
+        hideChoose(){
+          this.isShow = false
+        },
+        //改变变形类型
         changeTransformName(e,index){
           this.list[index].transformName = e.currentTarget.dataset.type;
         },
-        changeValue(index){
-            if (index){
-              let translateX = this.list[index].translateX,
-                translateY = this.list[index].translateY,
-                scaleX = this.list[index].scaleX,
-                scaleY = this.list[index].scaleY,
-                rotateDeg = this.list[index].rotateDeg,
-                skewX = this.list[index].skewX,
-                skewY = this.list[index].skewY;
-            }
+        prepareSubmit(){
             let replaceStr = '';                                                //由于有四种情况，所以要提前确认代替的字符串
             this.list.forEach(item=>{
               let x = '';
@@ -92,7 +93,7 @@
               }
               replaceStr += ` ${x}`
             });
-            this.submit('transform',this.now,replaceStr);
+          this.submit('transform',this.now,replaceStr);
         },
         spliceList(index){
             this.list.splice(index,1);
@@ -121,11 +122,6 @@
             skewX:0,
             skewY:0
           })
-        }
-      },
-      watch:{
-        list(){
-          console.log('gg')
         }
       }
     }

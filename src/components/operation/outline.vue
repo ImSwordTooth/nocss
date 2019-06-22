@@ -3,12 +3,12 @@
       <span class="operateTitle"><i class="iconfont iconoutline"></i>轮廓线</span>
       <div>
         <div class="item">
-          <input type="range" min="0" max="10" step="1" v-model="outlineWeight">
-          <span class="borderWeightText">{{outlineWeight}}</span>
+          <input type="range" min="0" max="10" step="1" v-model="outline.outlineWeight">
+          <span class="borderWeightText">{{outline.outlineWeight}}</span>
         </div>
         <div class="item">
           <span class="info">样式：</span>
-          <span class="chooseContainer" :class="{'tttop':isShowOutlineStyle}" @click="isShowOutlineStyle = !isShowOutlineStyle" v-clickoutside="hideOutlineStyle">{{outlineStyle}}
+          <div class="chooseContainer" :class="{'tttop':isShowOutlineStyle}" @click="isShowOutlineStyle = !isShowOutlineStyle" v-clickoutside="hideOutlineStyle">{{outline.outlineStyle}}
             <i class="iconfont" :class="{'iconuparrow':isShowOutlineStyle,'icondownarrow':!isShowOutlineStyle}"></i>
             <ul v-show="isShowOutlineStyle">
               <li @click="changeOutlineStyle($event)"><i class="iconfont iconsolid"></i>solid</li>
@@ -20,13 +20,13 @@
               <li @click="changeOutlineStyle($event)"><i class="iconfont icongroove"></i>groove</li>
               <li @click="changeOutlineStyle($event)"><i class="iconfont iconridge"></i>ridge</li>
             </ul>
-          </span>
+          </div>
         </div>
         <div class="item">
           <span class="color" @click="isShow = true" v-clickoutside="hideColorPicker">
             <span class="currentColor" :style="{'background':rgba}"></span>
             <span class="currentColorText">{{colorText}}</span>
-            <chrome-picker class="colorPicker" v-if="isShow" v-model="color"></chrome-picker>
+            <chrome-picker class="colorPicker" v-if="isShow" v-model="outline.color"></chrome-picker>
           </span>
         </div>
         <div class="offsetDiv">
@@ -34,11 +34,10 @@
           <input type="range" min="0" max="20" step="1" v-model="outlineOffset">
           <span class="borderWeightText">{{outlineOffset}}</span>
         </div>
-        <label>
-
-          <input type="checkbox">
-          <span></span>
-          是否为空
+        <label class="checkbox">
+          <input type="checkbox" v-model="isChecked">
+          <i class="iconfont" :class="{'iconcheckboxnotchecked':!isChecked,'iconcheckboxchecked':isChecked}"></i>
+          为空
         </label>
 
       </div>
@@ -54,23 +53,41 @@
       props:['now'],
       data(){
           return{
-            outlineWeight:0,
+            outline:{
+              outlineWeight:0,
+              outlineStyle:'solid',
+              color:{
+                rgba: { r: 0, g: 0, b: 0, a: 0 },
+                a: 1
+              }
+            },
             isShowOutlineStyle:false,
             isShow:false,
-            outlineStyle:'solid',
             outlineOffset:0,
-            color:{
-              rgba: { r: 0, g: 0, b: 0, a: 0 },
-              a: 0
-            },
+            isChecked:false
           }
       },
       components:{
         'chrome-picker': Chrome,
       },
+      created(){
+        this.$watch('$data.outline',function () {
+          this.prepareCommit();
+        },{immediate:this.isMed,deep:true});
+        this.$watch('$data.outlineOffset',function () {
+          this.submit("outline-offset",this.now,`${this.outline.outlineOffset}px`)
+        },{immediate:this.isMed});
+        this.$watch('$data.isChecked',function () {
+          if (this.isChecked){
+            this.submit("outline",this.now,"none");
+          }else {
+            this.prepareCommit();
+          }
+        },{immediate:this.isMed});
+      },
       computed:{
         rgba(){
-          let rgba = this.color.rgba;
+          let rgba = this.outline.color.rgba;
           if(rgba.a === 0){
             return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
           }
@@ -79,12 +96,15 @@
           }
         },
         colorText(){
-          let rgba = this.color.rgba;
+          let rgba = this.outline.color.rgba;
           if (rgba.a === 0){
             return "无"
           } else {
-            return rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+            return rgba.a === 1 ? this.outline.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
           }
+        },
+        isMed(){
+          return this.now !== 'standard'
         }
       },
       methods:{
@@ -95,26 +115,12 @@
           this.isShow = false
         },
         changeOutlineStyle(e){
-          this.outlineStyle = e.currentTarget.innerText;
+          this.outline.outlineStyle = e.currentTarget.innerText;
         },
         prepareCommit(){
-          let rgba = this.color.rgba;
-          let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          this.submit('outline',this.now,`${this.outlineWeight}px ${this.outlineStyle} ${currentColor}`);
-        }
-      },
-      watch:{
-        outlineWeight(){
-          this.prepareCommit();
-        },
-        outlineStyle(){
-          this.prepareCommit();
-        },
-        color(){
-            this.prepareCommit();
-        },
-        outlineOffset(){
-          this.submit("outline-offset",this.now,`${this.outlineOffset}px`)
+          let rgba = this.outline.color.rgba;
+          let currentColor = rgba.a === 1 ? this.outline.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
+          this.submit('outline',this.now,`${this.outline.outlineWeight}px ${this.outline.outlineStyle} ${currentColor}`);
         }
       }
     }
@@ -155,5 +161,10 @@
   }
   .offsetDiv input{
     width: 100px;
+  }
+
+  .checkbox{
+    float: right;
+    margin-right: 30px;
   }
 </style>
