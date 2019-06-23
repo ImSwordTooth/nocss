@@ -1,5 +1,5 @@
 <template>
-  <li id="transition">
+  <li>
     <span class="operateTitle" v-tooltip.top="'仅支持当前css代码中已出现的属性'"><i class="iconfont icontransition"></i>过渡</span>
     <div>
       <div v-for="(item,index) in list" class="listDiv">
@@ -9,16 +9,16 @@
           <span v-if="item.transitionName==='请选择'" class="chooseContainer" @click="isShowTransitionName = !isShowTransitionName" v-clickoutside="hideTransitionName">{{item.transitionName}}
           <i class="iconfont" :class="{'iconuparrow':isShowTransitionName,'icondownarrow':!isShowTransitionName}"></i>
           <ul v-show="isShowTransitionName">
-            <li @click="changeTransitionName($event,index)" data-type="all"><i class="iconfont iconall"></i>全部</li>
-            <li @click="changeTransitionName($event,index)" data-type="color"><i class="iconfont iconcolor"></i>颜色</li>
-            <li @click="changeTransitionName($event,index)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小</li>
-            <li @click="changeTransitionName($event,index)" data-type="border"><i class="iconfont iconborder"></i>边框</li>
-            <li @click="changeTransitionName($event,index)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形</li>
-            <li @click="changeTransitionName($event,index)" data-type="background-color"><i class="iconfont iconbackgroundcolor"></i>背景色</li>
-            <li @click="changeTransitionName($event,index)" data-type="padding"><i class="iconfont iconpadding"></i>内边距</li>
-            <li @click="changeTransitionName($event,index)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影</li>
-            <li @click="changeTransitionName($event,index)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影</li>
-            <li @click="changeTransitionName($event,index)" data-type="transform"><i class="iconfont icontransform"></i>变形</li>
+            <li @click="changeTransitionName($event,index)" data-type="all"><i class="iconfont iconall"></i>全部<span class="en">all</span></li>
+            <li @click="changeTransitionName($event,index)" data-type="color"><i class="iconfont iconcolor"></i>颜色<span class="en">color</span></li>
+            <li @click="changeTransitionName($event,index)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小<span class="en">font-size</span></li>
+            <li @click="changeTransitionName($event,index)" data-type="border"><i class="iconfont iconborder"></i>边框<span class="en">border</span></li>
+            <li @click="changeTransitionName($event,index)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形<span class="en">font相关</span></li>
+            <li @click="changeTransitionName($event,index)" data-type="background-color"><i class="iconfont iconbackgroundcolor"></i>背景色<span class="en">border-color</span></li>
+            <li @click="changeTransitionName($event,index)" data-type="padding"><i class="iconfont iconpadding"></i>内边距<span class="en">padding</span></li>
+            <li @click="changeTransitionName($event,index)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影<span class="en">text-shadow</span></li>
+            <li @click="changeTransitionName($event,index)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影<span class="en">box-shadow</span></li>
+            <li @click="changeTransitionName($event,index)" data-type="transform"><i class="iconfont icontransform"></i>变形<span class="en">transform</span></li>
           </ul>
       </span>
         </div>
@@ -49,7 +49,7 @@
 
 <script>
     export default {
-      name: "transite",
+      name: "my-transition",
       props:['now'],
       data(){
           return{

@@ -36,14 +36,17 @@
         <div class="chooseContainer" @click="isShow = !isShow" v-clickoutside="hideBox">添加项
           <i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>
           <ul v-show="isShow">
-            <li @click="add($event)" data-type="color"><i class="iconfont iconcolor"></i>颜色</li>
-            <li @click="add($event)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小</li>
-            <li @click="add($event)" data-type="border"><i class="iconfont iconborder"></i>边框</li>
-            <li @click="add($event)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形</li>
-            <li @click="add($event)" data-type="backgroundcolor"><i class="iconfont iconbackgroundcolor"></i>背景色</li>
-            <li @click="add($event)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影</li>
-            <li @click="add($event)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影</li>
-            <li @click="add($event)" data-type="transform"><i class="iconfont icontransform"></i>变形</li>
+            <li @click="add($event)" data-type="my-color"><i class="iconfont iconcolor"></i>颜色<span class="en">color</span></li>
+            <li @click="add($event)" data-type="my-fontsize"><i class="iconfont iconfontsize"></i>字体大小<span class="en">font-size</span></li>
+            <li @click="add($event)" data-type="my-border"><i class="iconfont iconborder"></i>边框<span class="en">border</span></li>
+            <li @click="add($event)" data-type="my-fontstyle"><i class="iconfont iconfontstyle"></i>字形<span class="en">font相关</span></li>
+            <li @click="add($event)" data-type="my-backgroundcolor"><i class="iconfont iconbackgroundcolor"></i>背景色<span class="en">border-color</span></li>
+            <li @click="add($event)" data-type="my-padding"><i class="iconfont iconpadding"></i>内边距<span class="en">padding</span></li>
+            <li @click="add($event)" data-type="my-textshadow"><i class="iconfont icontextshadow"></i>字体阴影<span class="en">font-shadow</span></li>
+            <li @click="add($event)" data-type="my-boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影<span class="en">box-shadow</span></li>
+            <li @click="add($event)" data-type="my-transform"><i class="iconfont icontransform"></i>变形<span class="en">transform</span></li>
+            <li @click="add($event)" data-type="my-transition"><i class="iconfont icontransition"></i>过渡<span class="en">transition</span></li>
+            <li @click="add($event)" data-type="my-outline"><i class="iconfont iconoutline"></i>轮廓线<span class="en">outline</span></li>
           </ul>
          </div>
         <label class="addPercent">
@@ -64,7 +67,7 @@
 
 <script>
   import Hover from "../pseudoClasses/hover";
-  import Color from "../operation/color"
+  import Color from "../operation/my-color"
 
   export default {
     name: "animation",

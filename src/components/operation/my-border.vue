@@ -1,25 +1,25 @@
 <template>
-  <li id="border">
+  <li>
     <span class="operateTitle"><i class="iconfont iconborder"></i>边框</span>
     <div>
       <div class="item">
         <span class="info">宽度：</span>
         <input type="range" min="0" max="10" step="1" v-model="border.borderWeight">
-        <span class="borderWeightText">{{border.borderWeight}}</span>
+        <span class="borderWeightText">{{border.borderWeight}}px</span>
       </div>
       <div class="item">
         <span class="info">样式：</span>
         <div class="chooseContainer" :class="{'tttop':isShowBorderStyle}" @click="isShowBorderStyle = !isShowBorderStyle" v-clickoutside="hideBorderStyle">{{border.borderStyle}}
           <i class="iconfont" :class="{'iconuparrow':isShowBorderStyle,'icondownarrow':!isShowBorderStyle}"></i>
           <ul v-show="isShowBorderStyle">
-            <li @click="changeBorderStyle($event)"><i class="iconfont iconsolid"></i>solid</li>
-            <li @click="changeBorderStyle($event)"><i class="iconfont icondashed"></i>dashed</li>
-            <li @click="changeBorderStyle($event)"><i class="iconfont icondouble"></i>double</li>
-            <li @click="changeBorderStyle($event)"><i class="iconfont icondotted"></i>dotted</li>
-            <li @click="changeBorderStyle($event)"><i class="iconfont iconinset"></i>inset</li>
-            <li @click="changeBorderStyle($event)"><i class="iconfont iconoutset"></i>outset</li>
-            <li @click="changeBorderStyle($event)"><i class="iconfont icongroove"></i>groove</li>
-            <li @click="changeBorderStyle($event)"><i class="iconfont iconridge"></i>ridge</li>
+            <li @click="changeBorderStyle($event)" data-type="solid"><i class="iconfont iconsolid"></i>实线<span class="en">solid</span></li>
+            <li @click="changeBorderStyle($event)" data-type="dashed"><i class="iconfont icondashed"></i>虚线<span class="en">dashed</span></li>
+            <li @click="changeBorderStyle($event)" data-type="double"><i class="iconfont icondouble"></i>双线<span class="en">double</span></li>
+            <li @click="changeBorderStyle($event)" data-type="dotted"><i class="iconfont icondotted"></i>点状<span class="en">dotted</span></li>
+            <li @click="changeBorderStyle($event)" data-type="inset"><i class="iconfont iconinset"></i>内阴影<span class="en">inset</span></li>
+            <li @click="changeBorderStyle($event)" data-type="outset"><i class="iconfont iconoutset"></i>外阴影<span class="en">outset</span></li>
+            <li @click="changeBorderStyle($event)" data-type="groove"><i class="iconfont icongroove"></i>3D凹槽<span class="en">groove</span></li>
+            <li @click="changeBorderStyle($event)" data-type="ridge"><i class="iconfont iconridge"></i>3D垄状<span class="en">ridge</span></li>
           </ul>
         </div>
       </div>
@@ -38,7 +38,7 @@
   import {Chrome} from 'vue-color'
 
   export default {
-      name: "border",
+      name: "my-border",
       props:["now"],
       data(){
         return{
@@ -47,7 +47,7 @@
             borderStyle:'solid',                                                //边框样式
             color:{                                                             //边框颜色
               rgba: { r: 0, g: 0, b: 0, a: 0 },
-              a: 0
+              a: 1
             },
           },
           isShow:false,                                                       //控制颜色选择框的显示
@@ -74,7 +74,7 @@
         },
         //改变边框样式下拉框
         changeBorderStyle(event){
-          this.border.borderStyle = event.currentTarget.innerText;
+          this.border.borderStyle = event.currentTarget.dataset.type;
         },
         //准备提交
         prepareSubmit(){

@@ -1,5 +1,5 @@
 <template>
-  <li id="textshadow">
+  <li>
     <span class="operateTitle"><i class="iconfont iconboxshadow"></i>盒子阴影</span>
     <div>
       <div class="oneline">
@@ -19,8 +19,8 @@
           <span class="chooseContainer" :class="{'tttop':isShowType}" @click="isShowType = !isShowType" v-clickoutside="hideType">{{boxshadow.type}}
             <i class="iconfont" :class="{'iconuparrow':isShowType,'icondownarrow':!isShowType}"></i>
             <ul v-show="isShowType">
-              <li @click="changeType($event)"><i class="iconfont iconinset"></i>inset</li>
-              <li @click="changeType($event)"><i class="iconfont iconoutset"></i>outset</li>
+              <li @click="changeType($event)" data-type="inset"><i class="iconfont iconinset"></i>内阴影<span class="en">inset</span></li>
+              <li @click="changeType($event)" data-type="outset"><i class="iconfont iconoutset"></i>外阴影<span class="en">outset</span></li>
             </ul>
           </span>
         </div>
@@ -28,22 +28,22 @@
       <div class="item">
         <span class="info">x：</span>
         <input type="range" min="-10" max="10" step="1" v-model="boxshadow.offsetX">
-        <span>{{boxshadow.offsetX}}</span>
+        <span>{{boxshadow.offsetX}}px</span>
       </div>
       <div class="item">
         <span class="info">y：</span>
         <input type="range" min="-10" max="10" step="1" v-model="boxshadow.offsetY">
-        <span>{{boxshadow.offsetY}}</span>
+        <span>{{boxshadow.offsetY}}px</span>
       </div>
       <div class="item">
         <span class="info">模糊量：</span>
         <input type="range" min="0" max="20" step="1" v-model="boxshadow.blur">
-        <span>{{boxshadow.blur}}</span>
+        <span>{{boxshadow.blur}}px</span>
       </div>
       <div class="item">
         <span class="info">尺寸：</span>
         <input type="range" min="0" max="20" step="1" v-model="boxshadow.spread">
-        <span>{{boxshadow.spread}}</span>
+        <span>{{boxshadow.spread}}px</span>
       </div>
       <!--<button class="operate_btn" @click="addAlready">添加</button>-->
     </div>
@@ -54,7 +54,7 @@
   import {Chrome} from 'vue-color'
 
   export default {
-    name: "boxshadow",
+    name: "my-boxshadow",
       props:["now"],
       data(){
         return{
@@ -133,7 +133,7 @@
           this.isShowType = false
         },
         changeType(event){
-          this.boxshadow.type= event.currentTarget.innerText;
+          this.boxshadow.type= event.currentTarget.dataset.type;
         },
         // addAlready(){
         //   let rgba = this.color.rgba;

@@ -8,7 +8,7 @@
         <i class="iconfont iconcopy" v-tooltip.bottom="'复制'" v-clipboard:copy="codes" v-clipboard:success="onCopy"></i>
       </div>
     </div>
-    <pre v-highlightjs="codes">
+    <pre v-highlightjs="codes" class="pre">
       <code class="css"></code>
     </pre>
   </div>
@@ -40,12 +40,13 @@
 </script>
 
 <style scoped>
-  @import "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css";
+  @import "//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/vs.min.css";
   .showCodes{
     grid-row: 3/4;
     grid-column: 2/3;
-    /*flex: .4;*/
     border-top: solid 1px #c1c1c1;
-    background-color: #f0f0f0;
+  }
+  .pre{
+    white-space: pre-wrap;
   }
 </style>

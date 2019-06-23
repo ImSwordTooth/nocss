@@ -81,7 +81,6 @@ new Vue({
 *
 * */
 Vue.prototype.submit = function (name,type,replaceStr) {
-  console.log(replaceStr)
   let codes = this.$store.getters.getCodes;                                             //基础
   let hoverCodes = this.$store.getters.getHoverCodes;                                   //hover
   let animationCodes =this.$store.getters.getAnimationCodes;
@@ -95,10 +94,8 @@ Vue.prototype.submit = function (name,type,replaceStr) {
   switch (type) {
     case 'standard':{
       if (patt.test(codes)) {
-        console.log("11111")
         codes = codes.replace(pattHave,replaceStr);
       }else {
-        console.log("22222")
         codes = codes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
       }
       this.$store.dispatch('changeCodes', codes);
@@ -118,7 +115,7 @@ Vue.prototype.submit = function (name,type,replaceStr) {
         if (pattP.test(animationCodes)){
           animationCodes = animationCodes.replace(pattPercentHave,replaceStr);
         }else {
-          animationCodes = animationCodes.replace(pattPercentHaveNot,`\n\t\t${name}:${replaceStr};\n\t}`);
+          animationCodes = animationCodes.replace(pattPercentHaveNot,`\t${name}:${replaceStr};\n\t}`);
         }
       }else {
         animationCodes = animationCodes.replace(pattHaveNot,`\t${type} {\n\t\t${name}:${replaceStr};\n\t}\n}`);

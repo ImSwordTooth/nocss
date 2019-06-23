@@ -1,6 +1,6 @@
 <template>
-  <li id="backgroundcolor">
-    <span class="operateTitle" v-tooltip.top="'该项与“渐变”互斥'"><i class="iconfont iconbackgroundcolor"></i>背景色</span>
+  <li>
+    <span class="operateTitle" v-tooltip.top="'该项与“渐变”互斥'" title="background-color"><i class="iconfont iconbackgroundcolor"></i>背景色</span>
     <div>
       <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
         <span class="currentColor" :style="{'background':rgba}"></span>
@@ -15,7 +15,7 @@
   import {Chrome} from 'vue-color'
 
   export default {
-    name: "backgroundcolor",
+    name: "my-backgroundcolor",
     props:["now"],
     components:{
       'chrome-picker': Chrome,

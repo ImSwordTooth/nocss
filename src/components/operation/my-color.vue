@@ -1,5 +1,5 @@
 <template>
-  <li id="color">
+  <li>
     <span class="operateTitle"><i class="iconfont iconcolor"></i>颜色</span>
     <div>
       <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
@@ -15,7 +15,7 @@
   import {Chrome} from 'vue-color'
 
   export default {
-      name: "color",
+      name: "my-color",
       props:["now"],
       components:{
         'chrome-picker': Chrome,

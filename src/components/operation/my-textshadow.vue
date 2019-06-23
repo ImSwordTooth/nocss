@@ -1,5 +1,5 @@
 <template>
-  <li id="textshadow">
+  <li>
     <span class="operateTitle"><i class="iconfont icontextshadow"></i>字体阴影</span>
     <div>
       <div class="item">
@@ -12,17 +12,17 @@
       <div class="item">
         <span class="info">x：</span>
         <input type="range" min="-10" max="10" step="1" v-model="textshadow.offsetX">
-        <span>{{textshadow.offsetX}}</span>
+        <span>{{textshadow.offsetX}}px</span>
       </div>
       <div class="item">
         <span class="info">y：</span>
         <input type="range" min="-10" max="10" step="1" v-model="textshadow.offsetY">
-        <span>{{textshadow.offsetY}}</span>
+        <span>{{textshadow.offsetY}}px</span>
       </div>
       <div class="item">
         <span class="info">模糊量：</span>
         <input type="range" min="0" max="20" step="1" v-model="textshadow.blur">
-        <span>{{textshadow.blur}}</span>
+        <span>{{textshadow.blur}}px</span>
       </div>
     </div>
   </li>
@@ -32,7 +32,7 @@
   import {Chrome} from 'vue-color'
 
   export default {
-      name: "textshadow",
+      name: "my-textshadow",
       props:["now"],
       data(){
         return{

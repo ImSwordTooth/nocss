@@ -1,5 +1,5 @@
 <template>
-  <li id="fontstyle">
+  <li>
     <span class="operateTitle"><i class="iconfont iconfontstyle"></i>字形</span>
     <div>
       <div class="group">
@@ -20,7 +20,7 @@
 
 <script>
     export default {
-      name: "fontstyle",
+      name: "my-fontstyle",
       props:["now"],
       data(){
           return{
@@ -69,13 +69,13 @@
     border-right: solid 1px #bcbcbc;
     cursor: url("../../assets/cursor/pen.png"),pointer;
   }
-  #fontstyle .group i{
+  .group i{
     border: solid 1px transparent;
   }
-  #fontstyle .group i:hover{
+  .group i:hover{
     background-color: #dedede;
   }
-  #fontstyle .group i.active{
+  .group i.active{
     border: solid 1px #ccc;
     background-color: #eee;
   }

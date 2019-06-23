@@ -12,24 +12,7 @@
 
 <script>
     export default {
-        name: "my-header",
-      mounted() {
-          this.draw();
-      },
-      methods:{
-        draw(){
-          // console.log($("#can"))
-          let canvas = document.getElementById('can');
-          let header = document.getElementsByTagName("header")[0];
-          console.log(header.style.width)
-          canvas.width = header.width;
-          canvas.height = header.height;
-          let ctx = canvas.getContext("2d");
-          ctx.fillStyle= '#000';
-          ctx.fillRect(0,0,canvas.width,canvas.height)
-
-        }
-      }
+        name: "my-header"
     }
 </script>
 

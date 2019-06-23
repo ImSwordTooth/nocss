@@ -60,7 +60,7 @@
         switch (text) {
           case '文本':
             this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);
-            this.$store.dispatch('changeStandardList',["color","fontsize","fontstyle","backgroundcolor","border","padding","textshadow","boxshadow","transite","transform","outline"]);
+            this.$store.dispatch('changeStandardList',["color","fontsize","fontstyle","backgroundcolor","border","filter","padding","textshadow","boxshadow","transition","transform","outline"]);
             this.$store.dispatch('changePseudoClass',[{name:'hover',content:[]},{name:'active',content:[]}]);
             break;
           case '超链接':
@@ -71,7 +71,10 @@
           case '表单组件': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);break;
           case '按钮': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);break;
           case '盒子': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'},{class:'animation',name:'动画'}]);break;
-          case '图片': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'animation',name:'动画'}]);break;
+          case '图片':
+            this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'animation',name:'动画'}]);
+            this.$store.dispatch('changeStandardList',["border","filter","boxshadow","transition","transform","outline"]);
+            break;
           case '表格': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'}]);break;
           case '列表': this.$store.dispatch('changeOperateHead',[{class:'standard',name:'基本'},{class:'pseudoClass',name:'伪类'}]);break;
         }

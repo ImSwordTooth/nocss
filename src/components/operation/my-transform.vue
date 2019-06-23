@@ -1,31 +1,31 @@
 <template>
-    <li id="transform">
+    <li>
       <span class="operateTitle" v-tooltip.top="'ctrl+单击变化类型以删除该项'"><i class="iconfont icontransform"></i>变形</span>
       <div>
         <div v-for="(tr,index) in list" class="listDiv">
           <span class="info">变化类型：</span>
           <span v-if="tr.transformName!=='请选择'" class="transName" @click.ctrl="spliceList(index)">{{tr.transformName}}</span>
-          <span class="chooseContainer" v-if="tr.transformName==='请选择'" :class="{'tttop':isShow}" @click="isShow = !isShow" v-clickoutside="hideChoose">{{tr.transformName}}
-          <i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>
-          <ul v-show="isShow">
-            <li @click="changeTransformName($event,index)" data-type="translate"><i class="iconfont icontranslate"></i>平移</li>
-            <li @click="changeTransformName($event,index)" data-type="scale"><i class="iconfont iconscale"></i>缩放</li>
-            <li @click="changeTransformName($event,index)" data-type="rotate"><i class="iconfont iconrotate"></i>旋转</li>
-            <li @click="changeTransformName($event,index)" data-type="skew"><i class="iconfont iconskew"></i>倾斜</li>
-          </ul>
-        </span>
-          <div class="content" v-show="tr.transformName==='translate'">
+          <div class="chooseContainer" v-if="tr.transformName==='请选择'" :class="{'tttop':isShow}" @click="isShow = !isShow" v-clickoutside="hideChoose">{{tr.transformName}}
+            <i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>
+            <ul v-show="isShow">
+              <li @click="changeTransformName($event,index)" data-type="translate"><i class="iconfont icontranslate"></i>平移<span class="en">translate</span></li>
+              <li @click="changeTransformName($event,index)" data-type="scale"><i class="iconfont iconscale"></i>缩放<span class="en">scale</span></li>
+              <li @click="changeTransformName($event,index)" data-type="rotate"><i class="iconfont iconrotate"></i>旋转<span class="en">rotate</span></li>
+              <li @click="changeTransformName($event,index)" data-type="skew"><i class="iconfont iconskew"></i>倾斜<span class="en">skew</span></li>
+            </ul>
+          </div>
+          <div class="content" v-if="tr.transformName==='translate'">
             <span class="info">左右：</span><input type="text" class="operateText" v-model="tr.translateX"><span class="unit">px</span>
             <span class="info">上下：</span><input type="text" class="operateText" v-model="tr.translateY"><span class="unit">px</span>
           </div>
-          <div class="content" v-show="tr.transformName==='scale'">
+          <div class="content" v-if="tr.transformName==='scale'">
             <span class="info">横向：</span><input type="text" class="operateText" v-model="tr.scaleX"><span class="unit">倍</span>
             <span class="info">纵向：</span><input type="text" class="operateText" v-model="tr.scaleY"><span class="unit">倍</span>
           </div>
-          <div class="content" v-show="tr.transformName==='rotate'">
+          <div class="content" v-if="tr.transformName==='rotate'">
             <span class="info">角度：</span><input type="text" class="operateText" v-model="tr.rotateDeg"><span class="unit">deg</span>
           </div>
-          <div class="content" v-show="tr.transformName==='skew'">
+          <div class="content" v-if="tr.transformName==='skew'">
             <span class="info">横向：</span><input type="text" class="operateText" v-model="tr.skewX"><span class="unit">deg</span>
             <span class="info">纵向：</span><input type="text" class="operateText" v-model="tr.skewY"><span class="unit">deg</span>
           </div>
@@ -37,7 +37,7 @@
 
 <script>
     export default {
-      name: "transform",
+      name: "my-transform",
       props:['now'],
       data(){
         return{
@@ -97,7 +97,7 @@
         },
         spliceList(index){
             this.list.splice(index,1);
-            this.changeValue();
+            this.prepareSubmit();
             if (this.list.length === 0){
               this.list.push({
                 transformName:'请选择',

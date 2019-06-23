@@ -1,24 +1,24 @@
 <template>
-    <li id="outline">
+    <li>
       <span class="operateTitle"><i class="iconfont iconoutline"></i>轮廓线</span>
       <div>
         <div class="item">
           <input type="range" min="0" max="10" step="1" v-model="outline.outlineWeight">
-          <span class="borderWeightText">{{outline.outlineWeight}}</span>
+          <span class="borderWeightText">{{outline.outlineWeight}}px</span>
         </div>
         <div class="item">
           <span class="info">样式：</span>
           <div class="chooseContainer" :class="{'tttop':isShowOutlineStyle}" @click="isShowOutlineStyle = !isShowOutlineStyle" v-clickoutside="hideOutlineStyle">{{outline.outlineStyle}}
             <i class="iconfont" :class="{'iconuparrow':isShowOutlineStyle,'icondownarrow':!isShowOutlineStyle}"></i>
             <ul v-show="isShowOutlineStyle">
-              <li @click="changeOutlineStyle($event)"><i class="iconfont iconsolid"></i>solid</li>
-              <li @click="changeOutlineStyle($event)"><i class="iconfont icondashed"></i>dashed</li>
-              <li @click="changeOutlineStyle($event)"><i class="iconfont icondouble"></i>double</li>
-              <li @click="changeOutlineStyle($event)"><i class="iconfont icondotted"></i>dotted</li>
-              <li @click="changeOutlineStyle($event)"><i class="iconfont iconinset"></i>inset</li>
-              <li @click="changeOutlineStyle($event)"><i class="iconfont iconoutset"></i>outset</li>
-              <li @click="changeOutlineStyle($event)"><i class="iconfont icongroove"></i>groove</li>
-              <li @click="changeOutlineStyle($event)"><i class="iconfont iconridge"></i>ridge</li>
+              <li @click="changeOutlineStyle($event)" data-type="solid"><i class="iconfont iconsolid"></i>实线<span class="en">solid</span></li>
+              <li @click="changeOutlineStyle($event)" data-type="dashed"><i class="iconfont icondashed"></i>虚线<span class="en">dashed</span></li>
+              <li @click="changeOutlineStyle($event)" data-type="double"><i class="iconfont icondouble"></i>双线<span class="en">double</span></li>
+              <li @click="changeOutlineStyle($event)" data-type="dotted"><i class="iconfont icondotted"></i>点状<span class="en">dotted</span></li>
+              <li @click="changeOutlineStyle($event)" data-type="inset"><i class="iconfont iconinset"></i>内阴影<span class="en">inset</span></li>
+              <li @click="changeOutlineStyle($event)" data-type="outset"><i class="iconfont iconoutset"></i>外阴影<span class="en">outset</span></li>
+              <li @click="changeOutlineStyle($event)" data-type="groove"><i class="iconfont icongroove"></i>3D凹槽<span class="en">groove</span></li>
+              <li @click="changeOutlineStyle($event)" data-type="ridge"><i class="iconfont iconridge"></i>3D垄状<span class="en">ridge</span></li>
             </ul>
           </div>
         </div>
@@ -32,7 +32,7 @@
         <div class="offsetDiv">
           <span class="info">偏移量：</span>
           <input type="range" min="0" max="20" step="1" v-model="outlineOffset">
-          <span class="borderWeightText">{{outlineOffset}}</span>
+          <span class="borderWeightText">{{outlineOffset}}px</span>
         </div>
         <label class="checkbox">
           <input type="checkbox" v-model="isChecked">
@@ -75,7 +75,7 @@
           this.prepareCommit();
         },{immediate:this.isMed,deep:true});
         this.$watch('$data.outlineOffset',function () {
-          this.submit("outline-offset",this.now,`${this.outline.outlineOffset}px`)
+          this.submit("outline-offset",this.now,`${this.outlineOffset}px`)
         },{immediate:this.isMed});
         this.$watch('$data.isChecked',function () {
           if (this.isChecked){
@@ -115,7 +115,7 @@
           this.isShow = false
         },
         changeOutlineStyle(e){
-          this.outline.outlineStyle = e.currentTarget.innerText;
+          this.outline.outlineStyle = e.currentTarget.dataset.type;
         },
         prepareCommit(){
           let rgba = this.outline.color.rgba;

@@ -4,17 +4,17 @@
       <span class="chooseContainer" @click="isShow = !isShow" v-clickoutside="hideBox">添加
           <i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>
           <ul v-show="isShow">
-            <li @click="add($event)" data-type="color"><i class="iconfont iconcolor"></i>颜色</li>
-            <li @click="add($event)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小</li>
-            <li @click="add($event)" data-type="border"><i class="iconfont iconborder"></i>边框</li>
-            <li @click="add($event)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形</li>
-            <li @click="add($event)" data-type="backgroundcolor"><i class="iconfont iconbackgroundcolor"></i>背景色</li>
-            <li @click="add($event)" data-type="padding"><i class="iconfont iconpadding"></i>内边距</li>
-            <li @click="add($event)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影</li>
-            <li @click="add($event)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影</li>
-            <li @click="add($event)" data-type="transform"><i class="iconfont icontransform"></i>变形</li>
-            <li @click="add($event)" data-type="transite"><i class="iconfont icontransition"></i>过渡</li>
-            <li @click="add($event)" data-type="outline"><i class="iconfont iconoutline"></i>轮廓线</li>
+            <li @click="add($event)" data-type="color"><i class="iconfont iconcolor"></i>颜色<span class="en">color</span></li>
+            <li @click="add($event)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小<span class="en">font-size</span></li>
+            <li @click="add($event)" data-type="border"><i class="iconfont iconborder"></i>边框<span class="en">border</span></li>
+            <li @click="add($event)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形<span class="en">font相关</span></li>
+            <li @click="add($event)" data-type="backgroundcolor"><i class="iconfont iconbackgroundcolor"></i>背景色<span class="en">border-color</span></li>
+            <li @click="add($event)" data-type="padding"><i class="iconfont iconpadding"></i>内边距<span class="en">padding</span></li>
+            <li @click="add($event)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影<span class="en">font-shadow</span></li>
+            <li @click="add($event)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影<span class="en">box-shadow</span></li>
+            <li @click="add($event)" data-type="transform"><i class="iconfont icontransform"></i>变形<span class="en">transform</span></li>
+            <li @click="add($event)" data-type="transition"><i class="iconfont icontransition"></i>过渡<span class="en">transition</span></li>
+            <li @click="add($event)" data-type="outline"><i class="iconfont iconoutline"></i>轮廓线<span class="en">outline</span></li>
           </ul>
       </span>
       <ul class="operationUl">
@@ -53,7 +53,7 @@
             this.$store.dispatch("changeHoverCodes", hoverCodes)
           }
           let type = event.currentTarget.dataset.type;
-          import(`../operation/${type}`).then((data) => {
+          import(`../operation/my-${type}`).then((data) => {
             if (!this.pseudoClass.includes(data.default)){
               this.pseudoClass.push(data.default)
             }

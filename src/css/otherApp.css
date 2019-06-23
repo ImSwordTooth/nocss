@@ -12,7 +12,6 @@ html,body{
 .container{
   width: 100%;
   height: 100%;
-  background-color: rgba(208, 208, 208, 0.27);
   display: grid;
   grid-template-rows: 60px 3fr 2fr;
   grid-template-columns: 15fr 34fr 51fr;
@@ -154,9 +153,6 @@ html,body{
   font-size: 12px;
   border: solid 1px #cccccc;
 }
-.operate input[type=range]+span:after{
-  content:'px'
-}
 .operate .operateText{
   border-radius: 2px;
   line-height: normal;
@@ -283,6 +279,9 @@ html,body{
   transition: background-color .5s;
   animation: choose .6s ease-out;
 }
+.chooseContainer>ul li:hover .en{
+  color: rgba(12, 251, 231, 0.71);
+}
 .chooseContainer ::-webkit-scrollbar{
   background-color: rgba(155, 218, 255, 0.28);
   width: 5px;
@@ -291,6 +290,15 @@ html,body{
   background-color: #0ca6fb73;
   border: solid 1px #0000007d;
 }
+/*用于表明css属性的英文*/
+.en{
+  font-size: 13px;
+  font-style: italic;
+  margin-left: 5px;
+  color: #868686;
+}
+
+
 @keyframes choose {
   0%{
     outline-offset: 0;
@@ -320,3 +328,4 @@ html,body{
   top: 3px;
   color: #217db5;
 }
+

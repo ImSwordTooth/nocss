@@ -1,5 +1,5 @@
 <template>
-  <li id="padding">
+  <li>
     <span class="operateTitle"><i class="iconfont iconpadding"></i>内边距</span>
     <div>
       <span class="info">上：</span><input type="text" class="operateText" maxlength="3" v-model="padding.paddingTop"><span class="unit">px</span>
@@ -12,7 +12,7 @@
 
 <script>
     export default {
-      name: "padding",
+      name: "my-padding",
       props:['now'],
       data(){
         return{

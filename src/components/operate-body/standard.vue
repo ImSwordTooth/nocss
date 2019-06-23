@@ -31,7 +31,7 @@
         standardList(){                                             //监测属性列表的变化
           this.list = [];
           this.standardList.forEach(data=>{
-            import(`../operation/${data}`).then((res)=>{
+            import(`../operation/my-${data}`).then((res)=>{
               this.list.push(res.default)
             })
           })

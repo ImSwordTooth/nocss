@@ -1,16 +1,16 @@
 <template>
-  <li id="fontsize">
+  <li>
     <span  class="operateTitle"><i class="iconfont iconfontsize"></i>字体大小</span>
     <div>
       <input class="opacityChoose" type="range" min="12" max="100" step="1" v-model="fontsize">
-      <span>{{fontsize}}</span>
+      <span>{{fontsize}}px</span>
     </div>
   </li>
 </template>
 
 <script>
     export default {
-      name: "fontsize",
+      name: "my-fontsize",
       props:["now"],
       data(){
         return{
