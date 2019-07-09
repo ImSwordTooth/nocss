@@ -9,9 +9,9 @@
       </div>
       <div class="item">
         <span class="info">样式：</span>
-        <div class="chooseContainer" :class="{'tttop':isShowBorderStyle}" @click="isShowBorderStyle = !isShowBorderStyle" v-clickoutside="hideBorderStyle">{{border.borderStyle}}
+        <div class="chooseContainer" :class="{'tttop':isShowBorderStyle}" @click="choose($event)" v-clickoutside="hideBorderStyle">{{border.borderStyle}}
           <i class="iconfont" :class="{'iconuparrow':isShowBorderStyle,'icondownarrow':!isShowBorderStyle}"></i>
-          <ul v-show="isShowBorderStyle">
+          <ul v-show="isShowBorderStyle" :class="{'showTop':showTop}">
             <li @click="changeBorderStyle($event)" data-type="solid"><i class="iconfont iconsolid"></i>实线<span class="en">solid</span></li>
             <li @click="changeBorderStyle($event)" data-type="dashed"><i class="iconfont icondashed"></i>虚线<span class="en">dashed</span></li>
             <li @click="changeBorderStyle($event)" data-type="double"><i class="iconfont icondouble"></i>双线<span class="en">double</span></li>
@@ -51,7 +51,8 @@
             },
           },
           isShow:false,                                                       //控制颜色选择框的显示
-          isShowBorderStyle:false                                             //控制边框样式下拉框的显示
+          isShowBorderStyle:false,                                             //控制边框样式下拉框的显示
+          showTop:false
         }
       },
       components:{
@@ -64,6 +65,10 @@
           )
       },
       methods:{
+        choose(e){
+          this.isShowBorderStyle = !this.isShowBorderStyle;
+          this.showTop = window.innerHeight - e.clientY < 238;
+        },
         //隐藏颜色选择框
         hideColorPicker(){
           this.isShow = false

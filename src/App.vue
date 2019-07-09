@@ -3,7 +3,10 @@
     <myheader></myheader>
     <myaside></myaside>
 
-        <div class="prompt" v-if="toolType === ''">选择要操作的控件以开始</div>
+        <div class="prompt" v-if="toolType === ''">
+          <!--选择要操作的控件以开始-->
+          <img src="./assets/8.jpg" alt="x">
+        </div>
 
           <myitembox></myitembox>
           <mycodebox></mycodebox>

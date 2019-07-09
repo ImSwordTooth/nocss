@@ -20,7 +20,7 @@
         <span>{{textshadow.offsetY}}px</span>
       </div>
       <div class="item">
-        <span class="info">模糊量：</span>
+        <span class="info">模糊：</span>
         <input type="range" min="0" max="20" step="1" v-model="textshadow.blur">
         <span>{{textshadow.blur}}px</span>
       </div>

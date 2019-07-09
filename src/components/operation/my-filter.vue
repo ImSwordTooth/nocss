@@ -5,9 +5,9 @@
         <div v-for="(fi,index) in list" class="listDiv">
           <span class="info">函数：</span>
           <span v-if="fi.filterName!=='请选择'" class="filterName" @click.ctrl="spliceList(index)">{{fi.filterName}}()</span>
-          <div class="chooseContainer" v-if="fi.filterName==='请选择'" :class="{'tttop':isShow}" @click="isShow = !isShow" v-clickoutside="hideChoose">{{fi.filterName}}
+          <div class="chooseContainer" v-if="fi.filterName==='请选择'" :class="{'tttop':isShow}" @click="choose($event)" v-clickoutside="hideChoose">{{fi.filterName}}
             <i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>
-            <ul v-show="isShow">
+            <ul v-show="isShow" :class="{'showTop':showTop}">
               <li @click="changeFilterName($event,index)" data-type="blur"><i class="iconfont iconblur"></i>高斯模糊<span class="en">blur()</span></li>
               <li @click="changeFilterName($event,index)" data-type="brightness"><i class="iconfont iconbrightness"></i>亮度<span class="en">brightness()</span></li>
               <li @click="changeFilterName($event,index)" data-type="contrast"><i class="iconfont iconcontrast"></i>对比度<span class="en">contrast()</span></li>
@@ -72,7 +72,7 @@
                 </div>
               </li>
               <li>
-                <span class="info">模糊量：</span>
+                <span class="info">模糊：</span>
                 <div>
                   <input type="range" min="1" max="20" step="1" v-model="fi.shadowblur"><span>{{fi.shadowblur}}px</span>
                 </div>
@@ -95,6 +95,7 @@
         return{
           isShow:false,                                                     //控制滤镜函数的下拉框
           isShowColor:false,
+          showTop:false,
           list:[                                                            //滤镜列表
             {
               filterName:'请选择',                                            //滤镜函数名
@@ -158,6 +159,10 @@
         }
       },
       methods:{
+        choose(e){
+          this.isShow = !this.isShow;
+          this.showTop = window.innerHeight - e.clientY < 238;
+        },
         //隐藏滤镜函数的下拉框
         hideChoose(){
           this.isShow = false

@@ -16,9 +16,9 @@
 
         <div class="item">
           <span class="info">样式：</span>
-          <span class="chooseContainer" :class="{'tttop':isShowType}" @click="isShowType = !isShowType" v-clickoutside="hideType">{{boxshadow.type}}
+          <span class="chooseContainer" :class="{'tttop':isShowType}" @click="choose($event)" v-clickoutside="hideType">{{boxshadow.type}}
             <i class="iconfont" :class="{'iconuparrow':isShowType,'icondownarrow':!isShowType}"></i>
-            <ul v-show="isShowType">
+            <ul v-show="isShowType" :class="{'showTop':showTop}">
               <li @click="changeType($event)" data-type="inset"><i class="iconfont iconinset"></i>内阴影<span class="en">inset</span></li>
               <li @click="changeType($event)" data-type="outset"><i class="iconfont iconoutset"></i>外阴影<span class="en">outset</span></li>
             </ul>
@@ -36,12 +36,12 @@
         <span>{{boxshadow.offsetY}}px</span>
       </div>
       <div class="item">
-        <span class="info">模糊量：</span>
+        <span class="info">模糊：</span>
         <input type="range" min="0" max="20" step="1" v-model="boxshadow.blur">
         <span>{{boxshadow.blur}}px</span>
       </div>
       <div class="item">
-        <span class="info">尺寸：</span>
+        <span class="info">扩散：</span>
         <input type="range" min="0" max="20" step="1" v-model="boxshadow.spread">
         <span>{{boxshadow.spread}}px</span>
       </div>
@@ -72,7 +72,7 @@
           },
           isShow:false,
           isShowType:false,
-
+          showTop:false,
           list:[
             {
               isShow:false
@@ -114,6 +114,10 @@
         }
       },
       methods:{
+        choose(e){
+          this.isShowType = !this.isShowType;
+          this.showTop = window.innerHeight - e.clientY < 238;
+        },
         hideColorPicker(){
           this.isShow = false
           // if( this.list.every(function(item){

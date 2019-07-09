@@ -8,9 +8,9 @@
         </div>
         <div class="item">
           <span class="info">样式：</span>
-          <div class="chooseContainer" :class="{'tttop':isShowOutlineStyle}" @click="isShowOutlineStyle = !isShowOutlineStyle" v-clickoutside="hideOutlineStyle">{{outline.outlineStyle}}
+          <div class="chooseContainer" :class="{'tttop':isShowOutlineStyle}" @click="choose($event)" v-clickoutside="hideOutlineStyle">{{outline.outlineStyle}}
             <i class="iconfont" :class="{'iconuparrow':isShowOutlineStyle,'icondownarrow':!isShowOutlineStyle}"></i>
-            <ul v-show="isShowOutlineStyle">
+            <ul v-show="isShowOutlineStyle" :class="{'showTop':showTop}">
               <li @click="changeOutlineStyle($event)" data-type="solid"><i class="iconfont iconsolid"></i>实线<span class="en">solid</span></li>
               <li @click="changeOutlineStyle($event)" data-type="dashed"><i class="iconfont icondashed"></i>虚线<span class="en">dashed</span></li>
               <li @click="changeOutlineStyle($event)" data-type="double"><i class="iconfont icondouble"></i>双线<span class="en">double</span></li>
@@ -49,7 +49,7 @@
   import {Chrome} from 'vue-color'
 
   export default {
-        name: "outline",
+      name: "outline",
       props:['now'],
       data(){
           return{
@@ -64,7 +64,8 @@
             isShowOutlineStyle:false,
             isShow:false,
             outlineOffset:0,
-            isChecked:false
+            isChecked:false,
+            showTop:false
           }
       },
       components:{
@@ -108,6 +109,10 @@
         }
       },
       methods:{
+        choose(e){
+          this.isShowOutlineStyle = !this.isShowOutlineStyle;
+          this.showTop = window.innerHeight - e.clientY < 238;
+        },
         hideOutlineStyle(){
           this.isShowOutlineStyle = false
         },

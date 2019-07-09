@@ -5,9 +5,9 @@
         <div v-for="(tr,index) in list" class="listDiv">
           <span class="info">变化类型：</span>
           <span v-if="tr.transformName!=='请选择'" class="transName" @click.ctrl="spliceList(index)">{{tr.transformName}}</span>
-          <div class="chooseContainer" v-if="tr.transformName==='请选择'" :class="{'tttop':isShow}" @click="isShow = !isShow" v-clickoutside="hideChoose">{{tr.transformName}}
+          <div class="chooseContainer" v-if="tr.transformName==='请选择'" :class="{'tttop':isShow}" @click="choose($event)" v-clickoutside="hideChoose">{{tr.transformName}}
             <i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>
-            <ul v-show="isShow">
+            <ul v-show="isShow" :class="{'showTop':showTop}">
               <li @click="changeTransformName($event,index)" data-type="translate"><i class="iconfont icontranslate"></i>平移<span class="en">translate</span></li>
               <li @click="changeTransformName($event,index)" data-type="scale"><i class="iconfont iconscale"></i>缩放<span class="en">scale</span></li>
               <li @click="changeTransformName($event,index)" data-type="rotate"><i class="iconfont iconrotate"></i>旋转<span class="en">rotate</span></li>
@@ -53,7 +53,8 @@
               skewX:0,                                                              //X轴倾斜角度
               skewY:0,                                                              //Y轴倾斜角度
             }
-          ]
+          ],
+          showTop:false
         }
       },
       created(){
@@ -72,6 +73,10 @@
         }
       },
       methods:{
+        choose(e){
+          this.isShow = !this.isShow;
+          this.showTop = window.innerHeight - e.clientY < 238;
+        },
         //隐藏变化类型下拉框
         hideChoose(){
           this.isShow = false

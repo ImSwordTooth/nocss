@@ -1,8 +1,8 @@
 <template>
   <header>
-    <img src="../assets/222.png" alt="欢迎" class="logo">
+    <!--<img src="../assets/222.png" alt="欢迎" class="logo">-->
 
-    <!--<h1>!css</h1>-->
+    <h1>!css</h1>
     <a href="#" class="active">制作</a>
     <a href="#">别人家的</a>
     <a href="#">别人家的</a>
@@ -26,7 +26,7 @@
     display: flex;
     align-items: center;
     padding: 5px;
-    /*background:url("../assets/bc.jpg");*/
+    /*background:url("../assets/8.jpg");*/
     box-shadow: 0 0 5px 1px #7e8990;
     z-index: 3;
   }
@@ -51,6 +51,15 @@
   header a.active{
     border-bottom: solid 2px #f5ba71;
     color: #fbdf09;
+  }
+  @font-face {
+    font-family: logo;
+    src: url("../assets/Pervitina-Dex-FFP.ttf");
+  }
+  h1{
+    font-family: logo;
+    font-size: 45px;
+    font-weight: lighter;
   }
 
 </style>

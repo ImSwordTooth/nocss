@@ -6,9 +6,9 @@
         <div class="item">
           <span class="info">过渡属性：</span>
           <span v-if="item.transitionName!=='请选择'" class="value" @click.ctrl="spliceList(index)">{{item.transitionName}}</span>
-          <span v-if="item.transitionName==='请选择'" class="chooseContainer" @click="isShowTransitionName = !isShowTransitionName" v-clickoutside="hideTransitionName">{{item.transitionName}}
+          <span v-if="item.transitionName==='请选择'" class="chooseContainer" @click="chooseName($event)" v-clickoutside="hideTransitionName">{{item.transitionName}}
           <i class="iconfont" :class="{'iconuparrow':isShowTransitionName,'icondownarrow':!isShowTransitionName}"></i>
-          <ul v-show="isShowTransitionName">
+          <ul v-show="isShowTransitionName" :class="{'showTop':showTop_Name}">
             <li @click="changeTransitionName($event,index)" data-type="all"><i class="iconfont iconall"></i>全部<span class="en">all</span></li>
             <li @click="changeTransitionName($event,index)" data-type="color"><i class="iconfont iconcolor"></i>颜色<span class="en">color</span></li>
             <li @click="changeTransitionName($event,index)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小<span class="en">font-size</span></li>
@@ -25,9 +25,9 @@
         <div class="item">
           <span class="info">过渡动画：</span>
           <span v-if="item.easing!=='请选择'" class="value" @click.ctrl="spliceList(index)">{{item.easing}}</span>
-          <span v-if="item.easing==='请选择'" class="chooseContainer chooseEasing" :class="{'tttop':isShowEasing}" @click="isShowEasing = !isShowEasing" v-clickoutside="hideEasing">{{item.easing}}
+          <span v-if="item.easing==='请选择'" class="chooseContainer chooseEasing" :class="{'tttop':isShowEasing}" @click="chooseEasing($event)" v-clickoutside="hideEasing">{{item.easing}}
           <i class="iconfont" :class="{'iconuparrow':isShowEasing,'icondownarrow':!isShowEasing}"></i>
-          <ul v-show="isShowEasing">
+          <ul v-show="isShowEasing" :class="{'showTop':showTop_Easing}">
             <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'linear':isActive==='linear'}"></i></div>linear</li>
             <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease':isActive==='ease'}"></i></div>ease</li>
             <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-in':isActive==='ease-in'}"></i></div>ease-in</li>
@@ -39,6 +39,10 @@
         <div class="item">
           <span class="info">过渡时间：</span>
           <input type="text" class="operateText" maxlength="3" v-model="item.during"><span class="unit">s</span>
+        </div>
+        <div class="item">
+          <span class="info">延迟时间：</span>
+          <input type="text" class="operateText" maxlength="3" v-model="item.delay"><span class="unit">s</span>
         </div>
       </div>
 
@@ -57,13 +61,16 @@
             isShowEasing:false,
             isShowTransitionName:false,
             isActive:null,
+            showTop_Name:false,
+            showTop_Easing:false,
             // transitionName:'请选择',
             // during:0,
             list:[
               {
                 transitionName:'请选择',
                 easing:"请选择",
-                during:0
+                during:0,
+                delay:0
               }
             ],
           }
@@ -84,6 +91,14 @@
         }
       },
       methods:{
+        chooseName(e){
+          this.isShowTransitionName = !this.isShowTransitionName;
+          this.showTop_Name = window.innerHeight - e.clientY < 238;
+        },
+        chooseEasing(e){
+          this.isShowEasing = !this.isShowEasing;
+          this.showTop_Easing = window.innerHeight - e.clientY < 238;
+        },
         changeActive(e){
           this.isActive = e.currentTarget.innerText
         },
@@ -103,9 +118,9 @@
           this.list[i].transitionName = e.currentTarget.dataset.type;
         },
         prepareSubmit(){
-          let replaceStr = '';                                                //由于有四种情况，所以要提前确认代替的字符串
+          let replaceStr = '';
           this.list.forEach(item=>{
-            replaceStr += ` ${item.transitionName} ${item.easing} ${item.during}s,`
+            replaceStr += ` ${item.transitionName} ${item.easing} ${item.during}s ${item.delay}s,`
           });
           this.submit('transition',this.now,replaceStr.slice(0,replaceStr.length-1));
         },
@@ -118,12 +133,13 @@
         },
         spliceList(index){
           this.list.splice(index,1);
-          this.changeValue();
+          // this.changeValue();
           if (this.list.length === 0){
             this.list.push({
               transitionName:'请选择',
               easing:"请选择",
-              during:0
+              during:0,
+              delay:0
             })
           }
         },

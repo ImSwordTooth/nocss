@@ -67,6 +67,10 @@ html,body{
   user-select: none;
   z-index: 2;
 }
+.prompt img{
+  width: 100%;
+  height: 100%;
+}
 /*.showContainer{*/
   /*grid-row: 2/3;*/
   /*grid-column: 2/3;*/
@@ -253,9 +257,13 @@ html,body{
   border: dashed 1px rgba(1, 4, 47, 0.34);
   max-height: 238px;
   overflow: hidden auto;
-}
+}.chooseContainer>ul.showTop{
+   position: absolute;
+  bottom: 100%;
+ }
 .chooseContainer>ul li{
-  padding: 3px 15px;
+  position: relative;
+  padding: 3px 28px 3px 15px;
   border-bottom: solid 1px #e2e2e2;
   cursor: url("../assets/cursor/pen.png"),pointer;
   font-size: 14px;
@@ -327,5 +335,25 @@ html,body{
   position: relative;
   top: 3px;
   color: #217db5;
+}
+.iconok{
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: none;
+}
+.checked{
+  background-color: white;
+}
+.checked:hover{
+  background-color: white!important;
+  color: #000!important;
+  animation: none!important;
+}
+.checked:hover .en{
+  color: #868686!important;
+}
+.checked .iconok{
+  display: block;
 }
 
