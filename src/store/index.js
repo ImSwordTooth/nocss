@@ -151,8 +151,6 @@ const actions = {
   changeIsAlive(context, is) {
     context.commit('changeIsAlive',is)
   },
-
-
 };
 const store = new Vuex.Store({
   state,

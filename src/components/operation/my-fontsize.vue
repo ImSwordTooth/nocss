@@ -2,7 +2,7 @@
   <li>
     <span  class="operateTitle"><i class="iconfont iconfontsize"></i>字体大小</span>
     <div>
-      <input class="opacityChoose" type="range" min="12" max="100" step="1" v-model="fontsize">
+      <input type="range" min="12" max="100" step="1" v-model="fontsize">
       <span>{{fontsize}}px</span>
     </div>
   </li>

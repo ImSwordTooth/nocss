@@ -15,6 +15,7 @@
             <li @click="add($event)" data-type="transform" :class="{'checked':isTaped('transform')}"><i class="iconfont icontransform"></i>变形<span class="en">transform</span><i class="iconfont iconok"></i></li>
             <li @click="add($event)" data-type="transition" :class="{'checked':isTaped('transition')}"><i class="iconfont icontransition"></i>过渡<span class="en">transition</span><i class="iconfont iconok"></i></li>
             <li @click="add($event)" data-type="outline" :class="{'checked':isTaped('outline')}"><i class="iconfont iconoutline"></i>轮廓线<span class="en">outline</span><i class="iconfont iconok"></i></li>
+            <li @click="add($event)" data-type="letterspacing" :class="{'checked':isTaped('letterspacing')}"><i class="iconfont iconletterspacing"></i>字体间距<span class="en">letterspacing</span><i class="iconfont iconok"></i></li>
           </ul>
       </span>
       <ul class="operationUl">

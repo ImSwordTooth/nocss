@@ -63,12 +63,23 @@
             let type = this.$store.getters.getInputType;
             let image = require('../assets/logo.png');
             let text = this.$store.getters.getTagText;
+            console.log(type)
             switch (tag) {
               case 'p':return createElement(tag,text);
               case 'button':return createElement(tag,text);
               case 'div':return createElement(tag,text);
               case 'a':return createElement(tag,{attrs:{href:'#'}},text);
-              case 'input':return createElement(tag,{attrs:{type:type,value:text}});
+              case 'input':
+                if (type === 'text'){
+                  return createElement(tag,{attrs:{type:type,value:text}});
+                } else if (type === 'range'){                               //range的以后再想
+                  return createElement(tag,{attrs:{type:type,value:text}});
+                } else {
+                  return createElement('div',[
+                    createElement(tag,{attrs:{type:type,value:text}}),
+                    createElement('i')
+                  ]);
+                }
               case 'img':return createElement(tag,{attrs:{src:image}});
               case 'table':return createElement(tag,{attrs:{border:1}},[
                 createElement('tr',[createElement('td','哈哈哈'),createElement('td','哈哈哈'),createElement('td','哈哈哈')]),
