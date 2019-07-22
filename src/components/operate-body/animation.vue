@@ -4,7 +4,7 @@
       <!--css中animation属性的设置-->
       <div>
         <div class="item">
-          <input type="text" class="animationName operateText" v-model="keyframesName" placeholder="动画名称"><button @click="deleteKeyframes">删除</button>
+          <input type="text" class="animationName operateText" v-model="keyframesName" placeholder="动画名称"><button @click="deleteKeyframes" v-show="isShowDelete">删除</button>
         </div>
         <div class="item">
           <span class="info">过渡动画：</span>
@@ -97,6 +97,9 @@
         //后面的sort是根据节点的百分比进行排序
         return this.$store.getters.getPercentList;
         // return this.$store.getters.getPercentList.sort((a,b)=>(Number(a.name.slice(0,a.name.length-1)-Number(b.name.slice(0,b.name.length-1)))));
+      },
+      isShowDelete(){
+        return this.$store.getters.getPercentList[0].content.length !== 0;
       },
       isTaped(){
         return function (type){

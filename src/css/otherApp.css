@@ -4,9 +4,13 @@ html,body{
   margin: 0;
   cursor: url("../assets/cursor/pencil.png"),auto;
   overflow: hidden;
+  font-size: 16px;
 }
 ::selection{
   background-color: #2ec7bd;
+}
+.h-tooltip{
+  font-size: .75rem!important;
 }
 
 .container{
@@ -334,7 +338,6 @@ html,body{
 .checkbox input[type='checkbox']+i{
   position: relative;
   top: 3px;
-  color: #217db5;
 }
 .iconok{
   position: absolute;

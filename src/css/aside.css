@@ -6,7 +6,7 @@
 .tools>li{
   position: relative;
   display: flex;
-  padding: 20px 0;
+  padding: 1.6rem 0;
   align-items: center;
   flex-wrap: wrap;
   cursor: url("../assets/cursor/pen.png"),pointer;
