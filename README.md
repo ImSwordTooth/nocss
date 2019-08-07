@@ -15,11 +15,12 @@
 4. 部分.vue代码没有格式化处理，因为代码需要修改，如box-shadow、text-shadow、outline等
 5. 添加动画节点时的错误反馈，如已添加，不符合规范的文本等（要禁止粘贴事件吗？）
 6. 现在重置只能重置基本，不能重置伪类和动画
-1. 有“已选择”的下拉框在动画中还没实装
+7. 有“已选择”的下拉框在动画中还没实装
 给表单组件中的checkbox和radio添加样式，暂时没有研究range，如果麻烦的话直接放弃
-1.	如果用户选择checkbox ，就在input后面添加一个i元素，展示区
-2.	i元素的样式可以根据vuex中的数据来变化，所以要添加新的code，vue.prototype.submit也要添加新的case，这个是代码区，可以实现
-3.	:checked也可以加，再加一个code呗，但是如何监听checkbox已经被check，并且将:checked中的样式放到i里
+8.	如果用户选择checkbox ，就在input后面添加一个i元素，展示区
+9.	i元素的样式可以根据vuex中的数据来变化，所以要添加新的code，vue.prototype.submit也要添加新的case，这个是代码区，可以实现
+10.	:checked也可以加，再加一个code呗，但是如何监听checkbox已经被check，并且将:checked中的样式放到i里
+11. 变形，删除子项时，删到只剩一个的时候，会留下`transform`:，如果用户此时不进行操作的话，这个显然错误的代码会一直留着。
 
 
  
