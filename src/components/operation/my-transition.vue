@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span class="operateTitle" v-tooltip.top="'仅支持当前css代码中已出现的属性'"><i class="iconfont icontransition"></i>过渡</span>
+    <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'仅支持当前css代码中已出现的属性'"><i class="iconfont icontransition"></i>过渡</span>
     <div>
       <div v-for="(item,index) in list" class="listDiv">
         <div class="item">
@@ -143,6 +143,9 @@
             })
           }
         },
+        del(){
+          this.submit('transition',this.now,'')
+        }
       },
     }
 </script>

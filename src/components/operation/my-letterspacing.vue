@@ -1,6 +1,6 @@
 <template>
     <li>
-      <span class="operateTitle"><i class="iconfont iconletterspacing"></i>字体间距</span>
+      <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconletterspacing"></i>字体间距</span>
       <div>
         <input type="range" min="0" max="50" step="1" v-model="letterspacing">
         <span>{{letterspacing}}px</span>
@@ -25,6 +25,11 @@
       computed:{
         isMed(){
           return this.now !== 'standard'
+        }
+      },
+      methods:{
+        del(){
+          this.submit('letter-spacing',this.now,'')
         }
       }
     }

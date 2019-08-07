@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span class="operateTitle"><i class="iconfont iconboxshadow"></i>盒子阴影</span>
+    <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconboxshadow"></i>盒子阴影</span>
     <div>
       <div class="oneline">
         <!--<div v-for="(item,index) in list">-->
@@ -158,6 +158,9 @@
           let spread = this.boxshadow.spread;
           let currentColor = rgba.a === 1 ? this.boxshadow.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
           this.submit('box-shadow',this.now,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
+        },
+        del(){
+          this.submit('box-shadow',this.now,'')
         }
       }
     }

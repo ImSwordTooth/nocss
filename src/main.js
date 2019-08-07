@@ -91,31 +91,51 @@ Vue.prototype.submit = function (name,type,replaceStr) {
   let pattP = new RegExp(`(?<=\\b${type} {).*[.\\w\\W]*?${name}:`);        //百分比：：判断是否有此项
   let pattPercentHave = new RegExp(`(?<=\\b${type}.*[.\\w\\W]*?${name}:).*(?=;)`);         //百分比：：有此项，需要替换冒号后面的值
   let pattPercentHaveNot = new RegExp(`(?<=\\b${type}.*[.\\w\\W]*?)}`);         //百分比：：没有此项，需要替换花括号
+  let pattDelete = new RegExp(`\\n\\t\\b${name}:.+;`,'g');        //删除属性
+  let pattPercentDelete = new RegExp(`(?<=\\b${type} {).*[\\w\\W]*?\\b${name}:.+;(?=[\\w\\W]+})`,'g');        //删除百分比中的属性
   switch (type) {
     case 'standard':{
-      if (patt.test(codes)) {
-        codes = codes.replace(pattHave,replaceStr);
+      if (replaceStr === ''){
+        if (patt.test(codes)) {
+          codes = codes.replace(pattDelete,'');
+        }
       }else {
-        codes = codes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
+        if (patt.test(codes)) {
+          codes = codes.replace(pattHave,replaceStr);
+        }else {
+          codes = codes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
+        }
       }
       this.$store.dispatch('changeCodes', codes);
       break;
     }
     case 'hover':{
-      if (patt.test(hoverCodes)) {
-        hoverCodes = hoverCodes.replace(pattHave,replaceStr);
+      if (replaceStr === '') {
+        if (patt.test(hoverCodes)) {
+          hoverCodes = hoverCodes.replace(pattDelete, '');
+        }
       }else {
-        hoverCodes = hoverCodes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
+        if (patt.test(hoverCodes)) {
+          hoverCodes = hoverCodes.replace(pattHave,replaceStr);
+        }else {
+          hoverCodes = hoverCodes.replace(pattHaveNot,`\t${name}:${replaceStr};\n}`)
+        }
       }
       this.$store.dispatch('changeHoverCodes', hoverCodes);
       break;
     }
     default:{                                               //此处用于匹配动画中的类似0%、100%
       if (pattPercent.test(animationCodes)){
-        if (pattP.test(animationCodes)){
-          animationCodes = animationCodes.replace(pattPercentHave,replaceStr);
+        if (replaceStr === '') {
+          if (pattP.test(animationCodes)) {
+            animationCodes = animationCodes.replace(pattPercentDelete, '');
+          }
         }else {
-          animationCodes = animationCodes.replace(pattPercentHaveNot,`\t${name}:${replaceStr};\n\t}`);
+          if (pattP.test(animationCodes)){
+            animationCodes = animationCodes.replace(pattPercentHave,replaceStr);
+          }else {
+            animationCodes = animationCodes.replace(pattPercentHaveNot,`\t${name}:${replaceStr};\n\t}`);
+          }
         }
       }else {
         animationCodes = animationCodes.replace(pattHaveNot,`\t${type} {\n\t\t${name}:${replaceStr};\n\t}\n}`);

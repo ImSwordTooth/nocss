@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span class="operateTitle" v-tooltip.top="'该项与“渐变”互斥'" title="background-color"><i class="iconfont iconbackgroundcolor"></i>背景色</span>
+    <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'该项与“渐变”互斥'" title="background-color"><i class="iconfont iconbackgroundcolor"></i>背景色</span>
     <div>
       <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
         <span class="currentColor" :style="{'background':rgba}"></span>
@@ -62,6 +62,9 @@
       //隐藏颜色选择框
       hideColorPicker(){
         this.isShow = false
+      },
+      del(){
+        this.submit('background-color',this.now,'')
       }
     }
   }

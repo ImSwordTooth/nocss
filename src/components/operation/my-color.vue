@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span class="operateTitle"><i class="iconfont iconcolor"></i>颜色</span>
+    <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconcolor"></i>颜色</span>
     <div>
       <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
         <span class="currentColor" :style="{'background':rgba}"></span>
@@ -34,6 +34,9 @@
         //隐藏颜色选择框
         hideColorPicker(){
           this.isShow = false
+        },
+        del(){
+          this.submit('color',this.now,'')
         }
       },
       created(){

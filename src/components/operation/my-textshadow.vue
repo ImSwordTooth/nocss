@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span class="operateTitle"><i class="iconfont icontextshadow"></i>字体阴影</span>
+    <span class="operateTitle" @click.ctrl="del"><i class="iconfont icontextshadow"></i>字体阴影</span>
     <div>
       <div class="item">
         <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
@@ -89,6 +89,9 @@
           let rgba = this.textshadow.color.rgba;
           let currentColor = rgba.a === 1 ? this.textshadow.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
           this.submit('text-shadow',this.now,`${x}px ${y}px ${blur}px ${currentColor}`)
+        },
+        del(){
+          this.submit('text-shadow',this.now,'')
         }
       }
     }

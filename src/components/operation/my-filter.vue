@@ -1,6 +1,6 @@
 <template>
     <li>
-      <span class="operateTitle" v-tooltip.top="'ctrl+单击变化类型以删除该项'"><i class="iconfont iconfilter"></i>滤镜</span>
+      <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'ctrl+单击变化类型以删除该项'"><i class="iconfont iconfilter"></i>滤镜</span>
       <div>
         <div v-for="(fi,index) in list" class="listDiv">
           <span class="info">函数：</span>
@@ -242,6 +242,9 @@
               a: 1
             }
           })
+        },
+        del(){
+          this.submit('filter',this.now,'')
         }
       }
     }

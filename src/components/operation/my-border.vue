@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span class="operateTitle"><i class="iconfont iconborder"></i>边框</span>
+    <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconborder"></i>边框</span>
     <div>
       <div class="item">
         <span class="info">宽度：</span>
@@ -88,6 +88,9 @@
           let rgba = this.border.color.rgba;
           let currentColor = rgba.a === 1 ? this.border.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
           this.submit('border',this.now,`${weight}px ${style} ${currentColor}`)
+        },
+        del(){
+          this.submit('border',this.now,'')
         }
       },
       computed:{

@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span class="operateTitle"><i class="iconfont iconfontstyle"></i>字形</span>
+    <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'这个特殊，三个一下都删除^_^'"><i class="iconfont iconfontstyle"></i>字形</span>
     <div>
       <div class="group">
         <i class="iconfont iconbold" :class="{'active':Weight==='bold'}" data-weight="bold" @click="fontWeight($event)" title="粗体"></i>
@@ -58,6 +58,11 @@
           let decoration = event.currentTarget.dataset.decoration;
           this.Decoration = this.Decoration===decoration?'none':decoration;
         },
+        del(){
+          this.submit('font-weight',this.now,'');
+          this.submit('font-style',this.now,'');
+          this.submit('text-decoration',this.now,'');
+        }
       }
     }
 </script>

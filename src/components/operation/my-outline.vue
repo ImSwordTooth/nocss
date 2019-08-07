@@ -1,6 +1,6 @@
 <template>
     <li>
-      <span class="operateTitle"><i class="iconfont iconoutline"></i>轮廓线</span>
+      <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconoutline"></i>轮廓线</span>
       <div>
         <div class="item">
           <input type="range" min="0" max="10" step="1" v-model="outline.outlineWeight">
@@ -126,6 +126,9 @@
           let rgba = this.outline.color.rgba;
           let currentColor = rgba.a === 1 ? this.outline.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
           this.submit('outline',this.now,`${this.outline.outlineWeight}px ${this.outline.outlineStyle} ${currentColor}`);
+        },
+        del(){
+          this.submit('outline',this.now,'')
         }
       }
     }

@@ -1,6 +1,6 @@
 <template>
     <li>
-      <span class="operateTitle" v-tooltip.top="'ctrl+单击变化类型以删除该项'"><i class="iconfont icontransform"></i>变形</span>
+      <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'ctrl+单击<变化类型>以删除该子项'"><i class="iconfont icontransform"></i>变形</span>
       <div>
         <div v-for="(tr,index) in list" class="listDiv">
           <span class="info">变化类型：</span>
@@ -113,7 +113,8 @@
                 rotateDeg:0,
                 skewX:0,
                 skewY:0
-              })
+              });
+
             }
         },
         addList(){
@@ -127,6 +128,9 @@
             skewX:0,
             skewY:0
           })
+        },
+        del(){
+          this.submit('transform',this.now,'')
         }
       }
     }

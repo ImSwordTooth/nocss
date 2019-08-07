@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span  class="operateTitle"><i class="iconfont iconfontsize"></i>字体大小</span>
+    <span  class="operateTitle" @click.ctrl="del"><i class="iconfont iconfontsize"></i>字体大小</span>
     <div>
       <input type="range" min="12" max="100" step="1" v-model="fontsize">
       <span>{{fontsize}}px</span>
@@ -25,6 +25,11 @@
       computed:{
         isMed(){
           return this.now !== 'standard'
+        }
+      },
+      methods:{
+        del(){
+          this.submit('font-size',this.now,'')
         }
       }
     }

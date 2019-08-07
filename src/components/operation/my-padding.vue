@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span class="operateTitle"><i class="iconfont iconpadding"></i>内边距</span>
+    <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconpadding"></i>内边距</span>
     <div>
       <span class="info">上：</span><input type="text" class="operateText" maxlength="3" v-model="padding.paddingTop"><span class="unit">px</span>
       <span class="info">右：</span><input type="text" class="operateText" maxlength="3" v-model="padding.paddingRight"><span class="unit">px</span>
@@ -37,6 +37,11 @@
       computed:{
         isMed(){
           return this.now !== 'standard'
+        }
+      },
+      methods:{
+        del(){
+          this.submit('padding',this.now,'')
         }
       }
     }
