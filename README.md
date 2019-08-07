@@ -9,7 +9,7 @@
 
 ### 待修改
 
-1. submit()删除某个css键值对的正则
+1. ~submit()删除某个css键值对的正则~
 2. 小看了text-decoration，其功能远不止如此
 3. input内值为空时对应值应该置为0
 4. 部分.vue代码没有格式化处理，因为代码需要修改，如box-shadow、text-shadow、outline等
