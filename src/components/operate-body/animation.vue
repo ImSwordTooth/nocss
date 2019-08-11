@@ -144,8 +144,10 @@
         }
         let property = e.currentTarget.dataset.type;
         let list = this.$store.getters.getPercentList;
-        for (let i=0; i<list.length; i++){                                              //循环百分比节点
-          list[i].content.push(property)                                                //每个节点都要有这个属性
+        if (!list[0].content.includes(property)) {
+          for (let i=0; i<list.length; i++){                                              //循环百分比节点
+            list[i].content.push(property)                                                //每个节点都要有这个属性
+          }
         }
         this.$store.dispatch("changePercentList",list)
       },
@@ -310,6 +312,7 @@
   }
   .content{
     position: relative;
+    /*overflow: auto;*/
   }
   .percent{
     display: inline-flex;

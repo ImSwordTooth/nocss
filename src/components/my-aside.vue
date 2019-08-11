@@ -45,7 +45,9 @@
             if (button === 'warning') {
               this.activeLi = tag;
               this.$store.dispatch('changeCodes',`.nocss {\n}`);
-              this.$store.dispatch('changeIsAlive',false)
+              this.$store.dispatch('changeHoverCodes','');
+              this.$store.dispatch('changeAnimationCodes','');
+              this.$store.dispatch('changeIsAlive',false);
               this.submit(text,tag);
             }
           })

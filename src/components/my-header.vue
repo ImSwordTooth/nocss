@@ -6,7 +6,6 @@
     <a href="#" class="active">制作</a>
     <a href="#">别人家的</a>
     <a href="#">别人家的</a>
-    <canvas id="can" width="500" height="100"></canvas>
   </header>
 </template>
 

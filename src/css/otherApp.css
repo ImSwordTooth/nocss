@@ -359,4 +359,7 @@ html,body{
 .checked .iconok{
   display: block;
 }
+.tooltip-red{
+  color: red;
+}
 

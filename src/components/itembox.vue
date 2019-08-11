@@ -6,30 +6,40 @@
       </div>
       <div class="toolsBtn">
         <input type="text" class="text" @input="changeText($event)" placeholder="自定义文本">
-        <ul v-if="tagInfo === 'input'">
+        <ul v-if="tagInfo === 'input'" v-tooltip.top="'这功能不想要了'">
           <li v-for="type in types" :title="type" @click="changeType($event)" :class="{'active':type === inputType}"><i class="iconfont" :class="`icon${type}`"></i></li>
         </ul>
-        <ul v-if="tagInfo === 'table'">
-          <li title="行列数"><i class="iconfont icontablerowandcol"></i></li>
-        </ul>
         <code>&lt;{{tagInfo}}&gt;</code>
+        <i v-if="tagInfo === 'img'" class="iconfont iconupload" v-tooltip.bottom="{html:'tooltipContent'}" @click="clickFile()"></i>
+        <!--下面一行的代码只用于上方v-tooltip中的内容-->
+        <span id="tooltipContent" v-show="tagInfo === 'img'">点击上传图片<br><i>or</i><br>拖动一个图片到下方矩形中</span>
+        <i v-if="tagInfo === 'table'" class="iconfont icontablerowandcol" title="行列数"></i>
         <i class="iconfont iconhelp"></i>
+        <input type="file" hidden @change="uploadImg()" id="upload" accept="image/*">
       </div>
     </div>
-    <article>
+    <article id="article">
       <codes :style="itemStyle" @mouseenter.native="hoverFn" @mouseout.native="outFn"></codes>
     </article>
   </div>
 </template>
 
 <script>
+  import * as x0popup from "x0popup";
     export default {
       name: "itembox",
       data(){
         return{
           types:['input','checkbox','radio','range'],
-          isHover:false
+          isHover:false,
+          uploadContent:null
         }
+      },
+      mounted () {
+        ['dragleave', 'drop', 'dragenter','dragover'].forEach(e => {                       // 阻止浏览器默认的拖拽时事件，测试阻止这几个就够了，不放心就全阻止一遍吧
+          this.preventDefaultEvent(e);
+        });
+        this.addDropSupport();                                                    //为<article>添加拖拽事件
       },
       computed:{
         classObject(){
@@ -63,7 +73,6 @@
             let type = this.$store.getters.getInputType;
             let image = require('../assets/logo.png');
             let text = this.$store.getters.getTagText;
-            console.log(type)
             switch (tag) {
               case 'p':return createElement(tag,text);
               case 'button':return createElement(tag,text);
@@ -80,7 +89,7 @@
                     createElement('i')
                   ]);
                 }
-              case 'img':return createElement(tag,{attrs:{src:image}});
+              case 'img':return createElement(tag,{attrs:{src:image,id:'uploadedImg'}});
               case 'table':return createElement(tag,{attrs:{border:1}},[
                 createElement('tr',[createElement('td','哈哈哈'),createElement('td','哈哈哈'),createElement('td','哈哈哈')]),
                 createElement('tr',[createElement('td','哈哈哈')]),
@@ -97,6 +106,12 @@
         },
       },
       methods:{
+        // 禁用某些事件
+        preventDefaultEvent (eventName) {
+          document.addEventListener(eventName, function (e) {
+            e.preventDefault();
+          }, false)
+        },
         changeType:function (event) {
           let title = event.currentTarget.title;
           this.$store.dispatch('changeInputType',title)
@@ -111,7 +126,53 @@
         },
         outFn(){
           this.isHover = false;
-        }
+        },
+        // 通过js点击上传按钮
+        clickFile(){
+          document.getElementById('upload').click();
+        },
+        // 上传图片
+        uploadImg(){
+          let file =document.getElementById('upload').files[0];
+          let self = this;
+          if (!file || !window.FileReader) {           // 看支持不支持FileReader
+            //TODO 这里加一些提示
+            return;
+          }
+          if (/^image/.test(file.type)) {
+            var reader = new FileReader();              // 创建一个reader
+            reader.readAsDataURL(file);                 // 将图片将转成 base64 格式
+            reader.onloadend = function () {            // 读取成功后的回调
+              document.getElementById("uploadedImg").src = this.result;
+            }
+          }
+        },
+        // 拖动上传图片
+        addDropSupport () {
+          let BOX = document.getElementById('article');
+          BOX.addEventListener('drop', (e) => {
+            e.preventDefault();
+            // dataTransfer承载拖拽数据
+            let fileList = e.dataTransfer.files;                             // 其实这就是文件对象列表了
+            if (fileList.length === 0) {                                    // 总得拖一个文件吧
+              return false
+            }
+            if (fileList[0].type.indexOf('image') === -1) {                 // 格式限制
+              x0popup('发生错误','请选择图片文件','error');
+              return false;
+            }
+            if (fileList.length > 1) {                                      // 这次限制下只能拖一个文件
+              x0popup('发生错误','暂不支持多文件','error');
+              return false
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(fileList[0]);
+            reader.onloadend = function () {
+              document.getElementById("uploadedImg").src = this.result;
+            }
+          })
+        },
+
       }
     }
 </script>
@@ -130,7 +191,11 @@
     flex-grow: 1;
   }
   .showItems article input{
-    width: 80%;
+    max-width: 80%;
+  }
+  .showItems article img{
+    max-width: 80%;
+    max-height: 300px;
   }
   .text{
     width: 100px;
@@ -146,5 +211,14 @@
     box-shadow:inset 1px 1px 3px 0 #c7c7c7;;
     outline: none;
     vertical-align: middle;
+  }
+  #tooltipContent i{
+    font-size: 14px;
+    font-weight: bold;
+  }
+  #tooltipContent i:before,
+  #tooltipContent i:after{
+    content: '---';
+    font-weight: lighter;
   }
 </style>

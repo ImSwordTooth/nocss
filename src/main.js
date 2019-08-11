@@ -14,11 +14,23 @@ import 'vue-directive-tooltip/css/index.css';
 import VueClipboard from 'vue-clipboard2'
 
 
+
+// import $ from 'jquery'
 // import $ from 'jQuery'
 // Vue.use($)
 Vue.use(VueHighlightJS);
 
 Vue.use(Tooltip);
+
+Vue.use(Tooltip, {
+  // fontSize:80
+  // delay: 500,
+  // placement: 'right',
+  class: 'tooltip-red',
+  // triggers: ['hover'],
+  // offset: 0
+});
+
 
 Vue.use(VueClipboard);
 

@@ -1,6 +1,7 @@
 <template>
   <div class="pseudoList">
-    <p class="title">{{percentName}}</p>
+    <!--<p class="title">{{percentName}}</p>-->
+    <p class="pp"><i class="iconfont iconpercent"></i> {{percentName}}</p>
     <!--<span class="chooseContainer" @click="isShow = !isShow" v-clickoutside="hideBox">添加-->
           <!--<i class="iconfont" :class="{'iconuparrow':isShow,'icondownarrow':!isShow}"></i>-->
           <!--<ul v-show="isShow">-->
@@ -82,6 +83,13 @@
     border-radius: 100%;
     line-height: 40px;
     text-align: center;
+  }
+  .pp{
+    display: inline-flex;
+    align-items: center;
+    font-weight: bold;
+    font-style: oblique;
+    color: #5792fb;
   }
   .chooseContainer{
     position: static;
