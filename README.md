@@ -21,6 +21,7 @@
 9.	i元素的样式可以根据vuex中的数据来变化，所以要添加新的code，vue.prototype.submit也要添加新的case，这个是代码区，可以实现
 10.	:checked也可以加，再加一个code呗，但是如何监听checkbox已经被check，并且将:checked中的样式放到i里
 11. 变形，删除子项时，删到只剩一个的时候，会留下`transform`:，如果用户此时不进行操作的话，这个显然错误的代码会一直留着。
+12. 右上角重置只能重置standard的
 
 
  
