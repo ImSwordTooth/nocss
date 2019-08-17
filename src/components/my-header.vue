@@ -2,17 +2,22 @@
   <header>
     <!--<img src="../assets/222.png" alt="欢迎" class="logo">-->
 
-    <h1>!css</h1>
-    <a href="#" class="active">制作</a>
-    <a href="#">别人家的</a>
-    <a href="#">别人家的</a>
+    <!--<h1>!css</h1>-->
+    <vue-typer text="!css" erase-style="backspace" class="nocss"></vue-typer>
+    <!--<a href="#" class="active">制作</a>-->
+    <!--<a href="#">别人家的</a>-->
+    <!--<a href="#">别人家的</a>-->
   </header>
 </template>
 
 <script>
-    export default {
-        name: "my-header"
-    }
+import {VueTyper} from 'vue-typer'
+export default {
+  name: 'my-header',
+  components: {
+    VueTyper
+  }
+}
 </script>
 
 <style scoped>
@@ -51,9 +56,14 @@
     border-bottom: solid 2px #f5ba71;
     color: #fbdf09;
   }
+  .nocss{
+    font-size: 45px;
+    font-family: logo;
+    margin-left: 10px;
+  }
   @font-face {
     font-family: logo;
-    src: url("../assets/Pervitina-Dex-FFP.ttf");
+    src: url("../assets/Penguin-Regular.ttf");
   }
   h1{
     font-family: logo;

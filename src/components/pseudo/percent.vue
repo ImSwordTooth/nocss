@@ -21,46 +21,46 @@
 </template>
 
 <script>
-  export default {
-    name: "percent",
-    props:['percentName'],
-    data() {
-      return {
-        isShow:false
-      }
-    },
-    computed:{
-      PercentList(){
-        let list = this.$store.getters.getPercentList;
-        for (let i=0;i<list.length;i++){
-          if (list[i].name===this.percentName) {
-            return list[i];
-          }
+export default {
+  name: 'percent',
+  props: ['percentName'],
+  data () {
+    return {
+      isShow: false
+    }
+  },
+  computed: {
+    PercentList () {
+      let list = this.$store.getters.getPercentList
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].name === this.percentName) {
+          return list[i]
         }
       }
-    },
-    methods:{
-      hideBox(){
-        this.isShow = false
-      },
-      // add(event){
-      //   let codes = this.$store.getters.getAnimationCodes;
-      //   if (codes==='') {
-      //     codes = `@keyframes css {\n}`;
-      //     this.$store.dispatch("changeAnimationCodes", codes)
-      //   }
-      //   let type = event.currentTarget.dataset.type;
-      //   let list = this.$store.getters.getPercentList;
-      //   import(`../operation/${type}`).then((data) => {
-      //     if (!this.PercentList.content.includes(data.default)){
-      //       for (let i=0;i<list.length;i++){
-      //         list[i].content.push(data.default)
-      //       }
-      //     }
-      //   });
-      // }
     }
+  },
+  methods: {
+    hideBox () {
+      this.isShow = false
+    }
+    // add(event){
+    //   let codes = this.$store.getters.getAnimationCodes;
+    //   if (codes==='') {
+    //     codes = `@keyframes css {\n}`;
+    //     this.$store.dispatch("changeAnimationCodes", codes)
+    //   }
+    //   let type = event.currentTarget.dataset.type;
+    //   let list = this.$store.getters.getPercentList;
+    //   import(`../operation/${type}`).then((data) => {
+    //     if (!this.PercentList.content.includes(data.default)){
+    //       for (let i=0;i<list.length;i++){
+    //         list[i].content.push(data.default)
+    //       }
+    //     }
+    //   });
+    // }
   }
+}
 </script>
 
 <style scoped>
@@ -96,6 +96,3 @@
   }
 
 </style>
-
-
-

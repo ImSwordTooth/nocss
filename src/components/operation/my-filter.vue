@@ -2,7 +2,7 @@
     <li>
       <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'ctrl+单击变化类型以删除该项'"><i class="iconfont iconfilter"></i>滤镜</span>
       <div>
-        <div v-for="(fi,index) in list" class="listDiv">
+        <div v-for="(fi,index) in list" class="listDiv" :key="index">
           <span class="info">函数：</span>
           <span v-if="fi.filterName!=='请选择'" class="filterName" @click.ctrl="spliceList(index)">{{fi.filterName}}()</span>
           <div class="chooseContainer" v-if="fi.filterName==='请选择'" :class="{'tttop':isShow}" @click="choose($event)" v-clickoutside="hideChoose">{{fi.filterName}}
@@ -86,168 +86,167 @@
 </template>
 
 <script>
-  import {Chrome} from 'vue-color'
+import {Chrome} from 'vue-color'
 
-  export default {
-      name: "my-filter",
-      props:['now'],
-      data(){
-        return{
-          isShow:false,                                                     //控制滤镜函数的下拉框
-          isShowColor:false,
-          showTop:false,
-          list:[                                                            //滤镜列表
-            {
-              filterName:'请选择',                                            //滤镜函数名
-              blur:0,                                                         //高斯模糊
-              brightness:100,                                                 //亮度
-              contrast:100,                                                       //X轴缩放量
-              grayscale:0,                                                       //Y轴缩放量
-              opacity:100,                                                    //旋转角度
-              sepia:0,                                                        //X轴倾斜角度
-              saturate:100,                                                        //Y轴倾斜角度
-              huerotate:0,
-              invert:0,
-              x:0,
-              y:0,
-              shadowblur:0,
-              color:{
-                rgba: { r: 0, g: 0, b: 0, a: 0 },
-                a: 1
-              }
-            }
-          ]
+export default {
+  name: 'my-filter',
+  props: ['now'],
+  data () {
+    return {
+      isShow: false, // 控制滤镜函数的下拉框
+      isShowColor: false,
+      showTop: false,
+      list: [ // 滤镜列表
+        {
+          filterName: '请选择', // 滤镜函数名
+          blur: 0, // 高斯模糊
+          brightness: 100, // 亮度
+          contrast: 100, // X轴缩放量
+          grayscale: 0, // Y轴缩放量
+          opacity: 100, // 旋转角度
+          sepia: 0, // X轴倾斜角度
+          saturate: 100, // Y轴倾斜角度
+          huerotate: 0,
+          invert: 0,
+          x: 0,
+          y: 0,
+          shadowblur: 0,
+          color: {
+            rgba: { r: 0, g: 0, b: 0, a: 0 },
+            a: 1
+          }
         }
-      },
-      created(){
-        this.$watch('$data.list',function () {
-          this.prepareSubmit();
-        },{immediate:this.isMed,deep:true})
-      },
-      components:{
-        'chrome-picker': Chrome,
-      },
-      computed:{
-        rgba(){                                               //计算属性传参，用闭包
-          return function(index){
-            let rgba = this.list[index].color.rgba;
-            if(rgba.a === 0){                                 //透明度为0时，用斜纹代替颜色，表示透明
-              return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
-            }
-            else {                                            //其他情况下显示正常颜色
-              return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-            }
-          }
-        },
-        colorText(){
-          return function (index) {
-            let rgba = this.list[index].color.rgba;
-            if (rgba.a === 0){                                //透明度为0时，颜色为“无”
-              return "无"
-            } else {                                          //其他情况下显示正常颜色文本
-              return rgba.a === 1 ? this.list[index].color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-            }
-          }
-        },
-        isShowAdd(){                                                            //当变化类型没有是“请选择”的时候才显示添加按钮（其实并不好）
-          return !this.list.some(function (item) {
-            return item.filterName==='请选择'
-          })
-        },
-        isMed(){
-          return this.now !== 'standard'
-        }
-      },
-      methods:{
-        choose(e){
-          this.isShow = !this.isShow;
-          this.showTop = window.innerHeight - e.clientY < 238;
-        },
-        //隐藏滤镜函数的下拉框
-        hideChoose(){
-          this.isShow = false
-        },
-        hideColorPicker(){
-          this.isShowColor = false
-        },
-        changeFilterName(e,index){
-          this.list[index].filterName = e.currentTarget.dataset.type;
-        },
-        prepareSubmit(){
-          let replaceStr = '';                                                //由于有四种情况，所以要提前确认代替的字符串
-          this.list.forEach(item=>{
-            let x = '';
-            let filterName = item.filterName;
-            switch (filterName) {
-              case 'blur':x = `${filterName}(${item.blur}px)`;break;
-              case 'brightness':x = `${filterName}(${item.brightness}%)`;break;
-              case `contrast`:x = `${filterName}(${item.contrast}%)`;break;
-              case `grayscale`:x = `${filterName}(${item.grayscale}%)`;break;
-              case `opacity`:x = `${filterName}(${item.opacity}%)`;break;
-              case `sepia`:x = `${filterName}(${item.sepia}%)`;break;
-              case `saturate`:x = `${filterName}(${item.saturate}%)`;break;
-              case `hue-rotate`:x = `${filterName}(${item.huerotate}deg)`;break;
-              case `invert`:x = `${filterName}(${item.invert}%)`;break;
-              case `drop-shadow`:
-                let rgba = item.color.rgba;
-                let currentColor = rgba.a === 1 ? item.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-                x = `${filterName}(${item.x}px ${item.y}px ${item.shadowblur}px ${currentColor})`;break;
-            }
-            replaceStr += ` ${x}`                                             //前面有个小小的空格，不能删
-          });
-          this.submit('filter',this.now,replaceStr);
-        },
-        spliceList(index){
-          this.list.splice(index,1);
-          this.prepareSubmit();
-          if (this.list.length === 0){
-            this.list.push({
-              filterName:'请选择',                                            //滤镜函数名
-              blur:0,                                                         //高斯模糊
-              brightness:100,                                                 //亮度
-              contrast:100,                                                       //X轴缩放量
-              grayscale:0,                                                       //Y轴缩放量
-              opacity:100,                                                    //旋转角度
-              sepia:0,                                                        //X轴倾斜角度
-              saturate:100,                                                        //Y轴倾斜角度
-              huerotate:0,
-              invert:0,
-              x:0,
-              y:0,
-              shadowblur:0,
-              color:{
-                rgba: { r: 0, g: 0, b: 0, a: 0 },
-                a: 1
-              }
-            })
-          }
-        },
-        addList(){
-          this.list.push({
-            filterName:'请选择',                                            //滤镜函数名
-            blur:0,                                                         //高斯模糊
-            brightness:100,                                                 //亮度
-            contrast:100,                                                       //X轴缩放量
-            grayscale:0,                                                       //Y轴缩放量
-            opacity:100,                                                    //旋转角度
-            sepia:0,                                                        //X轴倾斜角度
-            saturate:100,                                                        //Y轴倾斜角度
-            huerotate:0,
-            invert:0,
-            x:0,
-            y:0,
-            shadowblur:0,
-            color:{
-              rgba: { r: 0, g: 0, b: 0, a: 0 },
-              a: 1
-            }
-          })
-        },
-        del(){
-          this.submit('filter',this.now,'')
+      ]
+    }
+  },
+  created () {
+    this.$watch('$data.list', function () {
+      this.prepareSubmit()
+    }, {immediate: this.isMed, deep: true})
+  },
+  components: {
+    'chrome-picker': Chrome
+  },
+  computed: {
+    rgba () { // 计算属性传参，用闭包
+      return function (index) {
+        let rgba = this.list[index].color.rgba
+        if (rgba.a === 0) { // 透明度为0时，用斜纹代替颜色，表示透明
+          return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
+        } else { // 其他情况下显示正常颜色
+          return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
         }
       }
+    },
+    colorText () {
+      return function (index) {
+        let rgba = this.list[index].color.rgba
+        if (rgba.a === 0) { // 透明度为0时，颜色为“无”
+          return '无'
+        } else { // 其他情况下显示正常颜色文本
+          return rgba.a === 1 ? this.list[index].color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+        }
+      }
+    },
+    isShowAdd () { // 当变化类型没有是“请选择”的时候才显示添加按钮（其实并不好）
+      return !this.list.some(function (item) {
+        return item.filterName === '请选择'
+      })
+    },
+    isMed () {
+      return this.now !== 'standard'
     }
+  },
+  methods: {
+    choose (e) {
+      this.isShow = !this.isShow
+      this.showTop = window.innerHeight - e.clientY < 238
+    },
+    // 隐藏滤镜函数的下拉框
+    hideChoose () {
+      this.isShow = false
+    },
+    hideColorPicker () {
+      this.isShowColor = false
+    },
+    changeFilterName (e, index) {
+      this.list[index].filterName = e.currentTarget.dataset.type
+    },
+    prepareSubmit () {
+      let replaceStr = '' // 由于有四种情况，所以要提前确认代替的字符串
+      this.list.forEach(item => {
+        let x = ''
+        let filterName = item.filterName
+        switch (filterName) {
+          case 'blur':x = `${filterName}(${item.blur}px)`; break
+          case 'brightness':x = `${filterName}(${item.brightness}%)`; break
+          case `contrast`:x = `${filterName}(${item.contrast}%)`; break
+          case `grayscale`:x = `${filterName}(${item.grayscale}%)`; break
+          case `opacity`:x = `${filterName}(${item.opacity}%)`; break
+          case `sepia`:x = `${filterName}(${item.sepia}%)`; break
+          case `saturate`:x = `${filterName}(${item.saturate}%)`; break
+          case `hue-rotate`:x = `${filterName}(${item.huerotate}deg)`; break
+          case `invert`:x = `${filterName}(${item.invert}%)`; break
+          case `drop-shadow`:
+            let rgba = item.color.rgba
+            let currentColor = rgba.a === 1 ? item.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+            x = `${filterName}(${item.x}px ${item.y}px ${item.shadowblur}px ${currentColor})`; break
+        }
+        replaceStr += ` ${x}` // 前面有个小小的空格，不能删
+      })
+      this.submit('filter', this.now, replaceStr)
+    },
+    spliceList (index) {
+      this.list.splice(index, 1)
+      this.prepareSubmit()
+      if (this.list.length === 0) {
+        this.list.push({
+          filterName: '请选择', // 滤镜函数名
+          blur: 0, // 高斯模糊
+          brightness: 100, // 亮度
+          contrast: 100, // X轴缩放量
+          grayscale: 0, // Y轴缩放量
+          opacity: 100, // 旋转角度
+          sepia: 0, // X轴倾斜角度
+          saturate: 100, // Y轴倾斜角度
+          huerotate: 0,
+          invert: 0,
+          x: 0,
+          y: 0,
+          shadowblur: 0,
+          color: {
+            rgba: { r: 0, g: 0, b: 0, a: 0 },
+            a: 1
+          }
+        })
+      }
+    },
+    addList () {
+      this.list.push({
+        filterName: '请选择', // 滤镜函数名
+        blur: 0, // 高斯模糊
+        brightness: 100, // 亮度
+        contrast: 100, // X轴缩放量
+        grayscale: 0, // Y轴缩放量
+        opacity: 100, // 旋转角度
+        sepia: 0, // X轴倾斜角度
+        saturate: 100, // Y轴倾斜角度
+        huerotate: 0,
+        invert: 0,
+        x: 0,
+        y: 0,
+        shadowblur: 0,
+        color: {
+          rgba: { r: 0, g: 0, b: 0, a: 0 },
+          a: 1
+        }
+      })
+    },
+    del () {
+      this.submit('filter', this.now, '')
+    }
+  }
+}
 </script>
 
 <style scoped>

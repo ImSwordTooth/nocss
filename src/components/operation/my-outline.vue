@@ -46,92 +46,91 @@
 </template>
 
 <script>
-  import {Chrome} from 'vue-color'
+import {Chrome} from 'vue-color'
 
-  export default {
-      name: "outline",
-      props:['now'],
-      data(){
-          return{
-            outline:{
-              outlineWeight:0,
-              outlineStyle:'solid',
-              color:{
-                rgba: { r: 0, g: 0, b: 0, a: 0 },
-                a: 1
-              }
-            },
-            isShowOutlineStyle:false,
-            isShow:false,
-            outlineOffset:0,
-            isChecked:false,
-            showTop:false
-          }
-      },
-      components:{
-        'chrome-picker': Chrome,
-      },
-      created(){
-        this.$watch('$data.outline',function () {
-          this.prepareCommit();
-        },{immediate:this.isMed,deep:true});
-        this.$watch('$data.outlineOffset',function () {
-          this.submit("outline-offset",this.now,`${this.outlineOffset}px`)
-        },{immediate:this.isMed});
-        this.$watch('$data.isChecked',function () {
-          if (this.isChecked){
-            this.submit("outline",this.now,"none");
-          }else {
-            this.prepareCommit();
-          }
-        },{immediate:this.isMed});
-      },
-      computed:{
-        rgba(){
-          let rgba = this.outline.color.rgba;
-          if(rgba.a === 0){
-            return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
-          }
-          else {
-            return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-          }
-        },
-        colorText(){
-          let rgba = this.outline.color.rgba;
-          if (rgba.a === 0){
-            return "无"
-          } else {
-            return rgba.a === 1 ? this.outline.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-          }
-        },
-        isMed(){
-          return this.now !== 'standard'
+export default {
+  name: 'outline',
+  props: ['now'],
+  data () {
+    return {
+      outline: {
+        outlineWeight: 0,
+        outlineStyle: 'solid',
+        color: {
+          rgba: { r: 0, g: 0, b: 0, a: 0 },
+          a: 1
         }
       },
-      methods:{
-        choose(e){
-          this.isShowOutlineStyle = !this.isShowOutlineStyle;
-          this.showTop = window.innerHeight - e.clientY < 238;
-        },
-        hideOutlineStyle(){
-          this.isShowOutlineStyle = false
-        },
-        hideColorPicker(){
-          this.isShow = false
-        },
-        changeOutlineStyle(e){
-          this.outline.outlineStyle = e.currentTarget.dataset.type;
-        },
-        prepareCommit(){
-          let rgba = this.outline.color.rgba;
-          let currentColor = rgba.a === 1 ? this.outline.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          this.submit('outline',this.now,`${this.outline.outlineWeight}px ${this.outline.outlineStyle} ${currentColor}`);
-        },
-        del(){
-          this.submit('outline',this.now,'')
-        }
-      }
+      isShowOutlineStyle: false,
+      isShow: false,
+      outlineOffset: 0,
+      isChecked: false,
+      showTop: false
     }
+  },
+  components: {
+    'chrome-picker': Chrome
+  },
+  created () {
+    this.$watch('$data.outline', function () {
+      this.prepareCommit()
+    }, {immediate: this.isMed, deep: true})
+    this.$watch('$data.outlineOffset', function () {
+      this.submit('outline-offset', this.now, `${this.outlineOffset}px`)
+    }, {immediate: this.isMed})
+    this.$watch('$data.isChecked', function () {
+      if (this.isChecked) {
+        this.submit('outline', this.now, 'none')
+      } else {
+        this.prepareCommit()
+      }
+    }, {immediate: this.isMed})
+  },
+  computed: {
+    rgba () {
+      let rgba = this.outline.color.rgba
+      if (rgba.a === 0) {
+        return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
+      } else {
+        return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      }
+    },
+    colorText () {
+      let rgba = this.outline.color.rgba
+      if (rgba.a === 0) {
+        return '无'
+      } else {
+        return rgba.a === 1 ? this.outline.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      }
+    },
+    isMed () {
+      return this.now !== 'standard'
+    }
+  },
+  methods: {
+    choose (e) {
+      this.isShowOutlineStyle = !this.isShowOutlineStyle
+      this.showTop = window.innerHeight - e.clientY < 238
+    },
+    hideOutlineStyle () {
+      this.isShowOutlineStyle = false
+    },
+    hideColorPicker () {
+      this.isShow = false
+    },
+    changeOutlineStyle (e) {
+      this.outline.outlineStyle = e.currentTarget.dataset.type
+    },
+    prepareCommit () {
+      let rgba = this.outline.color.rgba
+      let currentColor = rgba.a === 1 ? this.outline.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      this.submit('outline', this.now, `${this.outline.outlineWeight}px ${this.outline.outlineStyle} ${currentColor}`)
+    },
+    del () {
+      this.submit('outline', this.now, '')
+    }
+  }
+}
 </script>
 
 <style scoped>

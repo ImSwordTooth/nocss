@@ -29,72 +29,71 @@
 </template>
 
 <script>
-  import {Chrome} from 'vue-color'
+import {Chrome} from 'vue-color'
 
-  export default {
-      name: "my-textshadow",
-      props:["now"],
-      data(){
-        return{
-          textshadow:{
-            offsetX:0,
-            offsetY:0,
-            blur:0,
-            color:{
-              rgba: { r: 0, g: 0, b: 0, a: 0 },
-              a: 1
-            },
-          },
-          isShow:false,
+export default {
+  name: 'my-textshadow',
+  props: ['now'],
+  data () {
+    return {
+      textshadow: {
+        offsetX: 0,
+        offsetY: 0,
+        blur: 0,
+        color: {
+          rgba: { r: 0, g: 0, b: 0, a: 0 },
+          a: 1
         }
       },
-      components:{
-        'chrome-picker': Chrome,
-      },
-      created(){
-          this.$watch('$data.textshadow',function () {
-            this.prepareSubmit()
-          },{immediate:this.isMed,deep:true})
-      },
-      computed:{
-        rgba(){
-          let rgba = this.textshadow.color.rgba;
-          if(rgba.a === 0){
-            return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
-          }
-          else {
-            return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-          }
-        },
-        colorText(){
-          let rgba = this.textshadow.color.rgba;
-          if (rgba.a === 0){
-            return "无"
-          } else {
-            return rgba.a === 1 ? this.textshadow.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-          }
-        },
-        isMed(){
-          return this.now !== 'standard'
-        }
-      },
-      methods:{
-        hideColorPicker(){
-          this.isShow = false
-        },
-        prepareSubmit(now){
-          let x = this.textshadow.offsetX;
-          let y = this.textshadow.offsetY;
-          let blur = this.textshadow.blur;
-          let rgba = this.textshadow.color.rgba;
-          let currentColor = rgba.a === 1 ? this.textshadow.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          this.submit('text-shadow',this.now,`${x}px ${y}px ${blur}px ${currentColor}`)
-        },
-        del(){
-          this.submit('text-shadow',this.now,'')
-        }
-      }
+      isShow: false
     }
+  },
+  components: {
+    'chrome-picker': Chrome
+  },
+  created () {
+    this.$watch('$data.textshadow', function () {
+      this.prepareSubmit()
+    }, {immediate: this.isMed, deep: true})
+  },
+  computed: {
+    rgba () {
+      let rgba = this.textshadow.color.rgba
+      if (rgba.a === 0) {
+        return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
+      } else {
+        return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      }
+    },
+    colorText () {
+      let rgba = this.textshadow.color.rgba
+      if (rgba.a === 0) {
+        return '无'
+      } else {
+        return rgba.a === 1 ? this.textshadow.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      }
+    },
+    isMed () {
+      return this.now !== 'standard'
+    }
+  },
+  methods: {
+    hideColorPicker () {
+      this.isShow = false
+    },
+    prepareSubmit (now) {
+      let x = this.textshadow.offsetX
+      let y = this.textshadow.offsetY
+      let blur = this.textshadow.blur
+      let rgba = this.textshadow.color.rgba
+      let currentColor = rgba.a === 1 ? this.textshadow.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      this.submit('text-shadow', this.now, `${x}px ${y}px ${blur}px ${currentColor}`)
+    },
+    del () {
+      this.submit('text-shadow', this.now, '')
+    }
+  }
+}
 </script>
 
 <style scoped>

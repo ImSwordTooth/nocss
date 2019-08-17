@@ -11,40 +11,39 @@
 </template>
 
 <script>
-    export default {
-      name: "my-padding",
-      props:['now'],
-      data(){
-        return{
-          padding:{
-            paddingTop:0,                                                       //内边距~上
-            paddingRight:0,                                                     //内边距~右
-            paddingBottom:0,                                                    //内边距~下
-            paddingLeft:0                                                      //内边距~左
-          }
-        }
-      },
-      created(){
-        this.$watch('$data.padding',function () {
-          let codes = this.$store.getters.getCodes;
-          let top = this.padding.paddingTop;
-          let right = this.padding.paddingRight;
-          let bottom = this.padding.paddingBottom;
-          let left = this.padding.paddingLeft;
-          this.submit('padding',this.now,`${top}px ${right}px ${bottom}px ${left}px`);
-        },{immediate:this.isMed,deep:true})
-      },
-      computed:{
-        isMed(){
-          return this.now !== 'standard'
-        }
-      },
-      methods:{
-        del(){
-          this.submit('padding',this.now,'')
-        }
+export default {
+  name: 'my-padding',
+  props: ['now'],
+  data () {
+    return {
+      padding: {
+        paddingTop: 0, // 内边距~上
+        paddingRight: 0, // 内边距~右
+        paddingBottom: 0, // 内边距~下
+        paddingLeft: 0 // 内边距~左
       }
     }
+  },
+  created () {
+    this.$watch('$data.padding', function () {
+      let top = this.padding.paddingTop
+      let right = this.padding.paddingRight
+      let bottom = this.padding.paddingBottom
+      let left = this.padding.paddingLeft
+      this.submit('padding', this.now, `${top}px ${right}px ${bottom}px ${left}px`)
+    }, {immediate: this.isMed, deep: true})
+  },
+  computed: {
+    isMed () {
+      return this.now !== 'standard'
+    }
+  },
+  methods: {
+    del () {
+      this.submit('padding', this.now, '')
+    }
+  }
+}
 </script>
 
 <style scoped>

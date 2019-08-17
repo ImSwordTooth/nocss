@@ -16,27 +16,27 @@
 </template>
 
 <script>
-    export default {
-      name: "codebox",
-      data(){
-          return{
-            markdownhtml:`flex: .4;\nborder-top: solid 1px #c1c1c1;`
-          }
-      },
-      computed:{
-          codes(){
-            return this.$store.getters.getCodes+'\n'+this.$store.getters.getHoverCodes+'\n'+this.$store.getters.getAnimationCodes;
-          },
-      },
-      methods: {
-        onCopy: function (e) {
-          this.iscopyd = '复制成功'
-        },
-        onError: function (e) {
-          alert('Failed to copy texts')
-        }
-      }
+export default {
+  name: 'codebox',
+  data () {
+    return {
+      markdownhtml: `flex: .4;\nborder-top: solid 1px #c1c1c1;`
     }
+  },
+  computed: {
+    codes () {
+      return this.$store.getters.getCodes + '\n' + this.$store.getters.getHoverCodes + '\n' + this.$store.getters.getAnimationCodes
+    }
+  },
+  methods: {
+    onCopy: function (e) {
+      this.iscopyd = '复制成功'
+    },
+    onError: function (e) {
+      alert('Failed to copy texts')
+    }
+  }
+}
 </script>
 
 <style scoped>

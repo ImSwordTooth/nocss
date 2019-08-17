@@ -2,7 +2,7 @@
     <li>
       <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'ctrl+单击<变化类型>以删除该子项'"><i class="iconfont icontransform"></i>变形</span>
       <div>
-        <div v-for="(tr,index) in list" class="listDiv">
+        <div v-for="(tr,index) in list" class="listDiv" :key="index">
           <span class="info">变化类型：</span>
           <span v-if="tr.transformName!=='请选择'" class="transName" @click.ctrl="spliceList(index)">{{tr.transformName}}</span>
           <div class="chooseContainer" v-if="tr.transformName==='请选择'" :class="{'tttop':isShow}" @click="choose($event)" v-clickoutside="hideChoose">{{tr.transformName}}
@@ -36,104 +36,103 @@
 </template>
 
 <script>
-    export default {
-      name: "my-transform",
-      props:['now'],
-      data(){
-        return{
-          isShow:false,                                                     //控制变化类型的下拉框
-          list:[                                                            //变形列表
-            {
-              transformName:'请选择',                                            //变形类型
-              translateX:0,                                                         //X轴平移量
-              translateY:0,                                                         //Y轴平移量
-              scaleX:1,                                                             //X轴缩放量
-              scaleY:1,                                                             //Y轴缩放量
-              rotateDeg:0,                                                          //旋转角度
-              skewX:0,                                                              //X轴倾斜角度
-              skewY:0,                                                              //Y轴倾斜角度
-            }
-          ],
-          showTop:false
+export default {
+  name: 'my-transform',
+  props: ['now'],
+  data () {
+    return {
+      isShow: false, // 控制变化类型的下拉框
+      list: [ // 变形列表
+        {
+          transformName: '请选择', // 变形类型
+          translateX: 0, // X轴平移量
+          translateY: 0, // Y轴平移量
+          scaleX: 1, // X轴缩放量
+          scaleY: 1, // Y轴缩放量
+          rotateDeg: 0, // 旋转角度
+          skewX: 0, // X轴倾斜角度
+          skewY: 0 // Y轴倾斜角度
         }
-      },
-      created(){
-        this.$watch('$data.list',function () {
-          this.prepareSubmit();
-        },{immediate:this.isMed,deep:true})
-      },
-      computed:{
-        isShowAdd(){                                                            //当变化类型没有是“请选择”的时候才显示添加按钮（其实并不好）
-          return !this.list.some(function (item) {
-            return item.transformName==='请选择'
-          })
-        },
-        isMed(){
-          return this.now !== 'standard'
-        }
-      },
-      methods:{
-        choose(e){
-          this.isShow = !this.isShow;
-          this.showTop = window.innerHeight - e.clientY < 238;
-        },
-        //隐藏变化类型下拉框
-        hideChoose(){
-          this.isShow = false
-        },
-        //改变变形类型
-        changeTransformName(e,index){
-          this.list[index].transformName = e.currentTarget.dataset.type;
-        },
-        prepareSubmit(){
-            let replaceStr = '';                                                //由于有四种情况，所以要提前确认代替的字符串
-            this.list.forEach(item=>{
-              let x = '';
-              let transformName = item.transformName;
-              switch (transformName) {
-                case 'translate':x = `${transformName}(${item.translateX}px,${item.translateY}px)`;break;
-                case 'scale':x = `${transformName}(${item.scaleX},${item.scaleY})`;break;
-                case `rotate`:x = `${transformName}(${item.rotateDeg}deg)`;break;
-                case `skew`:x = `${transformName}(${item.skewX}deg,${item.skewY}deg)`;break;
-              }
-              replaceStr += ` ${x}`
-            });
-          this.submit('transform',this.now,replaceStr);
-        },
-        spliceList(index){
-            this.list.splice(index,1);
-            this.prepareSubmit();
-            if (this.list.length === 0){
-              this.list.push({
-                transformName:'请选择',
-                translateX:0,
-                translateY:0,
-                scaleX:1,
-                scaleY:1,
-                rotateDeg:0,
-                skewX:0,
-                skewY:0
-              });
-
-            }
-        },
-        addList(){
-          this.list.push({
-            transformName:'请选择',
-            translateX:0,
-            translateY:0,
-            scaleX:1,
-            scaleY:1,
-            rotateDeg:0,
-            skewX:0,
-            skewY:0
-          })
-        },
-        del(){
-          this.submit('transform',this.now,'')
-        }
-      }
+      ],
+      showTop: false
     }
+  },
+  created () {
+    this.$watch('$data.list', function () {
+      this.prepareSubmit()
+    }, {immediate: this.isMed, deep: true})
+  },
+  computed: {
+    isShowAdd () { // 当变化类型没有是“请选择”的时候才显示添加按钮（其实并不好）
+      return !this.list.some(function (item) {
+        return item.transformName === '请选择'
+      })
+    },
+    isMed () {
+      return this.now !== 'standard'
+    }
+  },
+  methods: {
+    choose (e) {
+      this.isShow = !this.isShow
+      this.showTop = window.innerHeight - e.clientY < 238
+    },
+    // 隐藏变化类型下拉框
+    hideChoose () {
+      this.isShow = false
+    },
+    // 改变变形类型
+    changeTransformName (e, index) {
+      this.list[index].transformName = e.currentTarget.dataset.type
+    },
+    prepareSubmit () {
+      let replaceStr = '' // 由于有四种情况，所以要提前确认代替的字符串
+      this.list.forEach(item => {
+        let x = ''
+        let transformName = item.transformName
+        switch (transformName) {
+          case 'translate':x = `${transformName}(${item.translateX}px,${item.translateY}px)`; break
+          case 'scale':x = `${transformName}(${item.scaleX},${item.scaleY})`; break
+          case `rotate`:x = `${transformName}(${item.rotateDeg}deg)`; break
+          case `skew`:x = `${transformName}(${item.skewX}deg,${item.skewY}deg)`; break
+        }
+        replaceStr += ` ${x}`
+      })
+      this.submit('transform', this.now, replaceStr)
+    },
+    spliceList (index) {
+      this.list.splice(index, 1)
+      this.prepareSubmit()
+      if (this.list.length === 0) {
+        this.list.push({
+          transformName: '请选择',
+          translateX: 0,
+          translateY: 0,
+          scaleX: 1,
+          scaleY: 1,
+          rotateDeg: 0,
+          skewX: 0,
+          skewY: 0
+        })
+      }
+    },
+    addList () {
+      this.list.push({
+        transformName: '请选择',
+        translateX: 0,
+        translateY: 0,
+        scaleX: 1,
+        scaleY: 1,
+        rotateDeg: 0,
+        skewX: 0,
+        skewY: 0
+      })
+    },
+    del () {
+      this.submit('transform', this.now, '')
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -170,6 +169,5 @@
     cursor: url("../../assets/cursor/pen.png"),auto;
     outline: none;
   }
-
 
 </style>

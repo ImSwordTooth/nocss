@@ -19,52 +19,52 @@
 </template>
 
 <script>
-    export default {
-      name: "my-fontstyle",
-      props:["now"],
-      data(){
-          return{
-            Weight:'normal',                                  //字体宽度
-            Style:'normal',                                   //字体样式
-            Decoration:'none'                                 //字体修饰线
-          }
-      },
-      created(){
-        this.$watch('$data.Weight',function () {
-          this.submit('font-weight',this.now,this.Weight);
-        },{immediate:this.isMed});
-        this.$watch('$data.Style',function () {
-          this.submit('font-style',this.now,this.Style);
-        },{immediate:this.isMed});
-        this.$watch('$data.Decoration',function () {
-          this.submit('text-decoration',this.now,this.Decoration);
-        },{immediate:this.isMed});
-      },
-      computed:{
-        isMed(){
-          return this.now !== 'standard'
-        }
-      },
-      methods:{
-        fontWeight(event){
-          let fontweight = event.currentTarget.dataset.weight;
-          this.Weight = this.Weight===fontweight?'normal':fontweight;
-        },
-        fontStyle(event){
-          let fontstyle = event.currentTarget.dataset.style;
-          this.Style = this.Style===fontstyle?'normal':fontstyle;
-        },
-        textdecoration(event){
-          let decoration = event.currentTarget.dataset.decoration;
-          this.Decoration = this.Decoration===decoration?'none':decoration;
-        },
-        del(){
-          this.submit('font-weight',this.now,'');
-          this.submit('font-style',this.now,'');
-          this.submit('text-decoration',this.now,'');
-        }
-      }
+export default {
+  name: 'my-fontstyle',
+  props: ['now'],
+  data () {
+    return {
+      Weight: 'normal', // 字体宽度
+      Style: 'normal', // 字体样式
+      Decoration: 'none' // 字体修饰线
     }
+  },
+  created () {
+    this.$watch('$data.Weight', function () {
+      this.submit('font-weight', this.now, this.Weight)
+    }, {immediate: this.isMed})
+    this.$watch('$data.Style', function () {
+      this.submit('font-style', this.now, this.Style)
+    }, {immediate: this.isMed})
+    this.$watch('$data.Decoration', function () {
+      this.submit('text-decoration', this.now, this.Decoration)
+    }, {immediate: this.isMed})
+  },
+  computed: {
+    isMed () {
+      return this.now !== 'standard'
+    }
+  },
+  methods: {
+    fontWeight (event) {
+      let fontweight = event.currentTarget.dataset.weight
+      this.Weight = this.Weight === fontweight ? 'normal' : fontweight
+    },
+    fontStyle (event) {
+      let fontstyle = event.currentTarget.dataset.style
+      this.Style = this.Style === fontstyle ? 'normal' : fontstyle
+    },
+    textdecoration (event) {
+      let decoration = event.currentTarget.dataset.decoration
+      this.Decoration = this.Decoration === decoration ? 'none' : decoration
+    },
+    del () {
+      this.submit('font-weight', this.now, '')
+      this.submit('font-style', this.now, '')
+      this.submit('text-decoration', this.now, '')
+    }
+  }
+}
 </script>
 
 <style scoped>

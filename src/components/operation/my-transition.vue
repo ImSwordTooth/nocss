@@ -2,7 +2,7 @@
   <li>
     <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'仅支持当前css代码中已出现的属性'"><i class="iconfont icontransition"></i>过渡</span>
     <div>
-      <div v-for="(item,index) in list" class="listDiv">
+      <div v-for="(item,index) in list" class="listDiv" :key="index">
         <div class="item">
           <span class="info">过渡属性：</span>
           <span v-if="item.transitionName!=='请选择'" class="value" @click.ctrl="spliceList(index)">{{item.transitionName}}</span>
@@ -52,102 +52,102 @@
 </template>
 
 <script>
-    export default {
-      name: "my-transition",
-      props:['now'],
-      data(){
-          return{
-            // easing:'ease',
-            isShowEasing:false,
-            isShowTransitionName:false,
-            isActive:null,
-            showTop_Name:false,
-            showTop_Easing:false,
-            // transitionName:'请选择',
-            // during:0,
-            list:[
-              {
-                transitionName:'请选择',
-                easing:"请选择",
-                during:0,
-                delay:0
-              }
-            ],
-          }
-      },
-      created(){
-        this.$watch('$data.list',function () {
-          this.prepareSubmit();
-        },{immediate:this.isMed,deep:true})
-      },
-      computed:{
-        isShowAdd(){
-          return !this.list.some(function (item) {
-            return item.transitionName==='请选择' || item.easing === '请选择'
-          })
-        },
-        isMed(){
-          return this.now !== 'standard'
+export default {
+  name: 'my-transition',
+  props: ['now'],
+  data () {
+    return {
+      // easing:'ease',
+      isShowEasing: false,
+      isShowTransitionName: false,
+      isActive: null,
+      showTop_Name: false,
+      showTop_Easing: false,
+      // transitionName:'请选择',
+      // during:0,
+      list: [
+        {
+          transitionName: '请选择',
+          easing: '请选择',
+          during: 0,
+          delay: 0
         }
-      },
-      methods:{
-        chooseName(e){
-          this.isShowTransitionName = !this.isShowTransitionName;
-          this.showTop_Name = window.innerHeight - e.clientY < 238;
-        },
-        chooseEasing(e){
-          this.isShowEasing = !this.isShowEasing;
-          this.showTop_Easing = window.innerHeight - e.clientY < 238;
-        },
-        changeActive(e){
-          this.isActive = e.currentTarget.innerText
-        },
-        deleteActive(){
-          this.isActive = null
-        },
-        hideEasing(){
-          this.isShowEasing = false
-        },
-        hideTransitionName(){
-          this.isShowTransitionName = false
-        },
-        changeEasing(e,i){
-          this.list[i].easing = e.currentTarget.innerText;
-        },
-        changeTransitionName(e,i){
-          this.list[i].transitionName = e.currentTarget.dataset.type;
-        },
-        prepareSubmit(){
-          let replaceStr = '';
-          this.list.forEach(item=>{
-            replaceStr += ` ${item.transitionName} ${item.easing} ${item.during}s ${item.delay}s,`
-          });
-          this.submit('transition',this.now,replaceStr.slice(0,replaceStr.length-1));
-        },
-        addList(){
-          this.list.push({
-            transitionName:'请选择',
-            easing:"请选择",
-            during:0
-          })
-        },
-        spliceList(index){
-          this.list.splice(index,1);
-          // this.changeValue();
-          if (this.list.length === 0){
-            this.list.push({
-              transitionName:'请选择',
-              easing:"请选择",
-              during:0,
-              delay:0
-            })
-          }
-        },
-        del(){
-          this.submit('transition',this.now,'')
-        }
-      },
+      ]
     }
+  },
+  created () {
+    this.$watch('$data.list', function () {
+      this.prepareSubmit()
+    }, {immediate: this.isMed, deep: true})
+  },
+  computed: {
+    isShowAdd () {
+      return !this.list.some(function (item) {
+        return item.transitionName === '请选择' || item.easing === '请选择'
+      })
+    },
+    isMed () {
+      return this.now !== 'standard'
+    }
+  },
+  methods: {
+    chooseName (e) {
+      this.isShowTransitionName = !this.isShowTransitionName
+      this.showTop_Name = window.innerHeight - e.clientY < 238
+    },
+    chooseEasing (e) {
+      this.isShowEasing = !this.isShowEasing
+      this.showTop_Easing = window.innerHeight - e.clientY < 238
+    },
+    changeActive (e) {
+      this.isActive = e.currentTarget.innerText
+    },
+    deleteActive () {
+      this.isActive = null
+    },
+    hideEasing () {
+      this.isShowEasing = false
+    },
+    hideTransitionName () {
+      this.isShowTransitionName = false
+    },
+    changeEasing (e, i) {
+      this.list[i].easing = e.currentTarget.innerText
+    },
+    changeTransitionName (e, i) {
+      this.list[i].transitionName = e.currentTarget.dataset.type
+    },
+    prepareSubmit () {
+      let replaceStr = ''
+      this.list.forEach(item => {
+        replaceStr += ` ${item.transitionName} ${item.easing} ${item.during}s ${item.delay}s,`
+      })
+      this.submit('transition', this.now, replaceStr.slice(0, replaceStr.length - 1))
+    },
+    addList () {
+      this.list.push({
+        transitionName: '请选择',
+        easing: '请选择',
+        during: 0
+      })
+    },
+    spliceList (index) {
+      this.list.splice(index, 1)
+      // this.changeValue();
+      if (this.list.length === 0) {
+        this.list.push({
+          transitionName: '请选择',
+          easing: '请选择',
+          during: 0,
+          delay: 0
+        })
+      }
+    },
+    del () {
+      this.submit('transition', this.now, '')
+    }
+  }
+}
 </script>
 
 <style scoped>

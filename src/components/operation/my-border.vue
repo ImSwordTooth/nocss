@@ -35,87 +35,86 @@
 </template>
 
 <script>
-  import {Chrome} from 'vue-color'
+import {Chrome} from 'vue-color'
 
-  export default {
-      name: "my-border",
-      props:["now"],
-      data(){
-        return{
-          border:{
-            borderWeight:0,                                                     //边框宽度
-            borderStyle:'solid',                                                //边框样式
-            color:{                                                             //边框颜色
-              rgba: { r: 0, g: 0, b: 0, a: 0 },
-              a: 1
-            },
-          },
-          isShow:false,                                                       //控制颜色选择框的显示
-          isShowBorderStyle:false,                                             //控制边框样式下拉框的显示
-          showTop:false
+export default {
+  name: 'my-border',
+  props: ['now'],
+  data () {
+    return {
+      border: {
+        borderWeight: 0, // 边框宽度
+        borderStyle: 'solid', // 边框样式
+        color: { // 边框颜色
+          rgba: { r: 0, g: 0, b: 0, a: 0 },
+          a: 1
         }
       },
-      components:{
-        'chrome-picker': Chrome,
-      },
-      created(){
-        this.$watch('$data.border',function(){
-                this.prepareSubmit();
-            },{immediate:this.isMed,deep:true}
-          )
-      },
-      methods:{
-        choose(e){
-          this.isShowBorderStyle = !this.isShowBorderStyle;
-          this.showTop = window.innerHeight - e.clientY < 238;
-        },
-        //隐藏颜色选择框
-        hideColorPicker(){
-          this.isShow = false
-        },
-        //隐藏边框样式下拉框
-        hideBorderStyle(){
-          this.isShowBorderStyle = false
-        },
-        //改变边框样式下拉框
-        changeBorderStyle(event){
-          this.border.borderStyle = event.currentTarget.dataset.type;
-        },
-        //准备提交
-        prepareSubmit(){
-          let weight = this.border.borderWeight;
-          let style = this.border.borderStyle;
-          let rgba = this.border.color.rgba;
-          let currentColor = rgba.a === 1 ? this.border.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          this.submit('border',this.now,`${weight}px ${style} ${currentColor}`)
-        },
-        del(){
-          this.submit('border',this.now,'')
-        }
-      },
-      computed:{
-        rgba(){
-          let rgba = this.border.color.rgba;
-          if(rgba.a === 0){                                 //透明度为0时，用斜纹代替颜色，表示透明
-            return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
-          }
-          else {                                            //其他情况下显示正常颜色
-            return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-          }
-        },
-        colorText(){
-          let rgba = this.border.color.rgba;
-          if (rgba.a === 0){                                //透明度为0时，颜色为“无”
-            return "无"
-          } else {                                          //其他情况下显示正常颜色文本
-            return rgba.a === 1 ? this.border.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-          }
-        },
-        isMed(){
-          return this.now!=="standard"
-        }
-      }
+      isShow: false, // 控制颜色选择框的显示
+      isShowBorderStyle: false, // 控制边框样式下拉框的显示
+      showTop: false
     }
+  },
+  components: {
+    'chrome-picker': Chrome
+  },
+  created () {
+    this.$watch('$data.border', function () {
+      this.prepareSubmit()
+    }, {immediate: this.isMed, deep: true}
+    )
+  },
+  methods: {
+    choose (e) {
+      this.isShowBorderStyle = !this.isShowBorderStyle
+      this.showTop = window.innerHeight - e.clientY < 238
+    },
+    // 隐藏颜色选择框
+    hideColorPicker () {
+      this.isShow = false
+    },
+    // 隐藏边框样式下拉框
+    hideBorderStyle () {
+      this.isShowBorderStyle = false
+    },
+    // 改变边框样式下拉框
+    changeBorderStyle (event) {
+      this.border.borderStyle = event.currentTarget.dataset.type
+    },
+    // 准备提交
+    prepareSubmit () {
+      let weight = this.border.borderWeight
+      let style = this.border.borderStyle
+      let rgba = this.border.color.rgba
+      let currentColor = rgba.a === 1 ? this.border.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      this.submit('border', this.now, `${weight}px ${style} ${currentColor}`)
+    },
+    del () {
+      this.submit('border', this.now, '')
+    }
+  },
+  computed: {
+    rgba () {
+      let rgba = this.border.color.rgba
+      if (rgba.a === 0) { // 透明度为0时，用斜纹代替颜色，表示透明
+        return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
+      } else { // 其他情况下显示正常颜色
+        return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      }
+    },
+    colorText () {
+      let rgba = this.border.color.rgba
+      if (rgba.a === 0) { // 透明度为0时，颜色为“无”
+        return '无'
+      } else { // 其他情况下显示正常颜色文本
+        return rgba.a === 1 ? this.border.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      }
+    },
+    isMed () {
+      return this.now !== 'standard'
+    }
+  }
+}
 </script>
 
 <style scoped>

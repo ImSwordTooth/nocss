@@ -11,21 +11,21 @@
 </template>
 
 <script>
-    export default {
-      name: "operate",
-      props:{
-        onsubmit:{
-          type:Function,
-          default:null
-        }
-      },
-      methods:{
-        reload(){
-              this.$store.dispatch('changeIsAlive',false);
-              this.$store.dispatch('changeCodes',`.nocss {\n}`);
-          }
-      }
+export default {
+  name: 'operate',
+  props: {
+    onsubmit: {
+      type: Function,
+      default: null
     }
+  },
+  methods: {
+    reload () {
+      this.$store.dispatch('changeIsAlive', false)
+      this.$store.dispatch('changeCodes', `.nocss {\n}`)
+    }
+  }
+}
 </script>
 
 <style scoped>

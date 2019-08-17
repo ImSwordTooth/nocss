@@ -24,48 +24,48 @@
 </template>
 
 <script>
-  export default {
-    name: "active",
-    props:['pseudoName'],
-    data() {
-      return {
-        isShow:true
-      }
-    },
-    computed:{
-      pseudoClass(){
-        let list = this.$store.getters.getPseudoClass;
-        for (let i=0;i<list.length;i++){
-          if (list[i].name===this.pseudoName) {
-            return list[i].content;
-          }
-        }
-      },
-      isTaped(){
-        return function (type){                                     //用闭包给计算属性添加参数
-          return this.pseudoClass.some(item=>{                      //如果动态加载的属性组件里有指定的名字的组件，就返回true，为true就添加了checked类，展示为已选中
-            return item.name===`my-${type}`
-          })
+export default {
+  name: 'active',
+  props: ['pseudoName'],
+  data () {
+    return {
+      isShow: true
+    }
+  },
+  computed: {
+    pseudoClass () {
+      let list = this.$store.getters.getPseudoClass
+      for (let i = 0; i < list.length; i++) {
+        if (list[i].name === this.pseudoName) {
+          return list[i].content
         }
       }
     },
-    methods:{
-      hideBox(){
-        this.isShow = false
-      },
-      add(event){
-        let hoverCodes = this.$store.getters.getHoverCodes;
-        if (hoverCodes==='') {
-          hoverCodes = `.nocss:hover {\n}`;
-          this.$store.dispatch("changeHoverCodes", hoverCodes)
-        }
-        let type = event.currentTarget.dataset.type;
-        import(`../operation/my-${type}`).then((data) => {
-          this.pseudoClass.push(data.default)
-        });
+    isTaped () {
+      return function (type) { // 用闭包给计算属性添加参数
+        return this.pseudoClass.some(item => { // 如果动态加载的属性组件里有指定的名字的组件，就返回true，为true就添加了checked类，展示为已选中
+          return item.name === `my-${type}`
+        })
       }
     }
+  },
+  methods: {
+    hideBox () {
+      this.isShow = false
+    },
+    add (event) {
+      let hoverCodes = this.$store.getters.getHoverCodes
+      if (hoverCodes === '') {
+        hoverCodes = `.nocss:hover {\n}`
+        this.$store.dispatch('changeHoverCodes', hoverCodes)
+      }
+      let type = event.currentTarget.dataset.type
+        import(`../operation/my-${type}`).then((data) => {
+          this.pseudoClass.push(data.default)
+        })
+    }
   }
+}
 </script>
 
 <style scoped>
@@ -87,6 +87,3 @@
   }
 
 </style>
-
-
-

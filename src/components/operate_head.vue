@@ -1,29 +1,29 @@
 <template>
   <div class="nav">
     <ul>
-      <li v-for="head in operateHead" @click="changeActive($event)" :data-head="head.class" :class="{'active':head.class === activeHead}"><i class="iconfont" :class="`icon${head.class}`"></i>{{head.name}}</li>
+      <li v-for="(head,index) in operateHead" :key="index" @click="changeActive($event)" :data-head="head.class" :class="{'active':head.class === activeHead}"><i class="iconfont" :class="`icon${head.class}`"></i>{{head.name}}</li>
     </ul>
   </div>
 </template>
 
 <script>
-    export default {
-      name: "operate_head",
-      computed:{
-          operateHead(){
-            return this.$store.getters.getOperateHead
-          },
-        activeHead(){
-            return this.$store.getters.getActiveHead
-        }
-      },
-      methods:{
-        changeActive(event){
-          let head = event.currentTarget.dataset.head;
-          this.$store.dispatch('changeActiveHead',head)
-        }
-      }
+export default {
+  name: 'operate_head',
+  computed: {
+    operateHead () {
+      return this.$store.getters.getOperateHead
+    },
+    activeHead () {
+      return this.$store.getters.getActiveHead
     }
+  },
+  methods: {
+    changeActive (event) {
+      let head = event.currentTarget.dataset.head
+      this.$store.dispatch('changeActiveHead', head)
+    }
+  }
+}
 </script>
 
 <style scoped>

@@ -51,119 +51,117 @@
 </template>
 
 <script>
-  import {Chrome} from 'vue-color'
+import {Chrome} from 'vue-color'
 
-  export default {
-    name: "my-boxshadow",
-      props:["now"],
-      data(){
-        return{
-          alreadyShadow:[],
-          boxshadow:{
-            offsetX:0,
-            offsetY:0,
-            blur:0,
-            spread:0,
-            color:{
-              rgba: { r: 0, g: 0, b: 0, a: 0 },
-              a: 1
-            },
-            type:'outset'
-          },
-          isShow:false,
-          isShowType:false,
-          showTop:false,
-          list:[
-            {
-              isShow:false
-            },{
-              isShow:false
-            }
-          ]
+export default {
+  name: 'my-boxshadow',
+  props: ['now'],
+  data () {
+    return {
+      alreadyShadow: [],
+      boxshadow: {
+        offsetX: 0,
+        offsetY: 0,
+        blur: 0,
+        spread: 0,
+        color: {
+          rgba: { r: 0, g: 0, b: 0, a: 0 },
+          a: 1
+        },
+        type: 'outset'
+      },
+      isShow: false,
+      isShowType: false,
+      showTop: false,
+      list: [
+        {
+          isShow: false
+        }, {
+          isShow: false
         }
-      },
-      components:{
-        'chrome-picker': Chrome,
-      },
-      created(){
-        this.$watch('$data.boxshadow',function(){
-            this.prepareSubmit();
-          },{immediate:this.isMed,deep:true}
-        )
-      },
-      computed:{
-        rgba(){
-          let rgba = this.boxshadow.color.rgba;
-          if(rgba.a === 0){
-            return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
-          }
-          else {
-            return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-          }
-        },
-        colorText(){
-          let rgba = this.boxshadow.color.rgba;
-          if (rgba.a === 0){
-            return "无"
-          } else {
-            return rgba.a === 1 ? this.boxshadow.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
-          }
-        },
-        isMed(){
-          return this.now !== 'standard';
-        }
-      },
-      methods:{
-        choose(e){
-          this.isShowType = !this.isShowType;
-          this.showTop = window.innerHeight - e.clientY < 238;
-        },
-        hideColorPicker(){
-          this.isShow = false
-          // if( this.list.every(function(item){
-          //   console.log("sss")
-          //  return !item.isShow
-          // })){
-          //   return false;
-          // }else {
-          //   this.list.forEach(item=>{
-          //     item.isShow = false
-          //   })
-          // }
-
-          },
-
-        hideType(){
-          this.isShowType = false
-        },
-        changeType(event){
-          this.boxshadow.type= event.currentTarget.dataset.type;
-        },
-        // addAlready(){
-        //   let rgba = this.color.rgba;
-        //   let type = this.type === 'inset' ? this.type : '';
-        //   let x = this.offsetX;
-        //   let y = this.offsetY;
-        //   let blur = this.blur;
-        //   let spread = this.spread;
-        //   let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a}),`;
-        //   this.alreadyShadow.push(`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`);
-        // },
-        prepareSubmit(){
-          let rgba = this.boxshadow.color.rgba;
-          let type = this.boxshadow.type === 'inset' ? this.boxshadow.type : '';
-          let x = this.boxshadow.offsetX;
-          let y = this.boxshadow.offsetY;
-          let blur = this.boxshadow.blur;
-          let spread = this.boxshadow.spread;
-          let currentColor = rgba.a === 1 ? this.boxshadow.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
-          this.submit('box-shadow',this.now,`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
-        },
-        del(){
-          this.submit('box-shadow',this.now,'')
-        }
-      }
+      ]
     }
+  },
+  components: {
+    'chrome-picker': Chrome
+  },
+  created () {
+    this.$watch('$data.boxshadow', function () {
+      this.prepareSubmit()
+    }, {immediate: this.isMed, deep: true}
+    )
+  },
+  computed: {
+    rgba () {
+      let rgba = this.boxshadow.color.rgba
+      if (rgba.a === 0) {
+        return `linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, rgba(0, 0, 0, 0.15) 50%, transparent 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, rgba(0, 0, 0, 0.15))`
+      } else {
+        return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      }
+    },
+    colorText () {
+      let rgba = this.boxshadow.color.rgba
+      if (rgba.a === 0) {
+        return '无'
+      } else {
+        return rgba.a === 1 ? this.boxshadow.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      }
+    },
+    isMed () {
+      return this.now !== 'standard'
+    }
+  },
+  methods: {
+    choose (e) {
+      this.isShowType = !this.isShowType
+      this.showTop = window.innerHeight - e.clientY < 238
+    },
+    hideColorPicker () {
+      this.isShow = false
+      // if( this.list.every(function(item){
+      //   console.log("sss")
+      //  return !item.isShow
+      // })){
+      //   return false;
+      // }else {
+      //   this.list.forEach(item=>{
+      //     item.isShow = false
+      //   })
+      // }
+    },
+
+    hideType () {
+      this.isShowType = false
+    },
+    changeType (event) {
+      this.boxshadow.type = event.currentTarget.dataset.type
+    },
+    // addAlready(){
+    //   let rgba = this.color.rgba;
+    //   let type = this.type === 'inset' ? this.type : '';
+    //   let x = this.offsetX;
+    //   let y = this.offsetY;
+    //   let blur = this.blur;
+    //   let spread = this.spread;
+    //   let currentColor = rgba.a === 1 ? this.color.hex:`rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a}),`;
+    //   this.alreadyShadow.push(`${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`);
+    // },
+    prepareSubmit () {
+      let rgba = this.boxshadow.color.rgba
+      let type = this.boxshadow.type === 'inset' ? this.boxshadow.type : ''
+      let x = this.boxshadow.offsetX
+      let y = this.boxshadow.offsetY
+      let blur = this.boxshadow.blur
+      let spread = this.boxshadow.spread
+      let currentColor = rgba.a === 1 ? this.boxshadow.color.hex : `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`
+      this.submit('box-shadow', this.now, `${x}px ${y}px ${blur}px ${spread}px ${type} ${currentColor}`)
+    },
+    del () {
+      this.submit('box-shadow', this.now, '')
+    }
+  }
+}
 </script>
 
 <style scoped>

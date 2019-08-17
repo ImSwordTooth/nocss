@@ -9,30 +9,30 @@
 </template>
 
 <script>
-    export default {
-      name: "my-letterspacing",
-      props:["now"],
-      data(){
-          return{
-            letterspacing:0
-          }
-      },
-      created(){
-        this.$watch('$data.letterspacing', function () {
-          this.submit('letter-spacing',this.now,`${this.letterspacing}px`)
-        },{immediate:this.isMed})
-      },
-      computed:{
-        isMed(){
-          return this.now !== 'standard'
-        }
-      },
-      methods:{
-        del(){
-          this.submit('letter-spacing',this.now,'')
-        }
-      }
+export default {
+  name: 'my-letterspacing',
+  props: ['now'],
+  data () {
+    return {
+      letterspacing: 0
     }
+  },
+  created () {
+    this.$watch('$data.letterspacing', function () {
+      this.submit('letter-spacing', this.now, `${this.letterspacing}px`)
+    }, {immediate: this.isMed})
+  },
+  computed: {
+    isMed () {
+      return this.now !== 'standard'
+    }
+  },
+  methods: {
+    del () {
+      this.submit('letter-spacing', this.now, '')
+    }
+  }
+}
 </script>
 
 <style scoped>
