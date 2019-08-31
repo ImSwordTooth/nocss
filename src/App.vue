@@ -4,8 +4,7 @@
     <myaside></myaside>
 
     <div class="prompt" v-if="toolType === ''">
-      <!--选择要操作的控件以开始-->
-      <img src="./assets/8.jpg" alt="x">
+      <div>选择要操作的控件以开始(暂未适配浏览器&&暂未响应式)</div>
     </div>
 
     <myitembox></myitembox>
@@ -15,11 +14,9 @@
       <myoperate></myoperate>
       <article class="operations">
         <operate-head></operate-head>
-        <div class="operate">
           <keep-alive>
             <component :is="operateHead"></component>
           </keep-alive>
-        </div>
       </article>
     </div>
   </div>
@@ -61,8 +58,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
   @import "../static/iconfont.css";
-  /*@import "css/app.css";*/
-  @import "css/otherApp.css";
+  @import "css/app.less";
 </style>

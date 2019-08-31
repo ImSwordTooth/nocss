@@ -1,7 +1,7 @@
 <template>
     <li>
       <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconoutline"></i>轮廓线</span>
-      <div>
+      <div class="content">
         <div class="item">
           <input type="range" min="0" max="10" step="1" v-model="outline.outlineWeight">
           <span class="borderWeightText">{{outline.outlineWeight}}px</span>

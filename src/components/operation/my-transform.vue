@@ -1,7 +1,7 @@
 <template>
     <li>
       <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'ctrl+单击<变化类型>以删除该子项'"><i class="iconfont icontransform"></i>变形</span>
-      <div>
+      <div class="content">
         <div v-for="(tr,index) in list" class="listDiv" :key="index">
           <span class="info">变化类型：</span>
           <span v-if="tr.transformName!=='请选择'" class="transName" @click.ctrl="spliceList(index)">{{tr.transformName}}</span>
@@ -14,18 +14,18 @@
               <li @click="changeTransformName($event,index)" data-type="skew"><i class="iconfont iconskew"></i>倾斜<span class="en">skew</span></li>
             </ul>
           </div>
-          <div class="content" v-if="tr.transformName==='translate'">
+          <div class="values" v-if="tr.transformName==='translate'">
             <span class="info">左右：</span><input type="text" class="operateText" v-model="tr.translateX"><span class="unit">px</span>
             <span class="info">上下：</span><input type="text" class="operateText" v-model="tr.translateY"><span class="unit">px</span>
           </div>
-          <div class="content" v-if="tr.transformName==='scale'">
+          <div class="values" v-if="tr.transformName==='scale'">
             <span class="info">横向：</span><input type="text" class="operateText" v-model="tr.scaleX"><span class="unit">倍</span>
             <span class="info">纵向：</span><input type="text" class="operateText" v-model="tr.scaleY"><span class="unit">倍</span>
           </div>
-          <div class="content" v-if="tr.transformName==='rotate'">
+          <div class="values" v-if="tr.transformName==='rotate'">
             <span class="info">角度：</span><input type="text" class="operateText" v-model="tr.rotateDeg"><span class="unit">deg</span>
           </div>
-          <div class="content" v-if="tr.transformName==='skew'">
+          <div class="values" v-if="tr.transformName==='skew'">
             <span class="info">横向：</span><input type="text" class="operateText" v-model="tr.skewX"><span class="unit">deg</span>
             <span class="info">纵向：</span><input type="text" class="operateText" v-model="tr.skewY"><span class="unit">deg</span>
           </div>
@@ -154,7 +154,7 @@ export default {
     margin:0 20px 0 5px;
     font-size: 12px;
   }
-  .content{
+  .values{
     display: inline-block;
     margin-left: 30px;
   }

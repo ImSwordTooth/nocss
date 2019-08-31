@@ -1,7 +1,7 @@
 <template>
   <li>
     <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'这个特殊，三个一下都删除^_^'"><i class="iconfont iconfontstyle"></i>字形</span>
-    <div>
+    <div class="content">
       <div class="group">
         <i class="iconfont iconbold" :class="{'active':Weight==='bold'}" data-weight="bold" @click="fontWeight($event)" title="粗体"></i>
         <i class="iconfont iconlighter" :class="{'active':Weight==='lighter'}"  data-weight="lighter" @click="fontWeight($event)" title="细体"></i>

@@ -1,7 +1,7 @@
 <template>
   <li>
     <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'该项与“渐变”互斥'" title="background-color"><i class="iconfont iconbackgroundcolor"></i>背景色</span>
-    <div>
+    <div class="content">
       <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
         <span class="currentColor" :style="{'background':rgba}"></span>
         <span class="currentColorText">{{colorText}}</span>

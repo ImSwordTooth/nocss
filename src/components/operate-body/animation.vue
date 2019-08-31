@@ -24,7 +24,7 @@
           <input type="text" class="operateText" maxlength="3" v-model="during"><span class="unit">s</span>
         </div>
         <div class="item">
-          <label class="checkbox" v-tooltip.top="'由于“非无限”会导致动画只播放一次，因此建议一直开启“无限”以查看效果，实际情况下由您定制'">
+          <label class="checkbox" v-tooltip.top="'由于“非无限”会导致动画只播放一次，因此建议一直开启“无限”以查看效果，实际情况下由你定制'">
             <input type="checkbox" v-model="isChecked">
             <i class="iconfont" :class="{'iconcheckboxnotchecked':!isChecked,'iconcheckboxchecked':isChecked}"></i>
             无限
@@ -70,6 +70,7 @@ import Hover from '../pseudoClasses/hover'
 import Color from '../operation/my-color'
 
 export default {
+  // TODO 诸多bug
   name: 'animation',
   components: {Hover, Color},
   data () {
@@ -153,6 +154,7 @@ export default {
     // 删除@keyframes规则
     deleteKeyframes () {
       let css = document.styleSheets[0]
+      console.log(css)
       css.deleteRule(0)
     },
     // 限制数字文本框只能输入两位数

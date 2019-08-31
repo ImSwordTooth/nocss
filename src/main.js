@@ -9,7 +9,7 @@ import VueHighlightJS from 'vue-highlightjs'
 import 'x0popup/dist/x0popup.min.css'
 // 提示
 import Tooltip from 'vue-directive-tooltip'
-// import 'vue-directive-tooltip/css/index.css';
+import 'vue-directive-tooltip/dist/vueDirectiveTooltip.css'
 // 复制
 import VueClipboard from 'vue-clipboard2'
 
@@ -19,15 +19,6 @@ import VueClipboard from 'vue-clipboard2'
 Vue.use(VueHighlightJS)
 
 Vue.use(Tooltip)
-
-Vue.use(Tooltip, {
-  // fontSize:80
-  // delay: 500,
-  // placement: 'right',
-  class: 'tooltip-red'
-  // triggers: ['hover'],
-  // offset: 0
-})
 
 Vue.use(VueClipboard)
 
@@ -41,7 +32,6 @@ requireComponentOperation.keys().forEach(fileName => {
     componentName, componentConfig.default || componentConfig
   )
 })
-
 const requireComponentPseudo = require.context('./components/pseudo', false, /\w+\.(vue|js)$/)
 requireComponentPseudo.keys().forEach(fileName => {
   const componentConfig = requireComponentPseudo(fileName)
@@ -89,10 +79,10 @@ new Vue({
 })
 
 /*
+*
 *@param {String}name  css属性名
 *@param {String}type  基础、伪类、或者动画节点
 *@param {String}replaceStr  css属性值
-*
 *
 * */
 Vue.prototype.submit = function (name, type, replaceStr) {

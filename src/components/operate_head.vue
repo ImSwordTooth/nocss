@@ -26,40 +26,45 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
+  /*操作区导航栏*/
   .nav{
     width: 100%;
-  }
-  .nav ul{
-    display: inline-flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .nav ul li{
-    background-color: #f5f5f5;
-    border: solid 1px #c3c3c375;
-    border-left: none;
-    padding: 5px 20px;
-    display: inline-flex;
-    align-items: center;
-    font-size: 15px;
-    cursor: url("../assets/cursor/pen.png"),pointer;
-  }
-  .nav ul li.active{
-    border-bottom: none;
-    background-color: transparent;
-  }
-  .nav ul i{
-    margin: 0 2px;
-  }
-  .iconanimation{animation: rotate infinite 2s linear}
-  @keyframes rotate {
-    0%{
-      transform: rotate(0);
-    }
-    100%{
-      transform: rotate(360deg);
+    ul{
+      display: inline-flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li{
+        background-color: #f5f5f5;
+        border: solid 1px #c3c3c375;
+        border-left: none;
+        padding: 5px 20px;
+        display: inline-flex;
+        align-items: center;
+        font-size: 15px;
+        cursor: url("../assets/cursor/pen.png"),pointer;
+      }
+      li.active{
+        border-bottom: none;
+        background-color: transparent;
+      }
+      i{
+        margin: 0 2px;
+      }
+      /*动画区的转动效果*/
+      .iconanimation{
+        animation: rotate infinite 2s linear
+      }
+      /*动画规则 · 动画区的转动效果*/
+      @keyframes rotate {
+        0%{
+          transform: rotate(0);
+        }
+        100%{
+          transform: rotate(360deg);
+        }
+      }
     }
   }
 </style>

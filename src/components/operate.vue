@@ -13,12 +13,6 @@
 <script>
 export default {
   name: 'operate',
-  props: {
-    onsubmit: {
-      type: Function,
-      default: null
-    }
-  },
   methods: {
     reload () {
       this.$store.dispatch('changeIsAlive', false)

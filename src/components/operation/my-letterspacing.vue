@@ -1,7 +1,7 @@
 <template>
     <li>
       <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconletterspacing"></i>字体间距</span>
-      <div>
+      <div class="content">
         <input type="range" min="0" max="50" step="1" v-model="letterspacing">
         <span>{{letterspacing}}px</span>
       </div>

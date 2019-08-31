@@ -1,7 +1,7 @@
 <template>
   <li>
     <span  class="operateTitle" @click.ctrl="del"><i class="iconfont iconfontsize"></i>字体大小</span>
-    <div>
+    <div class="content">
       <input type="range" min="12" max="100" step="1" v-model="fontsize">
       <span>{{fontsize}}px</span>
     </div>

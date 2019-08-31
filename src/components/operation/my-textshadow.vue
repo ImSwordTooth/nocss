@@ -1,7 +1,7 @@
 <template>
   <li>
     <span class="operateTitle" @click.ctrl="del"><i class="iconfont icontextshadow"></i>字体阴影</span>
-    <div>
+    <div class="content">
       <div class="item">
         <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
           <span class="currentColor" :style="{'background':rgba}"></span>

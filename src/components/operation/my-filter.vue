@@ -1,7 +1,7 @@
 <template>
     <li>
       <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'ctrl+单击变化类型以删除该项'"><i class="iconfont iconfilter"></i>滤镜</span>
-      <div>
+      <div class="content">
         <div v-for="(fi,index) in list" class="listDiv" :key="index">
           <span class="info">函数：</span>
           <span v-if="fi.filterName!=='请选择'" class="filterName" @click.ctrl="spliceList(index)">{{fi.filterName}}()</span>
@@ -20,34 +20,34 @@
               <li @click="changeFilterName($event,index)" data-type="drop-shadow"><i class="iconfont icondropshadow"></i>阴影<span class="en">drop-shadow()</span></li>
             </ul>
           </div>
-          <div class="content" v-if="fi.filterName==='blur'">
+          <div class="values" v-if="fi.filterName==='blur'">
             <span class="info">模糊度：</span><input type="text" class="operateText" v-model="fi.blur"><span class="unit">px</span>
           </div>
-          <div class="content" v-if="fi.filterName==='brightness'">
+          <div class="values" v-if="fi.filterName==='brightness'">
             <span class="info">亮度：</span><input type="text" class="operateText" v-model="fi.brightness"><span class="unit">%</span>
           </div>
-          <div class="content" v-if="fi.filterName==='contrast'">
+          <div class="values" v-if="fi.filterName==='contrast'">
             <span class="info">对比度：</span><input type="text" class="operateText" v-model="fi.contrast"><span class="unit">%</span>
           </div>
-          <div class="content" v-if="fi.filterName==='grayscale'">
+          <div class="values" v-if="fi.filterName==='grayscale'">
             <span class="info">灰度：</span><input type="range" min="1" max="100" step="1" v-model="fi.grayscale"><span>{{fi.grayscale}}%</span>
           </div>
-          <div class="content" v-if="fi.filterName==='opacity'">
+          <div class="values" v-if="fi.filterName==='opacity'">
             <span class="info">透明度：</span><input type="range" min="1" max="100" step="1" v-model="fi.opacity"><span>{{fi.opacity}}%</span>
           </div>
-          <div class="content" v-if="fi.filterName==='sepia'">
+          <div class="values" v-if="fi.filterName==='sepia'">
             <span class="info">褐度：</span><input type="range" min="1" max="100" step="1" v-model="fi.sepia"><span>{{fi.sepia}}%</span>
           </div>
-          <div class="content" v-if="fi.filterName==='saturate'">
+          <div class="values" v-if="fi.filterName==='saturate'">
             <span class="info">饱和度：</span><input type="text" class="operateText" v-model="fi.saturate"><span class="unit">%</span>
           </div>
-          <div class="content" v-if="fi.filterName==='hue-rotate'">
+          <div class="values" v-if="fi.filterName==='hue-rotate'">
             <span class="info">色相旋转：</span><input type="range" style="width: 300px" min="1" max="360" step="1" v-model="fi.huerotate"><span>{{fi.huerotate}}deg</span>
           </div>
-          <div class="content" v-if="fi.filterName==='invert'">
+          <div class="values" v-if="fi.filterName==='invert'">
             <span class="info">反转输出：</span><input type="range" min="1" max="100" step="1" v-model="fi.invert"><span>{{fi.invert}}%</span>
           </div>
-          <div class="content" v-if="fi.filterName==='drop-shadow'">
+          <div class="values" v-if="fi.filterName==='drop-shadow'">
             <ul class="shadow">
               <li>
                 <span class="info">颜色</span>
@@ -264,7 +264,7 @@ export default {
     font-size: 12px;
     border: solid 1px #cccccc;
   }
-  .content{
+  .values{
     display: inline-flex;
     margin-left: 30px;
     align-items: center;

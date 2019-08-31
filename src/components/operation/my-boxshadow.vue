@@ -1,7 +1,7 @@
 <template>
   <li>
     <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconboxshadow"></i>盒子阴影</span>
-    <div>
+    <div class="content">
       <div class="oneline">
         <!--<div v-for="(item,index) in list">-->
           <div class="item">

@@ -29,7 +29,7 @@ export default {
   props: ['pseudoName'],
   data () {
     return {
-      isShow: true
+      isShow: false
     }
   },
   computed: {

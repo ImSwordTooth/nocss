@@ -1,7 +1,7 @@
 <template>
   <li>
     <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconborder"></i>边框</span>
-    <div>
+    <div class="content">
       <div class="item">
         <span class="info">宽度：</span>
         <input type="range" min="0" max="10" step="1" v-model="border.borderWeight">
@@ -12,14 +12,8 @@
         <div class="chooseContainer" :class="{'tttop':isShowBorderStyle}" @click="choose($event)" v-clickoutside="hideBorderStyle">{{border.borderStyle}}
           <i class="iconfont" :class="{'iconuparrow':isShowBorderStyle,'icondownarrow':!isShowBorderStyle}"></i>
           <ul v-show="isShowBorderStyle" :class="{'showTop':showTop}">
-            <li @click="changeBorderStyle($event)" data-type="solid"><i class="iconfont iconsolid"></i>实线<span class="en">solid</span></li>
-            <li @click="changeBorderStyle($event)" data-type="dashed"><i class="iconfont icondashed"></i>虚线<span class="en">dashed</span></li>
-            <li @click="changeBorderStyle($event)" data-type="double"><i class="iconfont icondouble"></i>双线<span class="en">double</span></li>
-            <li @click="changeBorderStyle($event)" data-type="dotted"><i class="iconfont icondotted"></i>点状<span class="en">dotted</span></li>
-            <li @click="changeBorderStyle($event)" data-type="inset"><i class="iconfont iconinset"></i>内阴影<span class="en">inset</span></li>
-            <li @click="changeBorderStyle($event)" data-type="outset"><i class="iconfont iconoutset"></i>外阴影<span class="en">outset</span></li>
-            <li @click="changeBorderStyle($event)" data-type="groove"><i class="iconfont icongroove"></i>3D凹槽<span class="en">groove</span></li>
-            <li @click="changeBorderStyle($event)" data-type="ridge"><i class="iconfont iconridge"></i>3D垄状<span class="en">ridge</span></li>
+            <li v-for="(item,index) in borderStyleList" :key="index" @click="changeBorderStyle($event)" :data-type="item.en"><i class="iconfont" :class="'icon'+item.en"></i>{{item.cn}}<span class="en">{{item.en}}</span></li>
+            <!--<li @click="changeBorderStyle($event)" data-type="solid"><i class="iconfont iconsolid"></i>实线<span class="en">solid</span></li>-->
           </ul>
         </div>
       </div>
@@ -42,6 +36,40 @@ export default {
   props: ['now'],
   data () {
     return {
+      borderStyleList: [
+        {
+          cn: '实线',
+          en: 'solid'
+        },
+        {
+          cn: '虚线',
+          en: 'dashed'
+        },
+        {
+          cn: '双线',
+          en: 'double'
+        },
+        {
+          cn: '点状',
+          en: 'dotted'
+        },
+        {
+          cn: '内阴影',
+          en: 'inset'
+        },
+        {
+          cn: '外阴影',
+          en: 'outset'
+        },
+        {
+          cn: '3D凹槽',
+          en: 'groove'
+        },
+        {
+          cn: '3D垄状',
+          en: 'ridge'
+        }
+      ], // 列表的静态文本
       border: {
         borderWeight: 0, // 边框宽度
         borderStyle: 'solid', // 边框样式

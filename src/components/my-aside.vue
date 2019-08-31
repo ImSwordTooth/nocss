@@ -67,7 +67,7 @@ export default {
           break
         case '超链接':
           this.$store.dispatch('changeOperateHead', [{class: 'standard', name: '基本'}, {class: 'pseudoClass', name: '伪类'}, {class: 'animation', name: '动画'}])
-          this.$store.dispatch('changeStandardList', ['color', 'textshadow', 'boxshadow'])
+          this.$store.dispatch('changeStandardList', ['color', 'fontsize', 'fontstyle', 'backgroundcolor', 'border', 'padding', 'textshadow', 'boxshadow', 'transition', 'transform', 'outline', 'letterspacing'])
           this.$store.dispatch('changePseudoClass', [{name: 'hover', content: []}])
           break
         case '表单组件': this.$store.dispatch('changeOperateHead', [{class: 'standard', name: '基本'}, {class: 'pseudoClass', name: '伪类'}, {class: 'animation', name: '动画'}, {class: 'after', name: '+ i'}]); break
@@ -75,7 +75,7 @@ export default {
         case '盒子': this.$store.dispatch('changeOperateHead', [{class: 'standard', name: '基本'}, {class: 'pseudoClass', name: '伪类'}, {class: 'animation', name: '动画'}]); break
         case '图片':
           this.$store.dispatch('changeOperateHead', [{class: 'standard', name: '基本'}, {class: 'animation', name: '动画'}])
-          this.$store.dispatch('changeStandardList', ['border', 'filter', 'boxshadow', 'transition', 'transform', 'outline'])
+          this.$store.dispatch('changeStandardList', ['border', 'filter', 'boxshadow', 'transition', 'transform', 'outline', 'objectfit'])
           break
         case '表格': this.$store.dispatch('changeOperateHead', [{class: 'standard', name: '基本'}, {class: 'pseudoClass', name: '伪类'}]); break
         case '列表': this.$store.dispatch('changeOperateHead', [{class: 'standard', name: '基本'}, {class: 'pseudoClass', name: '伪类'}]); break
@@ -89,5 +89,49 @@ export default {
 </script>
 
 <style scoped>
-  @import "../css/aside.css";
+  .left .tools{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .tools>li{
+    position: relative;
+    display: flex;
+    padding: 1.6rem 0;
+    align-items: center;
+    flex-wrap: wrap;
+    cursor: url("../assets/cursor/pen.png"),pointer;
+    transition: all .3s;
+  }
+  .tools>li.active{
+    background-color: #464646;
+    color: wheat;
+    box-shadow: inset 5px 0 #deca8e;
+    transition: background-color .5s;
+  }
+
+  .tools>li>i{
+    position: absolute;
+    left: 20px;
+  }
+  .tools>li span{
+    width: 100%;
+    padding-left: 70px;
+  }
+
+  .tools>li:not([class='active']):hover{
+    background-color: rgba(236, 236, 236, 0.98);
+    box-shadow: 5px 9px 5px 0 rgba(228, 228, 228, 0.25);
+    transition: all .6s;
+  }
+  .more{
+    display: flex;
+    color: gray;
+    font-style: oblique;
+    justify-content: center;
+    margin-right: 20px;
+    font-size: 18px;
+    cursor: url("../assets/cursor/wait.png"),not-allowed;
+  }
+
 </style>

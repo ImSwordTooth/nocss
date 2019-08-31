@@ -1,40 +1,43 @@
 <template>
   <li>
     <span class="operateTitle" @click.ctrl="del" v-tooltip.top="'仅支持当前css代码中已出现的属性'"><i class="iconfont icontransition"></i>过渡</span>
-    <div>
+    <div class="content">
       <div v-for="(item,index) in list" class="listDiv" :key="index">
         <div class="item">
           <span class="info">过渡属性：</span>
           <span v-if="item.transitionName!=='请选择'" class="value" @click.ctrl="spliceList(index)">{{item.transitionName}}</span>
-          <span v-if="item.transitionName==='请选择'" class="chooseContainer" @click="chooseName($event)" v-clickoutside="hideTransitionName">{{item.transitionName}}
-          <i class="iconfont" :class="{'iconuparrow':isShowTransitionName,'icondownarrow':!isShowTransitionName}"></i>
-          <ul v-show="isShowTransitionName" :class="{'showTop':showTop_Name}">
-            <li @click="changeTransitionName($event,index)" data-type="all"><i class="iconfont iconall"></i>全部<span class="en">all</span></li>
-            <li @click="changeTransitionName($event,index)" data-type="color"><i class="iconfont iconcolor"></i>颜色<span class="en">color</span></li>
-            <li @click="changeTransitionName($event,index)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小<span class="en">font-size</span></li>
-            <li @click="changeTransitionName($event,index)" data-type="border"><i class="iconfont iconborder"></i>边框<span class="en">border</span></li>
-            <li @click="changeTransitionName($event,index)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形<span class="en">font相关</span></li>
-            <li @click="changeTransitionName($event,index)" data-type="background-color"><i class="iconfont iconbackgroundcolor"></i>背景色<span class="en">border-color</span></li>
-            <li @click="changeTransitionName($event,index)" data-type="padding"><i class="iconfont iconpadding"></i>内边距<span class="en">padding</span></li>
-            <li @click="changeTransitionName($event,index)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影<span class="en">text-shadow</span></li>
-            <li @click="changeTransitionName($event,index)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影<span class="en">box-shadow</span></li>
-            <li @click="changeTransitionName($event,index)" data-type="transform"><i class="iconfont icontransform"></i>变形<span class="en">transform</span></li>
-          </ul>
-      </span>
+          <div v-if="item.transitionName==='请选择'" class="chooseContainer" @click="chooseName($event)" v-clickoutside="hideTransitionName">
+            {{item.transitionName}}
+            <i class="iconfont" :class="{'iconuparrow':isShowTransitionName,'icondownarrow':!isShowTransitionName}"></i>
+            <ul v-show="isShowTransitionName" :class="{'showTop':showTop_Name}">
+              <li @click="changeTransitionName($event,index)" data-type="all"><i class="iconfont iconall"></i>全部<span class="en">all</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="color"><i class="iconfont iconcolor"></i>颜色<span class="en">color</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="fontsize"><i class="iconfont iconfontsize"></i>字体大小<span class="en">font-size</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="border"><i class="iconfont iconborder"></i>边框<span class="en">border</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="fontstyle"><i class="iconfont iconfontstyle"></i>字形<span class="en">font相关</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="background-color"><i class="iconfont iconbackgroundcolor"></i>背景色<span class="en">border-color</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="padding"><i class="iconfont iconpadding"></i>内边距<span class="en">padding</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="textshadow"><i class="iconfont icontextshadow"></i>字体阴影<span class="en">text-shadow</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="boxshadow"><i class="iconfont iconboxshadow"></i>盒子阴影<span class="en">box-shadow</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="transform"><i class="iconfont icontransform"></i>变形<span class="en">transform</span></li>
+              <li @click="changeTransitionName($event,index)" data-type="outline"><i class="iconfont iconoutline"></i>轮廓线<span class="en">outline</span></li>
+            </ul>
+          </div>
         </div>
         <div class="item">
           <span class="info">过渡动画：</span>
           <span v-if="item.easing!=='请选择'" class="value" @click.ctrl="spliceList(index)">{{item.easing}}</span>
-          <span v-if="item.easing==='请选择'" class="chooseContainer chooseEasing" :class="{'tttop':isShowEasing}" @click="chooseEasing($event)" v-clickoutside="hideEasing">{{item.easing}}
-          <i class="iconfont" :class="{'iconuparrow':isShowEasing,'icondownarrow':!isShowEasing}"></i>
-          <ul v-show="isShowEasing" :class="{'showTop':showTop_Easing}">
-            <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'linear':isActive==='linear'}"></i></div>linear</li>
-            <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease':isActive==='ease'}"></i></div>ease</li>
-            <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-in':isActive==='ease-in'}"></i></div>ease-in</li>
-            <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-out':isActive==='ease-out'}"></i></div>ease-out</li>
-            <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-in-out':isActive==='ease-in-out'}"></i></div>ease-in-out</li>
-          </ul>
-        </span>
+          <div v-if="item.easing==='请选择'" class="chooseContainer chooseEasing" :class="{'tttop':isShowEasing}" @click="chooseEasing($event)" v-clickoutside="hideEasing">
+            {{item.easing}}
+            <i class="iconfont" :class="{'iconuparrow':isShowEasing,'icondownarrow':!isShowEasing}"></i>
+            <ul v-show="isShowEasing" :class="{'showTop':showTop_Easing}">
+              <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'linear':isActive==='linear'}"></i></div>linear</li>
+              <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease':isActive==='ease'}"></i></div>ease</li>
+              <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-in':isActive==='ease-in'}"></i></div>ease-in</li>
+              <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-out':isActive==='ease-out'}"></i></div>ease-out</li>
+              <li @click="changeEasing($event,index)" @mouseenter="changeActive($event)" @mouseleave="deleteActive()"><div><i class="iconfont iconball" :class="{'ease-in-out':isActive==='ease-in-out'}"></i></div>ease-in-out</li>
+            </ul>
+          </div>
         </div>
         <div class="item">
           <span class="info">过渡时间：</span>

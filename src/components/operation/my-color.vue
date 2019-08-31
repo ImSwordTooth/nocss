@@ -1,7 +1,7 @@
 <template>
   <li>
     <span class="operateTitle" @click.ctrl="del"><i class="iconfont iconcolor"></i>颜色</span>
-    <div>
+    <div class="content">
       <span class="color" :class="{'tttop':isShow}" @click="isShow = true" v-clickoutside="hideColorPicker">
         <span class="currentColor" :style="{'background':rgba}"></span>
         <span class="currentColorText">{{colorText}}</span>
